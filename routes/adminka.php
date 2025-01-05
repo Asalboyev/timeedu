@@ -28,8 +28,9 @@ use App\Http\Controllers\{
     AdvantageCategoryController,
     AdvantageController,
     QuestionController,
-    DevelopmentController
+    DevelopmentController,
 };
+use App\Http\Controllers\Admin\MenusController;
 
 // autorization routes
 Auth::routes(['register' => false]);
@@ -40,6 +41,16 @@ Route::get('/admin', [HomeController::class, 'index'])->name('admin');
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     // posts
     Route::resource('posts', PostController::class);
+    // menus
+    Route::get('/menus/detele_file', [MenusController::class, 'detele_file'])->name('menus.detele_file');
+    Route::get('/menus/{id}/restore', [MenusController::class, 'restore'])->name('menus.restore');
+    Route::delete('/menus/{id}/force-destroy', [MenusController::class, 'forceDestroy'])->name('menus.forceDestroy');
+    Route::resource('menus', \App\Http\Controllers\Admin\MenusController::class);
+
+    //dinamik menus
+    Route::post('upload',[\App\Http\Controllers\Admin\DynamicMenuController::class,'upload'])->name('upload');
+    Route::resource('dynamic-menus', \App\Http\Controllers\Admin\DynamicMenuController::class);
+
 
     // posts categories
     Route::resource('posts_categories', PostsCategoryController::class);

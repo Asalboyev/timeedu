@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('dinamik_menus', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('menu_id');
             $table->text('title');
-            $table->integer('order')->default(0);
-            $table->unsignedBigInteger('parent_id')->nullable(); // O‘z-o‘ziga bog‘lanish
-            $table->string('path')->nullable();
-            $table->foreign('parent_id')->references('id')->on('menus')->onDelete('cascade');
-            $table->string('slug');
+            $table->text('text');
             $table->timestamps();
             $table->softDeletes(); // Soft delete qo'shish
 
+            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('dinamik_menus');
     }
 };
