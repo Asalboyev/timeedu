@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    public $title = 'Посты';
+    public $title = 'Posts';
     public $route_name = 'posts';
     public $route_parameter = 'post';
     /**

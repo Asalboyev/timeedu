@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->text('title');
-            $table->integer('order')->default(0);
+            $table->integer('order');
             $table->unsignedBigInteger('parent_id')->nullable(); // O‘z-o‘ziga bog‘lanish
             $table->string('path')->nullable();
             $table->foreign('parent_id')->references('id')->on('menus')->onDelete('cascade');

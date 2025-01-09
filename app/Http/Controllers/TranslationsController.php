@@ -164,30 +164,5 @@ class TranslationsController extends Controller
     }
 
 
-    public function search(Request $request)
-    {
-        $langs = Lang::all();
-        $a = Translation::all();
-        $cc = mb_strtolower($request->search);
-        foreach ($a as $item) {
-            $c['ru'] = mb_strtolower($item->val['ru']);
-            $item->val = $c;
-        }
-        $result = collect($a)->filter(function ($item) use ($cc) {
-            return false !== stripos($item->val['ru'], $cc);
-        });
 
-        foreach ($langs as $lang) {
-            $value = 'val->' . $lang->small;
-            if ($lang->small != 'ru') $result = $result->merge(Translation::where($value, 'like', '%' . $request->search . '%')->get());
-        }
-
-        $search_word = $request->search;
-
-        return view('app.translations.search', compact([
-            'result',
-            'search_word',
-            'langs'
-        ]));
-    }
 }

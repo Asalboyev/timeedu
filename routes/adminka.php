@@ -45,6 +45,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/menus/detele_file', [MenusController::class, 'detele_file'])->name('menus.detele_file');
     Route::get('/menus/{id}/restore', [MenusController::class, 'restore'])->name('menus.restore');
     Route::delete('/menus/{id}/force-destroy', [MenusController::class, 'forceDestroy'])->name('menus.forceDestroy');
+    Route::post('/menu/update-order', [MenusController::class, 'updateOrder'])->name('menu.updateOrder');
+
     Route::resource('menus', \App\Http\Controllers\Admin\MenusController::class);
 
     //dinamik menus

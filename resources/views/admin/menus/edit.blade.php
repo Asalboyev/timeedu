@@ -160,6 +160,15 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label for="path" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Slug</label>
+                                        <input type="text"  class="form-control @error('path') is-invalid @enderror" name="slug" value="{{ old('slug')?? $menu->slug ?? null }}" id="slug" placeholder="Slug...">
+                                        @error('slug')
+                                        <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
 
 
 

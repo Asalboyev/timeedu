@@ -11,16 +11,17 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 addRemoveLinks: true,
-                maxFiles: 10,
+                maxFiles: 1,
                 maxFilesize: 2, // MB
                 success: (file, response) => {
                     let input = document.createElement('input');
                     input.setAttribute('type', 'hidden');
                     input.setAttribute('value', response.file_name);
-                    input.setAttribute('name', 'dropzone_images[]');
+                    input.setAttribute('name', 'dropzone_images');
 
                     let form = document.getElementById('add');
                     form.append(input);
+                    console.log(response);
                 },
                 removedfile: function(file) {
                     file.previewElement.remove();
@@ -34,46 +35,44 @@
                         removing_img.remove();
                     }
                 },
+                init: function() {
+                    @if(isset($dynamic_menu -> background))
+
+                    var thisDropzone = this;
+
+                    document.querySelector('.dropzone').classList.add('dz-max-files-reached');
+
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('value', '{{ $dynamic_menu->background }}');
+                    input.setAttribute('name', 'dropzone_images');
+
+                    let form = document.getElementById('add');
+                    form.append(input);
+
+                    var mockFile = {
+
+                        name: '{{ $dynamic_menu->background }}',
+                        size: 1024 * 512,
+                        accepted: true
+                    };
+
+                    thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+                    thisDropzone.options.thumbnail.call(thisDropzone, mockFile, '{{ $dynamic_menu->sm_img }}');
+                    thisDropzone.files.push(mockFile)
+
+                    @endif
+                },
                 error: function(file, message) {
                     alert(message);
                     this.removeFile(file);
                 },
 
                 // change default texts
-                dictDefaultMessage: "Перетащите сюда файлы для загрузки",
-                dictRemoveFile: "Удалить файл",
-                dictCancelUpload: "Отменить загрузку",
-                dictMaxFilesExceeded: "Не можете загружать больше",
-
-                @if(old('dropzone_images') || isset($post->postImages[0]))
-                init: function() {
-                    var thisDropzone = this;
-
-                    // document.querySelector('.dropzone').classList.add('dz-max-files-reached');
-
-                    @foreach((old('dropzone_images') ?? $post->postImages()->pluck('img')->toArray()) as $img)
-
-                    var input = document.createElement('input');
-                    input.setAttribute('type', 'hidden');
-                    input.setAttribute('value', '{{ $img }}');
-                    input.setAttribute('name', 'dropzone_images[]');
-
-                    var form = document.getElementById('add');
-                    form.append(input);
-
-                    var mockFile = {
-                        name: '{{ $img }}',
-                        size: 1024 * 512,
-                        accepted: true
-                    };
-
-                    thisDropzone.options.addedfile.call(thisDropzone, mockFile);
-                    thisDropzone.options.thumbnail.call(thisDropzone, mockFile, '/upload/images/{{ $img }}');
-                    thisDropzone.files.push(mockFile)
-
-                    @endforeach
-                }
-                @endif
+                dictDefaultMessage: "Drag files here to upload",
+                dictRemoveFile: "Delete file",
+                dictCancelUpload: "Cancel download",
+                dictMaxFilesExceeded: "Can't load more"
             });
         };
     </script>
@@ -149,17 +148,6 @@
                                                 </span>
                                                         @enderror
                                                     </div>
-
-                                                    <div class="form-group">
-                                                        <label for="desc" class="form-label">Description</label>
-                                                        <textarea name="text[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('text.'.$lang->code) is-invalid @enderror ckeditor" name="text[{{ $lang->code }}]" placeholder="Description...">{{ old('text.'.$lang->code) ?? $dynamic_menu->text[$lang->code] ?? null }}</textarea>
-                                                        @error('desc.'.$lang->code)
-                                                        <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         </div>
                                         <div class="form-group">
@@ -174,6 +162,11 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                             @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <!-- Dropzone -->
+                                            <label for="dropzone" class="form-label">Photo</label>
+                                            <div class="dropzone dropzone-multiple" id="dropzone"></div>
                                         </div>
                                     </div>
                                 </div>

@@ -23,12 +23,16 @@ class PostsCategory extends Model
     {
         return $this->belongsToMany(Post::class, 'posts_category_post', 'posts_category_id', 'post_id');
     }
+    public function menus()
+    {
+        return $this->belongsToMany(FormMenu::class, 'form_menu_category', 'form_menu_id', 'category_id');
+    }
 
     public function parent()
     {
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
-    
+
     public function children()
     {
         return $this->hasMany(self::class, 'parent_id', 'id');
@@ -51,4 +55,9 @@ class PostsCategory extends Model
     public function getSmImgAttribute() {
         return $this->img ? url('').'/upload/images/200/'.$this->img : null;
     }
+    public function formMenus()
+    {
+        return $this->belongsToMany(FormMenu::class, 'form_menu_category');
+    }
+
 }

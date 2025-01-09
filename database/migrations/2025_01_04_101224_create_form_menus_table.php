@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('form_menus', function (Blueprint $table) {
             $table->id();
             $table->text('text')->nullable();
-            $table->integer('order')->nullable();
-            $table->integer('position')->default(0);
-            $table->string('title');
+            $table->integer('order');
+            $table->enum('position', [1, 2]);
+            $table->text('title')->nullable();
+            $table->text('photo')->nullable();
             $table->unsignedBigInteger('dinamik_menu_id'); // Foreign key to `dinamik_mens`
             $table->timestamps();
             $table->softDeletes(); // Soft delete qo'shish

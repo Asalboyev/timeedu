@@ -21,18 +21,58 @@ class MenusController extends Controller
      */
     public function index()
     {
-        $menus = Menu::latest()
+        $menusQuery = Menu::query();
+
+        // Search qidiruvi
+        if (isset($_GET['search'])) {
+            $search = trim($_GET['search']);
+            $menusQuery->where('title', 'like', '%' . $search . '%') // Menyu sarlavhasida qidirish
+            ; // Menyu ta'rifida qidirish (agar mavjud bo'lsa)
+        }
+
+        // Pagination va tartib
+        $menus = $menusQuery
+            ->orderBy('parent_id') // Glavni menyularni avval olib keladi
+            ->orderBy('order')    // Tartibni hisobga oladi
             ->paginate(12);
+
+        // Hierarxik menyu daraxtini yaratish
+        $menuTree = $this->buildMenuTree($menus);
+
         $languages = Lang::all();
 
         return view('admin.menus.index', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'menus' => $menus,
-            'languages' => $languages
+            'menus' => $menuTree,
+            'count' => $menus, // Pagination linklari uchun
+            'languages' => $languages,
+            'search' => isset($_GET['search']) ? $_GET['search'] : '', // Qidiruv qiymati
         ]);
     }
+
+
+// Hierarxik menyular daraxti uchun yordamchi funksiya
+    private function buildMenuTree($menus, $parentId = null)
+    {
+        $tree = [];
+        foreach ($menus as $menu) {
+            if ($menu->parent_id == $parentId) {
+                $children = $this->buildMenuTree($menus, $menu->id);
+                $tree[] = [
+                    'menu' => $menu,
+                    'children' => $children,
+                ];
+            }
+        }
+        return $tree;
+    }
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -85,10 +125,17 @@ class MenusController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function updateOrder(Request $request)
     {
-        //
+        $orderData = $request->order;
+
+        foreach ($orderData as $menu) {
+            Menu::where('id', $menu['id'])->update(['order' => $menu['order']]);
+        }
+
+        return response()->json(['message' => 'Order updated successfully!']);
     }
+
 
     /**
      * Show the form for editing the specified resource.

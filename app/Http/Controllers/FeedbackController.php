@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
-    public $title = 'Отзывы';
+    public $title = 'Reviews';
     public $route_name = 'feedbacks';
     public $route_parameter = 'feedback';
     /**

@@ -12,11 +12,7 @@
 
                         <!-- Title -->
                         <h1 class="header-title">
-{{--                            <a href="{{ route($route_name.'.detele_file') }}" >--}}
-{{--                                {{ $title }}--}}
-{{--                            </a>--}}
-
-
+                                {{ $title }}
                         </h1>
 
                     </div>
@@ -45,6 +41,16 @@
 
     <!-- CARDS -->
     <div class="container-fluid">
+        <div class="search">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route($route_name.'.index') }}" class="d-flex">
+                        <input type="text" class="form-control" name="search" value="{{$search}}" placeholder="Search...">
+                        <button type="submit" class="btn btn-success ms-3" style="width: 300px;">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="card mt-4">
             <div class="card-body">
                 <!-- Table -->
@@ -65,7 +71,10 @@
                                 <th scope="row" style="width: 100px">{{ $menus->firstItem() + $key }}</th>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {{ $item->title[$main_lang->code] }}
+                                        <div class="imb-block me-2 overflow-hidden">
+                                            <img src="{{ isset($item->background) ? $item->lg_img : asset('assets/img/default.png') }}" alt="">
+                                        </div>
+                                        {{ $item->title[$main_lang->code] ?? null}}
                                     </div>
                                 </td>
                                 <td>{{ $item->menu ? $item->menu->title[$main_lang->code] : 'null' }}</td>

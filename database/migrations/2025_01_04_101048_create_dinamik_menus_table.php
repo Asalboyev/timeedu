@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('menu_id');
             $table->text('title');
-            $table->text('text');
+            $table->text('short_title')->nullable();
+            $table->text('background')->nullable();
             $table->timestamps();
             $table->softDeletes(); // Soft delete qo'shish
 

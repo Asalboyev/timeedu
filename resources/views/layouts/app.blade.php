@@ -222,9 +222,82 @@
                                 </ul>
                             </div>
                         </li>
-
-
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="#posts" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('posts') || request()->is('posts/*') || request()->is('posts_categories') || request()->is('posts_categories/*') ? 'true' : 'false' }}" aria-controls="posts">
+                                <i class="fe fe-cast"></i> Posts
+                            </a>
+                            <div class="collapse {{ request()->is('admin/posts') || request()->is('admin/posts/*') || request()->is('admin/posts_categories') || request()->is('admin/posts_categories/*') ? 'show' : '' }}" id="posts">
+                                <ul class="nav nav-sm flex-column">
+                                    @if($menu_items->where('route', 'posts')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/posts') || request()->is('admin/posts/*') ? 'active' : '' }}" href="{{ route('posts.index') }}">
+                                                Posts
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if($menu_items->where('route', 'posts_categories')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/posts_categories') || request()->is('admin/posts_categories/*') ? 'active' : '' }}" href="{{ route('posts_categories.index') }}">
+                                                Categories
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </li>
+                    @if($menu_items_groups->where('title', 'Компания')->where('is_active', 1)->first())
+                        <li class="nav-item">
+                            <a class="nav-link" href="#company" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/members') || request()->is('admin/members/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/works') || request()->is('admin/works/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') ? 'true' : 'false' }}" aria-controls="documents">
+                                <i class="fe fe-star"></i> Group
+                            </a>
+                            <div class="collapse {{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/members') || request()->is('admin/members/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/works') || request()->is('admin/works/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') ? 'show' : '' }}" id="company">
+                                <ul class="nav nav-sm flex-column">
+                                    @if($menu_items->where('route', 'feedbacks')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') ? 'active' : '' }}" href="{{ route('feedbacks.index') }}">
+                                                Reviews
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if($menu_items->where('route', 'members')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/members') || request()->is('admin/members/*') ? 'active' : '' }}" href="{{ route('members.index') }}">
+                                                Team
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if($menu_items->where('route', 'partners')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/partners') || request()->is('admin/partners/*') ? 'active' : '' }}" href="{{ route('partners.index') }}">
+                                                Partners
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if($menu_items->where('route', 'works')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/works') || request()->is('admin/works/*') ? 'active' : '' }}" href="{{ route('works.index') }}">
+                                                Our works
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if($menu_items->where('route', 'vacancies')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/vacancies') || request()->is('admin/vacancies/*') ? 'active' : '' }}" href="{{ route('vacancies.index') }}">
+                                                Vacancies
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if($menu_items->where('route', 'questions')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/questions') || request()->is('admin/questions/*') ? 'active' : '' }}" href="{{ route('questions.index') }}">
+                                                FAQ
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
 
                     <hr class="navbar-divider my-3">
                     <li class="nav-item">

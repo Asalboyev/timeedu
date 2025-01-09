@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PostsCategoryController extends Controller
 {
-    public $title = 'Категории постов';
+    public $title = 'Post categories';
     public $route_name = 'posts_categories';
     public $route_parameter = 'posts_category';
     /**
@@ -149,7 +149,7 @@ class PostsCategoryController extends Controller
             'message' => 'Успешно сохранен'
         ]);
     }
-     
+
     /**
      * Remove the specified resource from storage.
      *

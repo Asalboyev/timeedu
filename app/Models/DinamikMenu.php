@@ -10,10 +10,11 @@ class DinamikMenu extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['menu_id', 'title', 'text'];
+    protected $fillable = ['menu_id', 'title', 'text','background','short_title'];
     protected $casts = [
         'title' => 'array',
         'text' => 'array',
+        'short_title' => 'array'
 
     ];
 
@@ -26,6 +27,23 @@ class DinamikMenu extends Model
     // Form bilan bog‘lanish
     public function forms()
     {
-        return $this->hasMany(Form::class, 'dinamik_men_id');
+        return $this->hasMany(FormMenu::class, 'dinamik_men_id');
+    }
+    protected $appends = [
+        'lg_img',
+        'md_img',
+        'sm_img'
+    ];
+
+    public function getLgImgAttribute() {
+        return $this->background  ? url('').'/upload/images/'.$this->background : null;
+    }
+
+    public function getMdImgAttribute() {
+        return $this->background ? url('').'/upload/images/600/'.$this->background : null;
+    }
+
+    public function getSmImgAttribute() {
+        return $this->background ? url('').'/upload/images/200/'.$this->background : null;
     }
 }

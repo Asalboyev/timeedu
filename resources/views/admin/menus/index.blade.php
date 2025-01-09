@@ -1,5 +1,25 @@
 @extends('layouts.app')
+@section('links')
+    <style>
+        #menu-list tr {
+            cursor: move;
+        }
 
+        .submenu-row {
+            background-color: #f9f9f9;
+        }
+
+        .menu-row {
+            background-color: #fff;
+        }
+
+        .ui-sortable-helper {
+            background-color: #d1ecf1 !important;
+        }
+    </style>
+
+
+@endsection
 @section('content')
     <!-- HEADER -->
     <div class="header">
@@ -45,6 +65,17 @@
 
     <!-- CARDS -->
     <div class="container-fluid">
+        <div class="search">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route($route_name.'.index') }}" class="d-flex">
+                        <input type="text" class="form-control" name="search" value="{{$search}}" placeholder="Search...">
+                        <button type="submit" class="btn btn-success ms-3" style="width: 300px;">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="card mt-4">
             <div class="card-body">
                 <!-- Table -->
@@ -59,37 +90,136 @@
                             <th scope="col"></th>
                         </tr>
                         </thead>
-                        <tbody>
-                        @foreach ($menus as $key => $item)
+                        <tbody id="menu-list">
+                        @foreach ($menus as $menuItem)
+                            {{-- Glavni menyu --}}
                             <tr>
-                                <th scope="row" style="width: 100px">{{ $menus->firstItem() + $key }}</th>
+                                <td>{{ $menuItem['menu']->id }}</td>
+                                <td><strong>{{ $menuItem['menu']->title[$languages->first()->code] }}</strong></td>
+                                <td>Main Menu</td>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        {{ $item->title[$main_lang->code] }}
-                                    </div>
+                                    <input
+                                        type="number"
+                                        class="form-control form-control-sm order-input"
+                                        value="{{ $menuItem['menu']->order }}"
+                                        data-id="{{ $menuItem['menu']->id }}"
+                                        style="width: 80px;">
                                 </td>
-                                <td>{{ $item->parent ? $item->parent->title[$main_lang->code] : 'Main Menu' }}</td>
-                                <td>{{ isset($item->created_at) ? date('d-m-Y', strtotime($item->created_at)) : '--' }}</td>
-                                <td style="width: 200px">
-                                    <div class="d-flex justify-content-end">
-                                        <a href="{{ route($route_name.'.edit', [$route_parameter => $item]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
-                                        <a class="btn btn-sm btn-danger ms-3" onclick="var result = confirm('Want to delete?');if (result){event.preventDefault();document.getElementById('delete-form{{ $item->id }}').submit();}"><i class="fe fe-trash"></i></a>
-                                        <form action="{{ route($route_name.'.destroy', [$route_parameter => $item]) }}" id="delete-form{{ $item->id }}" method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </div>
+                                <td>
+                                    <a href="{{ route($route_name.'.edit', [$route_parameter => $menuItem['menu']]) }}" class="btn btn-sm btn-info">
+                                        <i class="fe fe-edit-2"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-danger"
+                                       onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $menuItem['menu']->id }}').submit(); }">
+                                        <i class="fe fe-trash"></i>
+                                    </a>
+                                    <form id="delete-form-{{ $menuItem['menu']->id }}" action="{{ route($route_name.'.destroy', [$route_parameter => $menuItem['menu']]) }}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </td>
                             </tr>
+
+                            {{-- Sub-menyular --}}
+                            @if (!empty($menuItem['children']))
+                                @foreach ($menuItem['children'] as $child)
+                                    <tr>
+                                        <td>{{ $child['menu']->id }}</td>
+                                        <td>&mdash; {{ $child['menu']->title[$languages->first()->code] }}</td>
+                                        <td>{{ $menuItem['menu']->title[$languages->first()->code] }}</td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                class="form-control form-control-sm order-input"
+                                                value="{{ $child['menu']->order }}"
+                                                data-id="{{ $child['menu']->id }}"
+                                                style="width: 80px;">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route($route_name.'.edit', [$route_parameter => $child['menu']]) }}" class="btn btn-sm btn-info">
+                                                <i class="fe fe-edit-2"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-sm btn-danger"
+                                               onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $child['menu']->id }}').submit(); }">
+                                                <i class="fe fe-trash"></i>
+                                            </a>
+                                            <form id="delete-form-{{ $child['menu']->id }}" action="{{ route($route_name.'.destroy', [$route_parameter => $child['menu']]) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $menus->links() }}
+                    {{ $count->links() }}
                 </div>
             </div>
         </div>
     </div>
+
+@endsection
+@section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Drag-and-drop faollashtirish
+            $("#menu-list").sortable({
+                placeholder: "ui-state-highlight",
+                update: function (event, ui) {
+                    let order = [];
+                    $("#menu-list tr").each(function (index, element) {
+                        let id = $(element).data("id");
+                        if (id) {
+                            order.push({ id: id, order: index + 1 });
+                        }
+                    });
+
+                    // Orderni serverga jo'natish
+                    $.ajax({
+                        url: "{{ route('menu.updateOrder') }}",
+                        method: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            order: order,
+                        },
+                        success: function (response) {
+                            alert("Order updated successfully!");
+                        },
+                        error: function (xhr) {
+                            alert("Failed to update order. Please try again.");
+                        },
+                    });
+                },
+            });
+
+            // Orderni qo‘lda o‘zgartirish
+            $(".order-input").on("change", function () {
+                let id = $(this).data("id");
+                let order = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('menu.updateOrder') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        order: [{ id: id, order: order }],
+                    },
+                    success: function (response) {
+                        alert("Order updated successfully!");
+                    },
+                    error: function (xhr) {
+                        alert("Failed to update order. Please try again.");
+                    },
+                });
+            });
+        });
+    </script>
 
 @endsection

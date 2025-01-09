@@ -87,7 +87,7 @@
 
                                     <div class="form-group">
                                         <label for="parent_id" class="form-label">Parental menu</label>
-                                        <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" name="parent_id">
+                                        <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" data-choices='{"": true}' name="parent_id">
                                             <option value="">Main menu</option>
                                             @foreach ($all_categories as $key => $item)
                                                 <option value="{{ $item->id }}" {{ old('parent_id') == $item->id ? 'selected' : '' }}>{{ $item->title[$main_lang->code] }}</option>
