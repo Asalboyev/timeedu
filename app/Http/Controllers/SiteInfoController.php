@@ -17,6 +17,20 @@ class SiteInfoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function facts_figures()
+    {
+        $site_info = SiteInfo::latest()
+            ->first();
+        $langs = Lang::all();
+
+        return view('app.site_infos.facts_figures', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'site_info' => $site_info,
+            'langs' => $langs
+        ]);
+    }
     public function index()
     {
         $site_info = SiteInfo::latest()
@@ -32,13 +46,39 @@ class SiteInfoController extends Controller
         ]);
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function facts_figures_create(Request $request)
     {
+        $data = $request->all();
+
+
+        $site_info = SiteInfo::first();
+
+        SiteInfo::updateOrCreate(
+            [
+                'id' => $site_info->id ?? null
+            ],
+            [
+                'audience_size' => $data['audience_size'],
+                'educational_programs' => $data['educational_programs'],
+                'green_zone' => $data['green_zone'],
+                'library_collection' => $data['library_collection'],
+                'number_of_students' => $data['number_of_students'],
+                'male_students' => $data['male_students'],
+                'female_students' => $data['female_students'],
+            ]
+
+        );
+
+        return redirect()->route('facts_figures')->with([
+            'success' => true,
+            'message' => 'Успешно сохранен'
+        ]);
     }
 
     /**
@@ -47,6 +87,8 @@ class SiteInfoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
     public function store(Request $request)
     {
         $data = $request->all();

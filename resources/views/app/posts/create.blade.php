@@ -205,6 +205,15 @@
                                     <label for="dropzone" class="form-label">Photo</label>
                                     <div class="dropzone dropzone-multiple" id="dropzone"></div>
                                 </div>
+                                    <div class="form-group">
+                                        <label for="map" class="form-label">Insert card (<code>iframe</code>)</label>
+                                        <textarea name="video_link" id="map" cols="4" rows="4" class="form-control @error('video_link') is-invalid @enderror" name="video_link">{{ old('map')  }}</textarea>
+                                        @error('map')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
                             </div>
                         </div>
                     </div>

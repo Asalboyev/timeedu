@@ -16,6 +16,7 @@ class Post extends Model
         'date',
         'views_count',
         'meta_keywords',
+        'video_link',
         'slug'
     ];
 

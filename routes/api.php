@@ -20,8 +20,13 @@ use App\Http\Controllers\Api\ApiController;
 
 
 Route::middleware('locale')->group(function () {
+
     Route::get('/news', [\App\Http\Controllers\Api\NewsController::class, 'get_posts']);
     Route::get('/news/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_post']);
+
+    Route::get('/video_news', [\App\Http\Controllers\Api\NewsController::class, 'get_video_post']);
+    Route::get('/video_news/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_video_post']);
+
     Route::get('/categories', [\App\Http\Controllers\Api\NewsController::class, 'get_categories']);
     Route::get('/categories/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_categories']);
 

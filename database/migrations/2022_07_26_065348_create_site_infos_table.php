@@ -24,6 +24,15 @@ class CreateSiteInfosTable extends Migration
             $table->string('email')->nullable();
             $table->text('work_time')->nullable();
             $table->text('map')->nullable()->comment('iframe');
+
+            $table->text('audience_size')->nullable();
+            $table->string('educational_programs')->nullable();
+            $table->string('green_zone')->nullable();
+            $table->string('library_collection')->nullable();
+            $table->string('number_of_students')->nullable();
+            $table->string('male_students')->nullable();
+            $table->string('female_students')->nullable();
+
             $table->string('exchange')->nullable();
             $table->string('favicon')->nullable();
             $table->string('instagram')->nullable();

@@ -270,18 +270,19 @@
                                                 </span>
                                                         @enderror
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="title"
-                                                           class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">File</label>
-                                                    <input type="file" class="form-control @error('file.'.$lang->code) is-invalid
+                                                    <div class="form-group">
+                                                        <label for="title"
+                                                               class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">File
+                                                            {{$lang->code}}</label>
+                                                        <input type="file" class="form-control @error('file.'.$lang->code) is-invalid
                                                 @enderror" name="file[{{ $lang->code }}]" value="{{
                                                 old('file.'.$lang->code) }}" id="file" placeholder="File...">
-                                                    @error('file.'.$lang->code)
-                                                    <span class="invalid-feedback" role="alert">
+                                                        @error('file.'.$lang->code)
+                                                        <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                                    @enderror
+                                                        @enderror
+                                                    </div>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -290,7 +291,6 @@
                                             <label for="dropzone" class="form-label">Photo</label>
                                             <div class="dropzone dropzone-multiple" id="dropzone"></div>
                                         </div>
-
                                         <div class="form-group">
                                             <label for="menu_id" class="form-label">Menu</label>
                                             <select class="form-select searchable @error('menu_id') is-invalid @enderror"
@@ -308,14 +308,11 @@
                                         </span>
                                             @enderror
                                         </div>
-
                                     </div>
                                 </div>
                         </div>
                     </div>
-                    <div id="formContainer">
-
-                    </div>
+                    <div id="formContainer"> </div>
                     <div class="form-grouppp">
                         <label for="menu_id" class="form-label">ADD Form</label>
                         <select id="formSelector"  class="form-select">

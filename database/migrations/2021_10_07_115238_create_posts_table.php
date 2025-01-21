@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->text('subtitle')->nullable();
             $table->text('desc')->nullable();
             $table->dateTime('date')->nullable();
+            $table->text('video_link')->nullable();
             $table->integer('views_count')->default(1);
             $table->text('meta_keywords')->nullable();
             $table->string('slug');

@@ -333,6 +333,11 @@
                                         General information
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('admin/facts_figures') || request()->is('admin/facts_figures/*') ? 'active' : '' }}" href="{{ route('facts_figures') }}">
+                                        FACTS AND FIGURES
+                                    </a>
+                                </li>
 
                                 @if(auth()->user()->role == 'admin')
                                 <li class="nav-item">

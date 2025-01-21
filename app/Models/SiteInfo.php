@@ -25,6 +25,14 @@ class SiteInfo extends Model
         'instagram',
         'facebook',
         'youtube',
+
+        'audience_size',
+        'educational_programs',
+        'green_zone',
+        'library_collection',
+        'number_of_students',
+        'male_students',
+        'female_students',
     ];
 
     protected $casts = [

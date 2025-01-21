@@ -156,6 +156,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('upload-image', [HomeController::class, 'uploadImage'])->name('upload-image');
 
     // site info
+    Route::post('facts_figures', [SiteInfoController::class, 'facts_figures_create'])->name('facts_figures.create');
+    Route::get('facts_figures', [SiteInfoController::class, 'facts_figures'])->name('facts_figures');
+
     Route::resource('site_infos', SiteInfoController::class);
 
     // additional functions

@@ -358,7 +358,7 @@ class ApiController extends Controller
             'address' => $site_info->address[$locale] ?? $site_info->address,  // Manzil
             'phone_number' => $site_info->phone_number,  // Telefon raqami
             'email' => $site_info->email,  // Elektron pochta
-            'work_time' => $site_info->work_time[$locale] ?? $site_info->work_time ?? null, // Ish vaqti
+            'work_time' => $site_info->work_time[$locale] ?? $site_info->work_time ?? null,  // Ish vaqti
             'map' => $site_info->map,  // Xarita
             'exchange' => $site_info->exchange,  // Kurs o'zgarishlari
             'favicon' => $site_info->favicon,  // Favicon
@@ -366,7 +366,15 @@ class ApiController extends Controller
             'instagram' => $site_info->instagram,  // Instagram
             'facebook' => $site_info->facebook,  // Facebook
             'youtube' => $site_info->youtube,  // YouTube
+            'audience_size' => $site_info->audience_size,  // Auditoriya hajmi
+            'educational_programs' => $site_info->educational_programs,  // Ta'lim dasturlari
+            'green_zone' => $site_info->green_zone,  // Yashil hudud
+            'library_collection' => $site_info->library_collection,  // Kutubxona fondi
+            'number_of_students' => $site_info->number_of_students,  // Talabalar soni
+            'male_students' => $site_info->male_students,  // Erkak talabalar
+            'female_students' => $site_info->female_students,  // Ayol talabalar
         ];
+
 
         // JSON formatida natijalarni qaytarish
         return response()->json([
