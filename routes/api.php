@@ -34,6 +34,8 @@ Route::middleware('locale')->group(function () {
     Route::get('/students/{id}', [\App\Http\Controllers\Api\ApiController::class, 'show_students']);
 
     Route::get('/menu', [\App\Http\Controllers\Api\MenuMontroller::class, 'get_menu']);
+    Route::get('/menu/{id}', [\App\Http\Controllers\Api\MenuMontroller::class, 'show_menu']);
+
     Route::get('/faq', [ApiController::class, 'get_faq']);
     Route::get('/faq/{id}', [ApiController::class, 'show_faq']);
 

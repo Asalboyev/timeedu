@@ -146,5 +146,120 @@ class MenuMontroller extends Controller
 
         return response()->json($translatedMenus);
     }
+    public function show_menu(Request $request, $id)
+    {
+        $locale = $request->get('locale', app()->getLocale()); // Lokalizatsiya uchun tilni aniqlash
+
+        // Menyu IDsi bo'yicha ma'lumot olish
+        $menu = Menu::where('id', $id)->with([
+            'children',
+            'dinamikMens.forms.postsmenuCategories.posts.postImages',
+            'dinamikMens.forms.formImages'
+        ])->first();
+
+        if (!$menu) {
+            return response()->json(['message' => 'Menu not found'], 404);
+        }
+
+        // Lokalizatsiya qilingan ma'lumotlarni tayyorlash
+        $translatedMenu = [
+            'id' => $menu->id,
+            'title' => $menu->title[$locale] ?? null,
+            'parent_id' => $menu->parent_id,
+            'path' => $menu->path,
+            'slug' => $menu->slug,
+            'children' => $menu->children->map(function ($child) use ($locale) {
+                return [
+                    'id' => $child->id,
+                    'title' => $child->title[$locale] ?? null,
+                    'parent_id' => $child->parent_id,
+                    'path' => $child->path,
+                    'slug' => $child->slug,
+                    'dinamikMenus' => $child->dinamikMens->map(function ($dinamikMenu) use ($locale) {
+                        // Formlarni type bo'yicha ajratish
+                        $formsByType = $dinamikMenu->forms->groupBy('type')->map(function ($forms, $type) use ($locale) {
+                            return $forms->map(function ($form) use ($locale) {
+                                return [
+                                    'id' => $form->id,
+                                    'title' => $form->title[$locale] ?? null,
+                                    'text' => $form->text[$locale] ?? null,
+                                    'order' => $form->order,
+                                    'position' => $form->position,
+                                    'photo' => $form->photo,
+                                    'categories' => $form->postsmenuCategories->map(function ($category) use ($locale) {
+                                        return [
+                                            'id' => $category->id,
+                                            'title' => $category->title[$locale] ?? null,
+                                            'posts' => $category->posts->map(function ($post) use ($locale) {
+                                                return [
+                                                    'id' => $post->id,
+                                                    'title' => $post->title[$locale] ?? null,
+                                                    'subtitle' => $post->subtitle[$locale] ?? null,
+                                                    'desc' => $post->desc[$locale] ?? null,
+                                                    'date' => $post->date ?? null,
+                                                    'meta_keywords' => $post->meta_keywords[$locale] ?? null,
+                                                    'views_count' => $post->views_count ?? null,
+                                                    'slug' => $post->slug,
+                                                    'images' => $post->postImages->map(function ($image) {
+                                                        return [
+                                                            'lg' => $image->lg_img,
+                                                            'md' => $image->md_img,
+                                                            'sm' => $image->sm_img,
+                                                        ];
+                                                    })->toArray(),
+                                                ];
+                                            }),
+                                        ];
+                                    }),
+                                    'images' => $form->formImages->map(function ($image) {
+                                        return [
+                                            'id' => $image->id,
+                                            'url' => $image->url,
+                                            'alt_text' => $image->alt_text,
+                                        ];
+                                    }),
+                                ];
+                            });
+                        });
+
+                        return [
+                            'id' => $dinamikMenu->id,
+                            'title' => $dinamikMenu->title[$locale] ?? null,
+                            'text' => $dinamikMenu->text[$locale] ?? null,
+                            'background' => $dinamikMenu->lg_img,
+                            'short_title' => $dinamikMenu->short_title[$locale] ?? null,
+                            'forms' => $formsByType,
+                        ];
+                    }),
+                ];
+            }),
+            'dinamikMenus' => $menu->dinamikMens->map(function ($dinamikMenu) use ($locale) {
+                return [
+                    'id' => $dinamikMenu->id,
+                    'title' => $dinamikMenu->title[$locale] ?? null,
+                    'text' => $dinamikMenu->text[$locale] ?? null,
+                    'background' => $dinamikMenu->lg_img,
+                    'short_title' => $dinamikMenu->short_title[$locale] ?? null,
+                    'forms' => $dinamikMenu->forms->map(function ($form) use ($locale) {
+                        return [
+                            'id' => $form->id,
+                            'title' => $form->title[$locale] ?? null,
+                            'text' => $form->text[$locale] ?? null,
+                            'images' => $form->formImages->map(function ($image) {
+                                return [
+                                    'id' => $image->id,
+                                    'url' => $image->url,
+                                    'alt_text' => $image->alt_text,
+                                ];
+                            }),
+                        ];
+                    }),
+                ];
+            }),
+        ];
+
+        return response()->json($translatedMenu);
+    }
+
 
 }

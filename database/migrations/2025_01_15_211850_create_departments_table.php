@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('name');
             $table->unsignedBigInteger('structure_type_id');
-            $table->unsignedBigInteger('type_id');
+//            $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->boolean('active')->default(1);
             $table->string('code')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
 
 
             $table->foreign('structure_type_id')->references('id')->on('structure_types')->onDelete('cascade');
-            $table->foreign('type_id')->references('id')->on('employ_types')->onDelete('cascade');
+//            $table->foreign('type_id')->references('id')->on('employ_types')->onDelete('cascade');
             $table->foreign('parent_id')->references('id')->on('departments')->onDelete('cascade');
         });
     }

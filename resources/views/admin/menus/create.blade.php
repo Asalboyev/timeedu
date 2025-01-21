@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="in_main" class="form-label">Order</label>
-                                        <input type="number"  class="form-control @error('path') is-invalid @enderror" name="order" value="{{ old('path') }}" id="order" placeholder="Order...">
+                                        <input type="text"  class="form-control @error('path') is-invalid @enderror" name="order" value="{{ old('path') }}" id="order" placeholder="Order...">
 
                                         @error('in_main')
                                         <span class="invalid-feedback" role="alert">

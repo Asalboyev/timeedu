@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Department extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['name', 'structure_type_id', 'type_id', 'parent_id', 'active', 'code'];
+    protected $fillable = ['name', 'structure_type_id',  'parent_id', 'active', 'code'];
 
     protected $casts = [
         'name' => 'array',

@@ -22,13 +22,14 @@ class Employ extends Model
         'photo',
         'phone',
         'started_work',
+        'leader',
+        'professor',
     ];
     protected $casts = [
         'first_name' => 'array',
         'last_name' => 'array',
         'surname' => 'array',
-        'photo' => 'array',
-        'started_work' => 'array',
+        'address' => 'array',
 //        'special' => 'array',
 
     ];
@@ -37,4 +38,22 @@ class Employ extends Model
     {
         return $this->hasOne(EmployMeta::class, 'employ_id');
     }
+
+    protected $appends = [
+        'lg_img',
+        'md_img',
+        'sm_img'
+    ];
+    public function getLgImgAttribute() {
+        return $this->photo ? url('').'/upload/images/'.$this->photo : null;
+    }
+
+    public function getMdImgAttribute() {
+        return $this->photo ? url('').'/upload/images/600/'.$this->photo : null;
+    }
+
+    public function getSmImgAttribute() {
+        return $this->photo ? url('').'/upload/images/200/'.$this->photo : null;
+    }
+
 }

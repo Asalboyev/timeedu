@@ -21,10 +21,12 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->date('birthday')->nullable();
             $table->string('gender')->nullable();
-            $table->text('special')->nullable();
+            $table->boolean('special')->default(0);
+            $table->boolean('leader')->default(0)->nullable();
+            $table->boolean('professor')->default(0)->nullable();
             $table->text('photo')->nullable();
             $table->string('phone')->nullable();
-            $table->text('started_work')->nullable();
+            $table->date('start_time')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

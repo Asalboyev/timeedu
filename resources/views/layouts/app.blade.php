@@ -246,10 +246,10 @@
                             </div>
                         </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#positions" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('positions') || request()->is('positions/*') || request()->is('employ_staff') || request()->is('employ_staff/*') || request()->is('employ_forms') || request()->is('employ_forms/*')|| request()->is('employ_type') || request()->is('employ_type/*') ? 'true' : 'false' }}" aria-controls="posts">
+                        <a class="nav-link" href="#positions" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('positions') || request()->is('positions/*') || request()->is('employ_staff') || request()->is('employ_staff/*') || request()->is('employ_forms') || request()->is('employ_forms/*')|| request()->is('employ_type') || request()->is('employ_type/*') || request()->is('stracture_types') || request()->is('stracture_types/*') || request()->is('employs') || request()->is('employs/*') || request()->is('departaments') || request()->is('departaments/*')? 'true' : 'false' }}" aria-controls="posts">
                             <i class="fe fe-cast"></i> Employees
                         </a>
-                        <div class="collapse {{ request()->is('admin/positions') || request()->is('admin/positions/*') || request()->is('admin/employ_staff') || request()->is('admin/employ_staff/*') || request()->is('admin/employ_forms') || request()->is('admin/employ_forms/*') || request()->is('admin/employ_types') || request()->is('admin/employ_types/*')  ? 'show' : '' }}" id="positions">
+                        <div class="collapse {{ request()->is('admin/positions') || request()->is('admin/positions/*') || request()->is('admin/employ_staff') || request()->is('admin/employ_staff/*') || request()->is('admin/employ_forms') || request()->is('admin/employ_forms/*') || request()->is('admin/employ_types') || request()->is('admin/employ_types/*') || request()->is('admin/stracture_types') || request()->is('admin/stracture_types/*')  || request()->is('admin/employs') || request()->is('admin/employs/*')  || request()->is('admin/departaments') || request()->is('admin/departaments/*') ? 'show' : '' }}" id="positions">
                             <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->is('admin/positions') || request()->is('admin/positions/*') ? 'active' : '' }}" href="{{ route('positions.index') }}">
@@ -269,7 +269,22 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->is('admin/employ_types') || request()->is('admin/employ_types/*') ? 'active' : '' }}" href="{{ route('employ_types.index') }}">
-                                        Pmploy Typle
+                                         Pmploy Typle
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('admin/stracture_types') || request()->is('admin/stracture_types/*') ? 'active' : '' }}" href="{{ route('stracture_types.index') }}">
+                                        Stracture Typle
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('admin/employs') || request()->is('admin/employs/*') ? 'active' : '' }}" href="{{ route('employs.index') }}">
+                                        Employs
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('admin/departaments') || request()->is('admin/departaments/*') ? 'active' : '' }}" href="{{ route('departaments.index') }}">
+                                        Departaments
                                     </a>
                                 </li>
                             </ul>
