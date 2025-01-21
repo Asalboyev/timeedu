@@ -245,7 +245,38 @@
                                 </ul>
                             </div>
                         </li>
-                    @if($menu_items_groups->where('title', 'Компания')->where('is_active', 1)->first())
+                    <li class="nav-item">
+                        <a class="nav-link" href="#positions" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('positions') || request()->is('positions/*') || request()->is('employ_staff') || request()->is('employ_staff/*') || request()->is('employ_forms') || request()->is('employ_forms/*')|| request()->is('employ_type') || request()->is('employ_type/*') ? 'true' : 'false' }}" aria-controls="posts">
+                            <i class="fe fe-cast"></i> Employees
+                        </a>
+                        <div class="collapse {{ request()->is('admin/positions') || request()->is('admin/positions/*') || request()->is('admin/employ_staff') || request()->is('admin/employ_staff/*') || request()->is('admin/employ_forms') || request()->is('admin/employ_forms/*') || request()->is('admin/employ_types') || request()->is('admin/employ_types/*')  ? 'show' : '' }}" id="positions">
+                            <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('admin/positions') || request()->is('admin/positions/*') ? 'active' : '' }}" href="{{ route('positions.index') }}">
+                                            Positions
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('admin/employ_staff') || request()->is('admin/employ_staff/*') ? 'active' : '' }}" href="{{ route('employ_staff.index') }}">
+                                            Pmploy Staff
+                                        </a>
+                                    </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('admin/employ_forms') || request()->is('admin/employ_forms/*') ? 'active' : '' }}" href="{{ route('employ_forms.index') }}">
+                                        Pmploy Form
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('admin/employ_types') || request()->is('admin/employ_types/*') ? 'active' : '' }}" href="{{ route('employ_types.index') }}">
+                                        Pmploy Typle
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                @if($menu_items_groups->where('title', 'Компания')->where('is_active', 1)->first())
                         <li class="nav-item">
                             <a class="nav-link" href="#company" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') ? 'true' : 'false' }}" aria-controls="documents">
                                 <i class="fe fe-star"></i> Group

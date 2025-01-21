@@ -3,46 +3,45 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmployFor;
+use App\Models\EmployType;
 use App\Models\Lang;
-use App\Models\Menu;
-use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
-class PositionController extends Controller
+class EmployTypeController extends Controller
 {
-    public $title = 'Position';
-    public $route_name = 'positions';
-    public $route_parameter = 'position';
+    public $title = 'Employ Type';
+    public $route_name = 'employ_types';
+    public $route_parameter = 'employ_type';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         // Query yaratamiz
-        $positionQuery = Position::query();
+        $employ_typesQuery = EmployType::query();
 
         // Agar "search" parametri bo'lsa, qidiruv sharti qo'shamiz
         if (isset($_GET['search']) && !empty($_GET['search'])) {
             $search = trim($_GET['search']);
-            $positionQuery->where('name', 'like', '%' . $search . '%'); // Menyu sarlavhasida qidirish
+            $employ_typesQuery->where('name', 'like', '%' . $search . '%'); // Menyu sarlavhasida qidirish
 
         }
 
         // Pagination va tartib
-        $positions = $positionQuery->latest()
+        $employ_types = $employ_typesQuery->latest()
             ->paginate(12);
 
         // Mavjud tillar
         $languages = Lang::all();
 
         // View qaytariladi
-        return view('admin.positions.index', [
+        return view('admin.employ_types.index', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'positions' => $positions,
+            'employ_types' => $employ_types,
             'languages' => $languages,
             'search' => isset($_GET['search']) ? $_GET['search'] : '', // Qidiruv qiymati
         ]);
@@ -53,13 +52,11 @@ class PositionController extends Controller
     public function create()
     {
         $langs = Lang::all();
-        $positions = Position::all();
 
-        return view('admin.positions.create', [
+        return view('admin.employ_types.create', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'positions' => $positions,
             'langs' => $langs,
         ]);
     }
@@ -79,9 +76,9 @@ class PositionController extends Controller
                 'message' => 'Validation error'
             ]);
         }
-        Position::create($data);
+        EmployType::create($data);
 
-        return redirect()->route('positions.index')->with([
+        return redirect()->route('employ_types.index')->with([
             'success' => true,
             'message' => 'Saved successfully'
         ]);
@@ -98,16 +95,18 @@ class PositionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Position $position)
+    public function edit($id)
     {
         $langs = Lang::all();
+        $employform = EmployType::find($id);
 
-        return view('admin.positions.edit', [
+
+        return view('admin.employ_types.edit', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'langs' => $langs,
-            'position' => $position
+            'employform' => $employform
         ]);
     }
 
@@ -129,13 +128,13 @@ class PositionController extends Controller
             ]);
         }
 
-         $position = Position::findOrFail($id);
+        $employform = EmployType::findOrFail($id);
 
 
 
-        $position->update($data);
+        $employform->update($data);
 
-        return redirect()->route('positions.index')->with([
+        return redirect()->route('employ_types.index')->with([
             'success' => true,
             'message' => 'Updated successfully'
         ]);
@@ -146,10 +145,10 @@ class PositionController extends Controller
      */
     public function destroy($id)
     {
-        $position = Position::findOrFail($id);
-        $position->delete();
+        $employ_type = EmployType::findOrFail($id);
+        $employ_type->delete();
 
-        return redirect()->route('positions.index')->with([
+        return redirect()->route('employ_types.index')->with([
             'success' => true,
             'message' => 'Deleted successfully'
         ]);

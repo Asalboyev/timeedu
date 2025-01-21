@@ -31,32 +31,41 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function upload_from_dropzone(Request $request)
-    {
-        $img = $request->file('file');
+        public function upload_from_dropzone(Request $request)
+        {
+            // Faylni olish
+            $img = $request->file('file');
 
-        $img_name = Str::random(12) . '.' . $img->extension();
-        $saved_img = $img->move(public_path('/upload/images'), $img_name);
+            // Fayl nomini yaratish
+            $img_name = Str::random(12) . '.' . $img->extension();
 
-        if (!File::exists('upload\images\200')) {
-            File::makeDirectory(public_path('upload\images\200'), 0700, true, true);
+            // Faylni asosiy papkaga saqlash
+            $saved_img = $img->move(public_path('/upload/images'), $img_name);
+
+            // 200 px hajmdagi papkani tekshirish va yaratish
+            if (!File::exists(public_path('upload/images/200'))) {
+                File::makeDirectory(public_path('upload/images/200'), 0700, true, true);
+            }
+            // Rasmni 200 px hajmga o'zgartirish va saqlash
+            Image::make($saved_img)->resize(200, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(public_path() . '/upload/images/200/' . $img_name, 60);
+
+            // 600 px hajmdagi papkani tekshirish va yaratish
+            if (!File::exists(public_path('upload/images/600'))) {
+                File::makeDirectory(public_path('upload/images/600'), 0700, true, true);
+            }
+            // Rasmni 600 px hajmga o'zgartirish va saqlash
+            Image::make($saved_img)->resize(600, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(public_path() . '/upload/images/600/' . $img_name, 80);
+
+            // Javobni JSON formatida qaytarish
+            return response()->json([
+                'file_name' => $img_name,
+                'message' => 'File successfully uploaded'
+            ], 200);
         }
-        Image::make($saved_img)->resize(200, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save(public_path() . '/upload/images/200/' . $img_name, 60);
-
-        if (!File::exists('upload\images\600')) {
-            File::makeDirectory(public_path('upload\images\600'), 0700, true, true);
-        }
-        Image::make($saved_img)->resize(600, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save(public_path() . '/upload/images/600/' . $img_name, 80);
-
-        return response([
-            'file_name' => $img_name
-        ], 200);
-    }
-
     // upload image for CKEditor
 //    public function uploadImage(Request $request)
 ////    {

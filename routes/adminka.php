@@ -61,7 +61,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('langs', LangsController::class);
 
     // products
-    Route::resource('products', ProductController::class);
+    Route::resource('positions', \App\Http\Controllers\Admin\PositionController::class);
+    Route::resource('employ_staff', \App\Http\Controllers\Admin\EmployStaffController::class);
+    Route::resource('employ_forms', \App\Http\Controllers\Admin\EmployFormController::class);
+    Route::resource('employ_types', \App\Http\Controllers\Admin\EmployTypeController::class);
 
     // products categories
     Route::resource('products_categories', ProductsCategoryController::class);

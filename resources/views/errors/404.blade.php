@@ -11,21 +11,16 @@
 
 <body>
     <div class="wrapper">
-        <div class="blueBackground">
-            <div class="absoluteDiv">
-                <div class="relativeDiv"><img class="bgImage" src="{{ asset('client/media/errorImage.png') }}" alt="errorImage"></div>
-            </div>
-        </div>
+
         <div class="errorContainer">
             <div class="errorNumberDiv">
                 <p class="errorNumber">4</p>
                 <p class="errorNumber">0</p>
                 <p class="errorNumber">4</p>
             </div>
-            <p class="bigMessageText">Такой страницы не существует :(</p>
-            <div class="button"><a class="buttonLink" href="{{ route('index') }}" aria-label="home">Вернуться на главную страницу</a></div>
+            <p class="bigMessageText">This page does not exist :(</p>
+            <div class="button"><a class="buttonLink" href="{{ route('admin') }}" aria-label="home">Return to the main page</a></div>
         </div>
     </div>
 </body>
-
 </html>

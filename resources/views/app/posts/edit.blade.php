@@ -78,7 +78,7 @@
     };
 </script>
 
-    @dd($post);
+
 @endsection
 
 @section('content')

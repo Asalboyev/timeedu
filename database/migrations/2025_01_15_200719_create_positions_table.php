@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('name');
             $table->integer('order')->nullable();
-            $table->boolean('active')->default(true);
+            $table->integer('active')->default(1);
             $table->timestamps();
             $table->softDeletes(); // Soft delete qo'shish
 
