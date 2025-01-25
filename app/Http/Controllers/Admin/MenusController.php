@@ -23,21 +23,20 @@ class MenusController extends Controller
     {
         $menusQuery = Menu::query();
 
-        // Search qidiruvi
+        // Qidiruv (search)
         if (isset($_GET['search'])) {
             $search = trim($_GET['search']);
-            $menusQuery->where('title', 'like', '%' . $search . '%') // Menyu sarlavhasida qidirish
-            ; // Menyu ta'rifida qidirish (agar mavjud bo'lsa)
+            $menusQuery->where('title', 'like', '%' . $search . '%');
         }
 
-        // Pagination va tartib
-        $menus = $menusQuery
+        // Pagination bilan menyu olish
+        $paginatedMenus = $menusQuery
             ->orderBy('parent_id') // Glavni menyularni avval olib keladi
             ->orderBy('order')    // Tartibni hisobga oladi
-            ->paginate(12);
+            ->paginate(12);       // Sahifalash
 
-        // Hierarxik menyu daraxtini yaratish
-        $menuTree = $this->buildMenuTree($menus);
+        // Sahifalashdagi ma'lumotlardan daraxt yaratish
+        $menuTree = $this->buildMenuTree($paginatedMenus->items());
 
         $languages = Lang::all();
 
@@ -45,29 +44,43 @@ class MenusController extends Controller
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'menus' => $menuTree,
-            'count' => $menus, // Pagination linklari uchun
+            'menus' => $menuTree, // Hierarxik menyu daraxti (faqat sahifalangan ma'lumot)
+            'count' => $paginatedMenus, // Pagination linklari uchun
             'languages' => $languages,
             'search' => isset($_GET['search']) ? $_GET['search'] : '', // Qidiruv qiymati
         ]);
     }
 
 
+
+
+
 // Hierarxik menyular daraxti uchun yordamchi funksiya
-    private function buildMenuTree($menus, $parentId = null)
+    private function buildMenuTree($menus)
     {
-        $tree = [];
+        $menuTree = [];
+        $menuMap = [];
+
+        // ID bo'yicha menyularni xaritalash
         foreach ($menus as $menu) {
-            if ($menu->parent_id == $parentId) {
-                $children = $this->buildMenuTree($menus, $menu->id);
-                $tree[] = [
-                    'menu' => $menu,
-                    'children' => $children,
-                ];
+            $menuMap[$menu->id] = [
+                'menu' => $menu,
+                'children' => [],
+            ];
+        }
+
+        // Menyularni daraxt tuzilmasiga joylashtirish
+        foreach ($menus as $menu) {
+            if ($menu->parent_id && isset($menuMap[$menu->parent_id])) {
+                $menuMap[$menu->parent_id]['children'][] = &$menuMap[$menu->id];
+            } else {
+                $menuTree[] = &$menuMap[$menu->id];
             }
         }
-        return $tree;
+
+        return $menuTree;
     }
+
 
 
 

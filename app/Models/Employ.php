@@ -55,5 +55,10 @@ class Employ extends Model
     public function getSmImgAttribute() {
         return $this->photo ? url('').'/upload/images/200/'.$this->photo : null;
     }
+    public function educational_programs()
+    {
+        return $this->belongsToMany(EducationalProgram::class, 'educational_program_employ', 'educational_program_id', 'employ_id');
+    }
+
 
 }

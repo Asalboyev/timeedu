@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Lang;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
-    public $title = 'Услуги';
+    public $title = 'Scientific journals';
     public $route_name = 'services';
     public $route_parameter = 'service';
     /**
@@ -69,6 +71,10 @@ class ServiceController extends Controller
                 'success' => false,
                 'message' => 'Ошибка валидации'
             ]);
+        }
+        $data['slug'] = Str::slug($data['title'][$this->main_lang->code], '-');
+        if(Service::where('slug', $data['slug'])->exists()) {
+            $data['slug'] = $data['slug'].'-'.time();
         }
 
         if (isset($data['dropzone_images'])) {

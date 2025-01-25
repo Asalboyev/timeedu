@@ -118,15 +118,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <label for="subtitle{{ $lang->code }}" class="form-label">Подзаголовок</label>
-                                            <input type="text" class="form-control @error('subtitle.'.$lang->code) is-invalid @enderror" name="subtitle[{{ $lang->code }}]" value="{{ old('subtitle.'.$lang->code) }}" id="subtitle{{ $lang->code }}" placeholder="Подзаголовок...">
-                                            @error('subtitle.'.$lang->code)
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
+
                                         <div class="form-group">
                                             <label for="desc{{ $lang->code }}" class="form-label">Описание</label>
                                             <textarea id="desc{{ $lang->code }}" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Описание...">{{ old('desc.'.$lang->code) }}</textarea>
@@ -139,11 +131,7 @@
                                     </div>
                                     @endforeach
                                 </div>
-                                <div class="form-group">
-                                    <!-- Dropzone -->
-                                    <label for="dropzone" class="form-label">Фото</label>
-                                    <div class="dropzone dropzone-multiple" id="dropzone"></div>
-                                </div>
+
                             </div>
                         </div>
                         <!-- Button -->
@@ -161,27 +149,9 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="parent_id" class="form-label">Родительская услуга</label>
-                                    <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" name="parent_id">
-                                        <option value="">Главная услуга</option>
-                                        @foreach ($all_categories as $key => $item)
-                                        <option value="{{ $item->id }}" {{ old('parent_id') == $item->id ? 'selected' : '' }}>{{ $item->title[$main_lang->code] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('parent_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="price" class="form-label">Цена</label>
-                                    <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" id="price" placeholder="Цена...">
-                                    @error('price')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                                    <!-- Dropzone -->
+                                    <label for="dropzone" class="form-label">Фото</label>
+                                    <div class="dropzone dropzone-multiple" id="dropzone"></div>
                                 </div>
                             </div>
                         </div>

@@ -6,10 +6,11 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Lang;
 use App\Models\Certificate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CertificateController extends Controller
 {
-    public $title = 'Сертификаты';
+    public $title = 'Certificates';
     public $route_name = 'certificates';
     public $route_parameter = 'certificate';
     /**
@@ -59,9 +60,11 @@ class CertificateController extends Controller
     {
         $data = $request->all();
 
+        // Validatsiya
         $validator = Validator::make($data, [
-            'title.'.$this->main_lang->code => 'required'
+            'title.' . $this->main_lang->code => 'required',
         ]);
+
         if ($validator->fails()) {
             return back()->withInput()->with([
                 'success' => false,
@@ -69,6 +72,15 @@ class CertificateController extends Controller
             ]);
         }
 
+        // Faylni yuklash
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = Str::random(12) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/certificates'), $fileName);
+            $data['img'] = $fileName;
+        }
+
+        // Dropzone rasmlarini qo'shish
         if (isset($data['dropzone_images'])) {
             $data['img'] = $data['dropzone_images'];
         }
@@ -80,6 +92,7 @@ class CertificateController extends Controller
             'message' => 'Успешно сохранен'
         ]);
     }
+
 
     /**
      * Display the specified resource.

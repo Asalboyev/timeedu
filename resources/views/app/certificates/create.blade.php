@@ -80,7 +80,7 @@
         [
         'active' => true,
         'url' => '',
-        'name' => 'Добавление',
+        'name' => 'Add',
         'disabled' => true
         ],
         ]
@@ -109,7 +109,7 @@
                                     @foreach($langs as $lang)
                                     <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
                                         <div class="form-group">
-                                            <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Название</label>
+                                            <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">title</label>
                                             <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="title[{{ $lang->code }}]" value="{{ old('title.'.$lang->code) }}" id="title" placeholder="Название...">
                                             @error('title.'.$lang->code)
                                             <span class="invalid-feedback" role="alert">
@@ -118,8 +118,8 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="desc" class="form-label">Описание</label>
-                                            <textarea name="desc[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Описание...">{{ old('desc.'.$lang->code) }}</textarea>
+                                            <label for="desc" class="form-label">Description</label>
+                                            <textarea name="desc[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Description...">{{ old('desc.'.$lang->code) }}</textarea>
                                             @error('desc.'.$lang->code)
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -131,6 +131,11 @@
                                 </div>
                                 <div class="form-group">
                                     <!-- Dropzone -->
+                                    <label for="dropzone" class="form-label text-capitalize">file</label>
+                                    <input type="file"  class="form-control" name="file" value="{{ old('file') }}" id="title" placeholder="file...">
+                                    </div>
+                                <div class="form-group">
+                                    <!-- Dropzone -->
                                     <label for="dropzone" class="form-label text-capitalize">Сертификат</label>
                                     <div class="dropzone dropzone-multiple" id="dropzone"></div>
                                 </div>
@@ -138,8 +143,8 @@
                         </div>
                         <!-- Button -->
                         <div class="model-btns d-flex justify-content-end">
-                            <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Отмена</a>
-                            <button type="submit" class="btn btn-primary ms-2">Сохранить</button>
+                            <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">cancel</a>
+                            <button type="submit" class="btn btn-primary ms-2">Save</button>
                         </div>
 
                     </form>

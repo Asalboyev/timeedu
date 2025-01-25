@@ -20,7 +20,7 @@
 
                     <!-- Button -->
                     <a href="{{ route('documents.create') }}" class="btn btn-primary lift">
-                        Добавить
+                        Add
                     </a>
 
                 </div>
@@ -49,8 +49,8 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Название</th>
-                            <th scope="col">Родительская категория</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Date</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -59,7 +59,7 @@
                         <tr>
                             <th scope="row" style="width: 100px">{{ $documents->firstItem() + $key }}</th>
                             <td>{{ $item->title[$main_lang->code] }}</td>
-                            <td>{{ $item->parent ? $item->parent->title[$main_lang->code] : 'Главная категория' }}</td>
+                            <td>{{ $item->date }}</td>
                             <td style="width: 200px">
                                 <div class="d-flex justify-content-end">
                                     <a href="{{ route('documents.edit', [$route_parameter => $item]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>

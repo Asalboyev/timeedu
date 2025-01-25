@@ -13,7 +13,8 @@ class Partner extends Model
         'link', 
         'img',
         'title', 
-        'desc'
+        'desc',
+        'partner'
     ];
 
     protected $casts = [

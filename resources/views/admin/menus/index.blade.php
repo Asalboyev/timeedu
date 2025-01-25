@@ -158,6 +158,7 @@
                 <div class="mt-4">
                     {{ $count->links() }}
                 </div>
+
             </div>
         </div>
     </div>

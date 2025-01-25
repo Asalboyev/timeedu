@@ -14,7 +14,6 @@ class EmployMeta extends Model
         'department_id',
         'position_id',
         'employ_staff_id',
-        'employ_status_id',
         'employ_form_id',
         'contrakt_date',
         'contrakt_number',
@@ -38,5 +37,18 @@ class EmployMeta extends Model
     {
         return $this->belongsTo(Position::class, 'position_id');
     }
+    public function employ_form()
+    {
+        return $this->belongsTo(EmployFor::class, 'employ_form_id');
+    }
+    public function employ_staff()
+    {
+        return $this->belongsTo(EmployStaff::class, 'employ_staff_id');
+    }
+    public function employ_type()
+    {
+        return $this->belongsTo(EmployType::class, 'employ_type_id');
+    }
+
 
 }

@@ -250,6 +250,26 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       name="professor"
+                                                       id="switchTwo"
+                                                       value="1"
+                                                        {{ $employ->professor ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="switchTwo"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col ms-n2">
+                                            <small class="text-muted">
+                                                Professor
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <!-- Dropzone -->
                                     <label for="dropzone" class="form-label">Photo</label>
                                     <div class="dropzone dropzone-multiple" id="dropzone"></div>

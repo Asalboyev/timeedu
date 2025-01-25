@@ -19,7 +19,8 @@ class Member extends Model
         'linkedin_link',
         'facebook_link',
         'work_time',
-        'view_count'
+        'view_count',
+        'gender'
     ];
 
     protected $casts = [

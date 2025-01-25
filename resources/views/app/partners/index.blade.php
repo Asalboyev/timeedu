@@ -50,6 +50,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">titile</th>
+                            <th scope="col"></th>
                             <th scope="col">Link</th>
                             <th scope="col"></th>
                         </tr>
@@ -65,6 +66,13 @@
                                     </div>
                                     {{ $item->title[$main_lang->code] }}
                                 </div>
+                            </td>
+                            <td>
+                                @if($item->partner == 1)
+                                    <span style="color: green; font-weight: bold;">Partner</span>
+                                @else
+                                    <span style="color: red; font-weight: bold;">link</span>
+                                @endif
                             </td>
                             <td>{{ $item->link ?? '--' }}</td>
                             <td style="width: 200px">

@@ -65,7 +65,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = $request->all();
         $data['date'] = isset($data['date']) ? date('Y-m-d', strtotime($data['date'])) : date('Y-m-d');
 

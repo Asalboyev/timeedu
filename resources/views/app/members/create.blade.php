@@ -178,6 +178,13 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
+                                    <label for="menu_id" class="form-label">Gender</label>
+                                    <select name="gender" class="form-select">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="telegram_link" class="form-label">Telegram link</label>
                                     <input type="text" class="form-control @error('telegram_link') is-invalid @enderror" name="telegram_link" value="{{ old('telegram_link') }}" id="telegram_link" placeholder="link...">
                                     @error('telegram_link')

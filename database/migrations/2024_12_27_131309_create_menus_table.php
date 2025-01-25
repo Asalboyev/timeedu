@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('order');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('path')->nullable();
-            $table->foreign('parent_id')->references('id')->on('menus')->onDelete('cascade');
+          $table->foreign('parent_id')->references('id')->on('menus')->onDelete('cascade');
             $table->string('slug');
             $table->timestamps();
             $table->softDeletes(); // Soft delete qo'shish

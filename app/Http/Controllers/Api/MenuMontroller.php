@@ -92,7 +92,15 @@ class MenuMontroller extends Controller
                                         'text' => $form->text[$locale] ?? null,
                                         'order' => $form->order,
                                         'position' => $form->position,
+                                        'type' => $form->type,
                                         'photo' => $form->photo,
+                                        'photo' => $form->formImages->map(function ($image) {
+                                            return [
+                                                'lg' => $image->lg_img, // Katta o'lchamdagi rasm URL
+                                                'md' => $image->md_img, // O'rta o'lchamdagi rasm URL
+                                                'sm' => $image->sm_img, // Kichik o'lchamdagi rasm URL
+                                            ];
+                                        })->toArray(),
                                         'categories' => $form->postsmenuCategories->map(function ($category) use ($locale) {
                                             return [
                                                 'id' => $category->id,
@@ -185,8 +193,13 @@ class MenuMontroller extends Controller
                                     'text' => $form->text[$locale] ?? null,
                                     'order' => $form->order,
                                     'position' => $form->position,
-                                    'photo' => $form->photo,
-                                    'categories' => $form->postsmenuCategories->map(function ($category) use ($locale) {
+                                    'photo' => $form->formImages->map(function ($image) {
+                                        return [
+                                            'lg' => $image->lg_img, // Katta o'lchamdagi rasm URL
+                                            'md' => $image->md_img, // O'rta o'lchamdagi rasm URL
+                                            'sm' => $image->sm_img, // Kichik o'lchamdagi rasm URL
+                                        ];
+                                    })->toArray(),                                    'categories' => $form->postsmenuCategories->map(function ($category) use ($locale) {
                                         return [
                                             'id' => $category->id,
                                             'title' => $category->title[$locale] ?? null,

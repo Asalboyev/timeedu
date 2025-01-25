@@ -15,11 +15,10 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
+            $table->text('title')->nullable();
             $table->string('date')->nullable();
             $table->string('file')->nullable();
             $table->string('link')->nullable();
-            $table->bigInteger('category_id')->nullable();
             $table->timestamps();
         });
     }

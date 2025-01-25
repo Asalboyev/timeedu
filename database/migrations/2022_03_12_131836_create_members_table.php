@@ -23,6 +23,7 @@ class CreateMembersTable extends Migration
             $table->string('telegram_link')->nullable();
             $table->string('linkedin_link')->nullable();
             $table->string('facebook_link')->nullable();
+            $table->string('gender')->nullable();
             $table->string('work_time')->nullable();
             $table->integer('view_count')->default(0);
             $table->timestamps();

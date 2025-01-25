@@ -32,124 +32,131 @@ use App\Http\Controllers\{
 };
 use App\Http\Controllers\Admin\MenusController;
 
-// autorization routes
 Auth::routes(['register' => false]);
 
-// route to login page
 Route::get('/admin', [HomeController::class, 'index'])->name('admin');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
-    // posts
+
     Route::resource('posts', PostController::class);
-    // menus
+
     Route::get('/menus/detele_file', [MenusController::class, 'detele_file'])->name('menus.detele_file');
+
     Route::get('/menus/{id}/restore', [MenusController::class, 'restore'])->name('menus.restore');
+
     Route::delete('/menus/{id}/force-destroy', [MenusController::class, 'forceDestroy'])->name('menus.forceDestroy');
+
     Route::post('/menu/update-order', [MenusController::class, 'updateOrder'])->name('menu.updateOrder');
+
 
     Route::resource('menus', \App\Http\Controllers\Admin\MenusController::class);
 
-    //dinamik menus
     Route::post('upload',[\App\Http\Controllers\Admin\DynamicMenuController::class,'upload'])->name('upload');
+
     Route::resource('dynamic-menus', \App\Http\Controllers\Admin\DynamicMenuController::class);
 
 
-    // posts categories
     Route::resource('posts_categories', PostsCategoryController::class);
 
-    // langs
+
     Route::resource('langs', LangsController::class);
 
-    // products
+    Route::resource('skills', \App\Http\Controllers\Admin\SkillController::class);
+
+    Route::resource('activities', \App\Http\Controllers\Admin\ActivitiesController::class);
+
+    Route::resource('entrance-requirements', \App\Http\Controllers\Admin\EntranceRequirementController::class);
+
+
+//    Route::get('education-faqs/{id}', \App\Http\Controllers\Admin\EducationFaqController::class,'index')->name('education-faqs.index');
+//    Route::get('education-faqs/create/{id}', \App\Http\Controllers\Admin\EducationFaqController::class,'index')->name('education-faqs.index');
+//    Route::get('education-faqs/create/{id}', \App\Http\Controllers\Admin\EducationFaqController::class,'index')->name('education-faqs.index');
+
+
+
     Route::resource('positions', \App\Http\Controllers\Admin\PositionController::class);
+
     Route::resource('employ_staff', \App\Http\Controllers\Admin\EmployStaffController::class);
+
     Route::resource('employ_forms', \App\Http\Controllers\Admin\EmployFormController::class);
+
     Route::resource('employ_types', \App\Http\Controllers\Admin\EmployTypeController::class);
+
     Route::resource('stracture_types', \App\Http\Controllers\Admin\StractureTypeController::class);
+
     Route::resource('employs', \App\Http\Controllers\Admin\EmployController::class);
+
     Route::resource('departaments', \App\Http\Controllers\Admin\DepartamentController::class);
 
-    // products categories
+
+    Route::get('employ_meta', [\App\Http\Controllers\Admin\EmployMetaController::class, 'index'])->name('employ_meta.index');
+
+    Route::get('employ_meta/create', [\App\Http\Controllers\Admin\EmployMetaController::class, 'create'])->name('employ_meta.create');
+
+    Route::post('employ_meta', [\App\Http\Controllers\Admin\EmployMetaController::class, 'store'])->name('employ_meta.store');
+
+    Route::get('employ_meta/{id}', [\App\Http\Controllers\Admin\EmployMetaController::class, 'edit'])->name('employ_meta.edit');
+
+    Route::put('employ_meta/{id}', [\App\Http\Controllers\Admin\EmployMetaController::class, 'update'])->name('employ_meta.update');
+
+    Route::delete('employ_meta/{id}', [\App\Http\Controllers\Admin\EmployMetaController::class, 'destroy'])->name('employ_meta.destroy');
+
     Route::resource('products_categories', ProductsCategoryController::class);
 
-    // products brands
     Route::get('banners', [BrandController::class, 'index'])->name('banners.index');
 
-    // Create - Yangi Certificate yaratish formasi
     Route::get('banners/create', [BrandController::class, 'create'])->name('banners.create');
 
-    // Store - Yangi Certificate yaratish
     Route::post('banners', [BrandController::class, 'store'])->name('banners.store');
 
-    // Edit - Certificate tahrirlash formasi
     Route::get('banners/{id}/edit', [BrandController::class, 'edit'])->name('banners.edit');
 
-    // Update - Certificate yangilash
     Route::put('banners/{id}', [BrandController::class, 'update'])->name('banners.update');
 
-    // Delete - Certificate o'chirish
     Route::delete('banners/{id}', [BrandController::class, 'destroy'])->name('banners.destroy');
 
-    // certificates
     Route::resource('certificates', CertificateController::class);
+    Route::resource('educational-programs', \App\Http\Controllers\Admin\EducationalProgramsController::class);
 
-    // documents
     Route::resource('documents', DocumentController::class);
 
-    // document categories
     Route::resource('document_categories', DocumentCategoryController::class);
 
-    // feedbacks
     Route::resource('feedbacks', FeedbackController::class);
 
-    // memebers
 
     Route::get('students', [MemberController::class, 'index'])->name('students.index');
 
-// Create - Yangi Certificate yaratish formasi
     Route::get('students/create', [MemberController::class, 'create'])->name('students.create');
 
-// Store - Yangi Certificate yaratish
     Route::post('students', [MemberController::class, 'store'])->name('students.store');
 
-// Edit - Certificate tahrirlash formasi
     Route::get('students/{id}/edit', [MemberController::class, 'edit'])->name('students.edit');
 
-// Update - Certificate yangilash
     Route::put('students/{id}', [MemberController::class, 'update'])->name('students.update');
 
-// Delete - Certificate o'chirish
     Route::delete('students/{id}', [MemberController::class, 'destroy'])->name('students.destroy');
+
     Route::resource('students', MemberController::class);
 
-    // partners
     Route::resource('partners', PartnerController::class);
 
-    // FAQ
     Route::resource('questions', QuestionController::class);
 
-    // services
     Route::resource('services', ServiceController::class);
 
-    // works
     Route::resource('works', WorkController::class);
 
-    // users
     Route::resource('users', UserController::class);
 
-    // applications
     Route::resource('applications', ApplicationsController::class);
 
-    // vacancies
     Route::resource('vacancies', VacancyController::class);
 
-    // logs
     Route::resource('logs', LogController::class);
 
-    // translations
     Route::resource('translations', TranslationsController::class);
 
-    // translation groups
     Route::resource('translation_groups', TranslationGroupController::class);
 
     // dropzone upload files

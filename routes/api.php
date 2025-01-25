@@ -42,6 +42,12 @@ Route::middleware('locale')->group(function () {
     Route::get('/partners', [ApiController::class, 'get_partners']);
     Route::get('/partners/{id}', [ApiController::class, 'show_partners']);
 
+    Route::get('/partner-link', [ApiController::class, 'get_partners_link']);
+    Route::get('/partner-link/{id}', [ApiController::class, 'show_partners_link']);
+
+    Route::get('/certificates', [ApiController::class, 'get_certificates']);
+    Route::get('/certificates/{id}', [ApiController::class, 'show_certificates']);
+
     Route::get('/banners', [ApiController::class, 'get_banner']);
 
     Route::get('/vacancies', [ApiController::class, 'get_vacancies']);

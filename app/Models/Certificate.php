@@ -12,6 +12,7 @@ class Certificate extends Model
     protected $fillable = [
         'title',
         'img',
+        'file',
         'desc'
     ];
 

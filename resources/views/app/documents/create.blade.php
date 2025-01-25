@@ -98,19 +98,6 @@
                                     <label for="date" class="form-label">Дата</label>
                                     <input type="text" id="date" name="date" class="form-control" value="{{ old('date') }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
                                 </div>
-                                <div class="form-group">
-                                    <label for="category_id" class="form-label">Категория</label>
-                                    <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id">
-                                        @foreach ($all_categories as $key => $item)
-                                        <option value="{{ $item->id }}" {{ old('category_id') == $item->id ? 'selected' : '' }}>{{ $item->title[$main_lang->code] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('category_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
                             </div>
                         </div>
                     </div>

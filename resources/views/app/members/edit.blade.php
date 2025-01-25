@@ -197,6 +197,13 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
+                                    <label for="menu_id" class="form-label">Gender</label>
+                                    <select name="gender" class="form-select">
+                                        <option value="male" {{ $member->gender == 'male' ? 'selected' : '' }}>Male</option>
+                                        <option value="female" {{ $member->gender == 'female' ? 'selected' : '' }}>Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="instagram_link" class="form-label">Instagram link</label>
                                     <input type="text" class="form-control @error('instagram_link') is-invalid @enderror" name="instagram_link" value="{{ old('instagram_link') ?? $member->instagram_link }}" id="instagram_link" placeholder="link...">
                                     @error('instagram_link')

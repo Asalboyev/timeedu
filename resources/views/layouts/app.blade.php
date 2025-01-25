@@ -245,11 +245,43 @@
                                 </ul>
                             </div>
                         </li>
+                       <li class="nav-item">
+                        <a class="nav-link" href="#educational-programs" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('educational-programs') || request()->is('educational-programs/*') || request()->is('educational-programs') || request()->is('educational-programs/*') || request()->is('skills') || request()->is('skills/*') || request()->is('activities') || request()->is('activities/*') || request()->is('entrance-requirements') || request()->is('entrance-requirements/*') ? 'true' : 'false' }}" aria-controls="educational-programs">
+                            <i class="fe fe-cast"></i> Educational Programs
+                        </a>
+                        <div class="collapse {{ request()->is('admin/educational-programs') || request()->is('admin/educational-programs/*') || request()->is('admin/educational-programs') || request()->is('admin/educational-programs/*')|| request()->is('admin/skills') || request()->is('admin/skills/*') || request()->is('admin/entrance-requirements') || request()->is('admin/entrance-requirements/*') || request()->is('admin/activities') || request()->is('admin/activities/*') ? 'show' : '' }}" id="educational-programs">
+                            <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('admin/educational-programs') || request()->is('admin/educational-programs/*') ? 'active' : '' }}" href="{{ route('educational-programs.index') }}">
+                                            Educational Programs
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('admin/activities') || request()->is('admin/activities/*') ? 'active' : '' }}" href="{{ route('activities.index') }}">
+                                            Activities
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('admin/entrance-requirements') || request()->is('admin/entrance-requirements/*') ? 'active' : '' }}" href="{{ route('entrance-requirements.index') }}">
+                                            Entrance Requirement
+                                        </a>
+                                    </li>
+
+                                <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('admin/skills') || request()->is('admin/skills/*') ? 'active' : '' }}" href="{{ route('skills.index') }}">
+                                            Skills
+                                        </a>
+                                    </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#positions" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('positions') || request()->is('positions/*') || request()->is('employ_staff') || request()->is('employ_staff/*') || request()->is('employ_forms') || request()->is('employ_forms/*')|| request()->is('employ_type') || request()->is('employ_type/*') || request()->is('stracture_types') || request()->is('stracture_types/*') || request()->is('employs') || request()->is('employs/*') || request()->is('departaments') || request()->is('departaments/*')? 'true' : 'false' }}" aria-controls="posts">
+                        <a class="nav-link" href="#positions" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('positions') || request()->is('positions/*') || request()->is('employ_staff') || request()->is('employ_staff/*') || request()->is('employ_forms') || request()->is('employ_forms/*')|| request()->is('employ_type') || request()->is('employ_type/*') || request()->is('stracture_types') || request()->is('stracture_types/*') || request()->is('employs') || request()->is('employs/*') || request()->is('departaments') || request()->is('departaments/*') || request()->is('employ_meta') || request()->is('employ_meta/*')? 'true' : 'false' }}" aria-controls="posts">
                             <i class="fe fe-cast"></i> Employees
                         </a>
-                        <div class="collapse {{ request()->is('admin/positions') || request()->is('admin/positions/*') || request()->is('admin/employ_staff') || request()->is('admin/employ_staff/*') || request()->is('admin/employ_forms') || request()->is('admin/employ_forms/*') || request()->is('admin/employ_types') || request()->is('admin/employ_types/*') || request()->is('admin/stracture_types') || request()->is('admin/stracture_types/*')  || request()->is('admin/employs') || request()->is('admin/employs/*')  || request()->is('admin/departaments') || request()->is('admin/departaments/*') ? 'show' : '' }}" id="positions">
+                        <div class="collapse {{ request()->is('admin/positions') || request()->is('admin/positions/*') || request()->is('admin/employ_staff') || request()->is('admin/employ_staff/*') || request()->is('admin/employ_forms') || request()->is('admin/employ_forms/*') || request()->is('admin/employ_types') || request()->is('admin/employ_types/*') || request()->is('admin/stracture_types') || request()->is('admin/stracture_types/*')  || request()->is('admin/employs') || request()->is('admin/employs/*')  || request()->is('admin/departaments') || request()->is('admin/departaments/*') || request()->is('admin/employ_meta') || request()->is('admin/employ_meta/*') ? 'show' : '' }}" id="positions">
                             <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->is('admin/positions') || request()->is('admin/positions/*') ? 'active' : '' }}" href="{{ route('positions.index') }}">
@@ -259,12 +291,12 @@
 
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->is('admin/employ_staff') || request()->is('admin/employ_staff/*') ? 'active' : '' }}" href="{{ route('employ_staff.index') }}">
-                                            Pmploy Staff
+                                            Employ Staff
                                         </a>
                                     </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->is('admin/employ_forms') || request()->is('admin/employ_forms/*') ? 'active' : '' }}" href="{{ route('employ_forms.index') }}">
-                                        Pmploy Form
+                                        Employ Form
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -287,16 +319,21 @@
                                         Departaments
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('admin/employ_meta') || request()->is('admin/employ_meta/*') ? 'active' : '' }}" href="{{ route('employ_meta.index') }}">
+                                        Employ meta
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
 
                 @if($menu_items_groups->where('title', 'Компания')->where('is_active', 1)->first())
                         <li class="nav-item">
-                            <a class="nav-link" href="#company" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') ? 'true' : 'false' }}" aria-controls="documents">
+                            <a class="nav-link" href="#company" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') || request()->is('admin/certificates') || request()->is('admin/certificates/*')  || request()->is('admin/documents') || request()->is('admin/documents/*') || request()->is('admin/services') || request()->is('admin/services/*') ? 'true' : 'false' }}" aria-controls="documents">
                                 <i class="fe fe-star"></i> Group
                             </a>
-                            <div class="collapse {{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') ? 'show' : '' }}" id="company">
+                            <div class="collapse {{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') || request()->is('admin/certificates') || request()->is('admin/certificates/*')  || request()->is('admin/documents') || request()->is('admin/documents/*') || request()->is('admin/services') || request()->is('admin/services/*') ? 'show' : '' }}" id="company">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->is('admin/banners') || request()->is('admin/banners/*') ? 'active' : '' }}" href="{{ route('banners.index') }}">
@@ -331,6 +368,23 @@
                                             </a>
                                         </li>
                                     @endif
+                                    @if($menu_items->where('route', 'certificates')->where('is_active', 1)->first())
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/certificates') || request()->is('admin/certificates/*') ? 'active' : '' }}" href="{{ route('certificates.index') }}">
+                                                Certificates
+                                            </a>
+                                        </li>
+                                    @endif
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/documents') || request()->is('admin/documents/*') ? 'active' : '' }}" href="{{ route('documents.index') }}">
+                                                Documents
+                                            </a>
+                                        </li>
+                                    <li class="nav-item">
+                                            <a class="nav-link {{ request()->is('admin/services') || request()->is('admin/services/*') ? 'active' : '' }}" href="{{ route('services.index') }}">
+                                                Services
+                                            </a>
+                                        </li>
                                 </ul>
                             </div>
                         </li>

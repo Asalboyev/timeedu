@@ -16,7 +16,7 @@ class Service extends Model
         'views_count',
         'img',
         'price',
-        'parent_id'
+        'slug'
     ];
 
     protected $casts = [

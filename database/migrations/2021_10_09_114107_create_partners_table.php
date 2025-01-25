@@ -19,6 +19,7 @@ class CreatePartnersTable extends Migration
             $table->string('link')->nullable();
             $table->string('img');
             $table->text('desc')->nullable();
+            $table->text('partner')->nullable();
             $table->timestamps();
         });
     }

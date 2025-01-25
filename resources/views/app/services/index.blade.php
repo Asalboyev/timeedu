@@ -20,7 +20,7 @@
 
                     <!-- Button -->
                     <a href="{{ route($route_name.'.create') }}" class="btn btn-primary lift">
-                        Добавить
+                        Add
                     </a>
 
                 </div>
@@ -49,9 +49,8 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Название</th>
-                            <th scope="col">Родительская услуга</th>
-                            <th scope="col">Число просмотров</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Number of views</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -67,7 +66,6 @@
                                     {{ $item->title[$main_lang->code] }}
                                 </div>
                             </td>
-                            <td>{{ $item->parent ? $item->parent->title[$main_lang->code] : 'Главная категория' }}</td>
                             <td>{{ $item->views_count }}</td>
                             <td style="width: 200px">
                                 <div class="d-flex justify-content-end">

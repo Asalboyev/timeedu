@@ -146,17 +146,16 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <label for="desc" class="form-label">Description</label>
-                                            <textarea name="desc[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Описание...">{{ old('desc.'.$lang->code) ?? $partner->desc[$lang->code] ?? null }}</textarea>
-                                            @error('desc.'.$lang->code)
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
                                     </div>
                                     @endforeach
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="menu_id" class="form-label">Status</label>
+                                    <select name="partner" class="form-select">
+                                        <option value="1">Partner</option>
+                                        <option value="0">Link</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <!-- Dropzone -->

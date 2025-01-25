@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
-    public $title = 'Документы';
+    public $title = 'Documents';
     public $route_name = 'documents';
     public $route_parameter = 'document';
     /**

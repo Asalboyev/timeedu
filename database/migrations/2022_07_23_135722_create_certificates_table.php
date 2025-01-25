@@ -18,6 +18,7 @@ class CreateCertificatesTable extends Migration
             $table->text('title');
             $table->string('img')->nullable();
             $table->text('desc')->nullable();
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }

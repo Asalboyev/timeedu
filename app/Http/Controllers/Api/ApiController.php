@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Certificate;
 use App\Models\Member;
 use App\Models\Question;
 use App\Models\Vacancy;
@@ -186,35 +187,111 @@ class ApiController extends Controller
             'prev_page_url' => $member->previousPageUrl(), // Oldingi sahifa URLi
         ]);
     }
-    public function get_partners()
+    public function show_students(Request $request, $id = null)
+{
+    // Foydalanuvchi tilini olish
+    $locale = App::getLocale();
+
+    // Agar id bo'lsa, ma'lum bir studentni qaytarish
+    if ($id) {
+        $member = Member::find($id);
+
+        // Agar student topilmasa, 404 xatolikni qaytaradi
+        if (!$member) {
+            return response()->json([
+                'message' => 'Student not found'
+            ], 404);
+        }
+
+        // Student ma'lumotlarini tilga mos formatda qaytarish
+        $translatedStudent = [
+            'id' => $member->id ?? null,
+            'name' => $member->name[$locale] ?? null,
+            'position' => $member->position[$locale] ?? null,
+            'phone_number' => $member->phone_number ?? null,
+            'instagram_link' => $member->instagram_link ?? null,
+            'telegram_link' => $member->telegram_link ?? null,
+            'linkedin_link' => $member->linkedin_link ?? null,
+            'facebook_link' => $member->facebook_link ?? null,
+            'work_time' => $member->work_time[$locale] ?? null,
+            'photo' => [
+                'lg' => $member->img ? url('/upload/images/' . $member->img) : null,
+                'md' => $member->img ? url('/upload/images/600/' . $member->img) : null,
+                'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null,
+            ],
+        ];
+
+        return response()->json($translatedStudent);
+    }
+
+    // Agar id berilmagan bo'lsa, barcha studentlarni paginate qilish
+    $members = Member::latest()->paginate(15);
+
+    // Agar studentlar topilmasa, 404 xatolikni qaytaradi
+    if ($members->isEmpty()) {
+        return response()->json([
+            'message' => 'No records found'
+        ], 404);
+    }
+
+    // Studentlarni foydalanuvchi tiliga moslashtirish
+    $translatedPosts = collect($members->items())->map(function ($member) use ($locale) {
+        return [
+            'id' => $member->id ?? null,
+            'name' => $member->name[$locale] ?? null,
+            'position' => $member->position[$locale] ?? null,
+            'phone_number' => $member->phone_number ?? null,
+            'instagram_link' => $member->instagram_link ?? null,
+            'telegram_link' => $member->telegram_link ?? null,
+            'linkedin_link' => $member->linkedin_link ?? null,
+            'facebook_link' => $member->facebook_link ?? null,
+            'work_time' => $member->work_time ?? null,
+            'photo' => [
+                'lg' => $member->img ? url('/upload/images/' . $member->img) : null,
+                'md' => $member->img ? url('/upload/images/600/' . $member->img) : null,
+                'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null,
+            ],
+        ];
+    });
+
+    // Studentlar va paginate ma'lumotlarini JSON formatida qaytarish
+    return response()->json([
+        'data' => $translatedPosts,             // Tilga mos studentlar
+        'total' => $members->total(),             // Umumiy studentlar soni
+        'per_page' => $members->perPage(),        // Har bir sahifadagi studentlar soni
+        'current_page' => $members->currentPage(), // Hozirgi sahifa raqami
+        'last_page' => $members->lastPage(),      // Oxirgi sahifa raqami
+        'next_page_url' => $members->nextPageUrl(), // Keyingi sahifa URLi
+        'prev_page_url' => $members->previousPageUrl(), // Oldingi sahifa URLi
+    ]);
+}
+    public function get_certificates()
     {
         // Foydalanuvchi tilini olish
         $locale = App::getLocale();
 
         // Postlarni oxirgi qo'shilganidan boshlab olish va 10 tadan paginate qilish
-        $partners = Partner::latest()->paginate(10);
+        $member = Certificate::latest()->paginate(15);
 
         // Agar postlar topilmasa, 404 xatolikni qaytaradi
-        if ($partners->isEmpty()) {
+        if ($member->isEmpty()) {
             return response()->json([
                 'message' => 'No records found'
             ], 404);
         }
 
         // Postlarni foydalanuvchi tiliga moslashtirish
-        $translatedPosts = collect($partners->items())->map(function ($partners) use ($locale) {
+        $translatedPosts = collect($member->items())->map(function ($member) use ($locale) {
             return [
-                'id' => $partners->id,
-                'title' => $partners->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
-                'desc' => $partners->desc[$locale] ?? null, // Mahsulotning ta'rifi (locale bo'yicha)
-
-                // Rasmning to'liq URL manzili, turli o'lchamlar uchun
+                'id' => $member->id ?? null, //
+                'title' => $member->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
+                'desc' => $member->desc[$locale] ?? null, //
+                'file' => url('upload/certificates/' . $member->file),
                 'photo' => [
-                    'lg' => $partners->img ? url('/upload/images/' . $partners->img) : null, // Katta o'lchamdagi rasm
-                    'md' => $partners->img ? url('/upload/images/600/' . $partners->img) : null, // O'rtacha o'lchamdagi rasm
-                    'sm' => $partners->img ? url('/upload/images/200/' . $partners->img) : null, // Kichik o'lchamdagi rasm
+                    'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
+                    'md' => $member->img ? url('/upload/images/600/' . $member->img) : null, // O'rtacha o'lchamdagi rasm
+                    'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null, // Kichik o'lchamdagi rasm
                 ],
-                'link' => $partners->link,
 
             ];
         });
@@ -223,49 +300,22 @@ class ApiController extends Controller
         // Postlar va paginate ma'lumotlarini JSON formatida qaytarish
         return response()->json([
             'data' => $translatedPosts,             // Tilga mos postlar
-            'total' => $partners->total(),             // Umumiy postlar soni
-            'per_page' => $partners->perPage(),        // Har bir sahifadagi postlar soni
-            'current_page' => $partners->currentPage(), // Hozirgi sahifa raqami
-            'last_page' => $partners->lastPage(),      // Oxirgi sahifa raqami
-            'next_page_url' => $partners->nextPageUrl(), // Keyingi sahifa URLi
-            'prev_page_url' => $partners->previousPageUrl(), // Oldingi sahifa URLi
+            'total' => $member->total(),             // Umumiy postlar soni
+            'per_page' => $member->perPage(),        // Har bir sahifadagi postlar soni
+            'current_page' => $member->currentPage(), // Hozirgi sahifa raqami
+            'last_page' => $member->lastPage(),      // Oxirgi sahifa raqami
+            'next_page_url' => $member->nextPageUrl(), // Keyingi sahifa URLi
+            'prev_page_url' => $member->previousPageUrl(), // Oldingi sahifa URLi
         ]);
     }
-//get_vacancies
-    public function show_partners($id){ // Foydalanuvchi tilini olish
-        $locale = App::getLocale();
-
-        // Slug orqali postni olish
-        $partners = Partner::find($id);
-
-
-        if (is_null($partners)) {
-            return response()->json(['message' => 'Post not found or URL is not null'], 404);
-        }
-
-        // Postni foydalanuvchi tiliga moslashtirish
-        $translatedPost = [
-            'id' => $partners->id,
-            'title' => $partners->title[$locale] ?? null,
-            'desc' => $partners->desc[$locale] ?? null,
-            'photo' => [
-                'lg' => $partners->img ? url('/upload/images/' . $partners->img) : null, // Katta o'lchamdagi rasm
-                'md' => $partners->img ? url('/upload/images/600/' . $partners->img) : null, // O'rtacha o'lchamdagi rasm
-                'sm' => $partners->img ? url('/upload/images/200/' . $partners->img) : null, // Kichik o'lchamdagi rasm
-            ],
-            'link' => $partners->link,
-        ];
-
-        return response()->json($translatedPost);
-    }
-    public function show_students(Request $request, $id = null)
+    public function show_certificates(Request $request, $id = null)
     {
         // Foydalanuvchi tilini olish
         $locale = App::getLocale();
 
         // Agar id bo'lsa, ma'lum bir studentni qaytarish
         if ($id) {
-            $member = Member::find($id);
+            $member = Certificate::find($id);
 
             // Agar student topilmasa, 404 xatolikni qaytaradi
             if (!$member) {
@@ -276,19 +326,16 @@ class ApiController extends Controller
 
             // Student ma'lumotlarini tilga mos formatda qaytarish
             $translatedStudent = [
-                'id' => $member->id ?? null,
-                'name' => $member->name[$locale] ?? null,
-                'position' => $member->position[$locale] ?? null,
-                'phone_number' => $member->phone_number ?? null,
-                'instagram_link' => $member->instagram_link ?? null,
-                'telegram_link' => $member->telegram_link ?? null,
-                'linkedin_link' => $member->linkedin_link ?? null,
-                'facebook_link' => $member->facebook_link ?? null,
-                'work_time' => $member->work_time[$locale] ?? null,
+                'id' => $member->id ?? null, //
+                'title' => $member->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
+                'desc' => $member->desc[$locale] ?? null, //
+                'file' => $member->url('upload/certificates')
+                    ? asset('storage/' . $member->url('upload/certificates'))
+                    : null,
                 'photo' => [
-                    'lg' => $member->img ? url('/upload/images/' . $member->img) : null,
-                    'md' => $member->img ? url('/upload/images/600/' . $member->img) : null,
-                    'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null,
+                    'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
+                    'md' => $member->img ? url('/upload/images/600/' . $member->img) : null, // O'rtacha o'lchamdagi rasm
+                    'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null, // Kichik o'lchamdagi rasm
                 ],
             ];
 
@@ -336,6 +383,142 @@ class ApiController extends Controller
             'prev_page_url' => $members->previousPageUrl(), // Oldingi sahifa URLi
         ]);
     }
+    public function get_partners()
+    {
+        // Foydalanuvchi tilini olish
+        $locale = App::getLocale();
+
+        // Partner modeli 1 bo'lganlarini olish va 10 tadan paginate qilish
+        $partners = Partner::where('partner', 1)->latest()->paginate(10);
+
+        // Agar postlar topilmasa, 404 xatolikni qaytaradi
+        if ($partners->isEmpty()) {
+            return response()->json([
+                'message' => 'No records found'
+            ], 404);
+        }
+
+        // Postlarni foydalanuvchi tiliga moslashtirish
+        $translatedPosts = collect($partners->items())->map(function ($partners) use ($locale) {
+            return [
+                'id' => $partners->id,
+                'title' => $partners->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
+                'photo' => [
+                    'lg' => $partners->img ? url('/upload/images/' . $partners->img) : null, // Katta o'lchamdagi rasm
+                    'md' => $partners->img ? url('/upload/images/600/' . $partners->img) : null, // O'rtacha o'lchamdagi rasm
+                    'sm' => $partners->img ? url('/upload/images/200/' . $partners->img) : null, // Kichik o'lchamdagi rasm
+                ],
+                'link' => $partners->link,
+            ];
+        });
+
+        // Postlar va paginate ma'lumotlarini JSON formatida qaytarish
+        return response()->json([
+            'data' => $translatedPosts,
+            'total' => $partners->total(),
+            'per_page' => $partners->perPage(),
+            'current_page' => $partners->currentPage(),
+            'last_page' => $partners->lastPage(),
+            'next_page_url' => $partners->nextPageUrl(),
+            'prev_page_url' => $partners->previousPageUrl(),
+        ]);
+    }
+
+    public function show_partners($id)
+    {
+        // Foydalanuvchi tilini olish
+        $locale = App::getLocale();
+
+        // ID va partner modeli 1 bo'lgan postni olish
+        $partners = Partner::where('partner', 1)->find($id);
+
+        if (is_null($partners)) {
+            return response()->json(['message' => 'Post not found or URL is not null'], 404);
+        }
+
+        // Postni foydalanuvchi tiliga moslashtirish
+        $translatedPost = [
+            'id' => $partners->id,
+            'title' => $partners->title[$locale] ?? null,
+            'photo' => [
+                'lg' => $partners->img ? url('/upload/images/' . $partners->img) : null, // Katta o'lchamdagi rasm
+                'md' => $partners->img ? url('/upload/images/600/' . $partners->img) : null, // O'rtacha o'lchamdagi rasm
+                'sm' => $partners->img ? url('/upload/images/200/' . $partners->img) : null, // Kichik o'lchamdagi rasm
+            ],
+            'link' => $partners->link,
+        ];
+
+        return response()->json($translatedPost);
+    }
+    public function get_partners_link()
+    {
+        // Foydalanuvchi tilini olish
+        $locale = App::getLocale();
+
+        // Partner modeli 1 bo'lganlarini olish va 10 tadan paginate qilish
+        $partners = Partner::where('partner', 0)->latest()->paginate(10);
+
+        // Agar postlar topilmasa, 404 xatolikni qaytaradi
+        if ($partners->isEmpty()) {
+            return response()->json([
+                'message' => 'No records found'
+            ], 404);
+        }
+
+        // Postlarni foydalanuvchi tiliga moslashtirish
+        $translatedPosts = collect($partners->items())->map(function ($partners) use ($locale) {
+            return [
+                'id' => $partners->id,
+                'title' => $partners->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
+                'photo' => [
+                    'lg' => $partners->img ? url('/upload/images/' . $partners->img) : null, // Katta o'lchamdagi rasm
+                    'md' => $partners->img ? url('/upload/images/600/' . $partners->img) : null, // O'rtacha o'lchamdagi rasm
+                    'sm' => $partners->img ? url('/upload/images/200/' . $partners->img) : null, // Kichik o'lchamdagi rasm
+                ],
+                'link' => $partners->link,
+            ];
+        });
+
+        // Postlar va paginate ma'lumotlarini JSON formatida qaytarish
+        return response()->json([
+            'data' => $translatedPosts,
+            'total' => $partners->total(),
+            'per_page' => $partners->perPage(),
+            'current_page' => $partners->currentPage(),
+            'last_page' => $partners->lastPage(),
+            'next_page_url' => $partners->nextPageUrl(),
+            'prev_page_url' => $partners->previousPageUrl(),
+        ]);
+    }
+
+    public function show_partners_link($id)
+    {
+        // Foydalanuvchi tilini olish
+        $locale = App::getLocale();
+
+        // ID va partner modeli 1 bo'lgan postni olish
+        $partners = Partner::where('partner', 0)->find($id);
+
+        if (is_null($partners)) {
+            return response()->json(['message' => 'Post not found or URL is not null'], 404);
+        }
+
+        // Postni foydalanuvchi tiliga moslashtirish
+        $translatedPost = [
+            'id' => $partners->id,
+            'title' => $partners->title[$locale] ?? null,
+            'photo' => [
+                'lg' => $partners->img ? url('/upload/images/' . $partners->img) : null, // Katta o'lchamdagi rasm
+                'md' => $partners->img ? url('/upload/images/600/' . $partners->img) : null, // O'rtacha o'lchamdagi rasm
+                'sm' => $partners->img ? url('/upload/images/200/' . $partners->img) : null, // Kichik o'lchamdagi rasm
+            ],
+            'link' => $partners->link,
+        ];
+
+        return response()->json($translatedPost);
+    }
+
+
     public function getCompany()
     {
         // Hozirgi foydalanuvchi tilini olish

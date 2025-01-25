@@ -17,20 +17,21 @@ return new class extends Migration
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('position_id');
             $table->unsignedBigInteger('employ_staff_id');
-            $table->unsignedBigInteger('employ_status_id');
             $table->unsignedBigInteger('employ_form_id');
-            $table->date('contrakt_date')->nullable();
+            $table->string('contrakt_date')->nullable();
             $table->string('contrakt_number')->nullable();
             $table->unsignedBigInteger('employ_type_id');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
 
+
             $table->foreign('employ_id')->references('id')->on('employs')->onDelete('cascade');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
             $table->foreign('employ_staff_id')->references('id')->on('employ_staff')->onDelete('cascade');
             $table->foreign('employ_type_id')->references('id')->on('employ_types')->onDelete('cascade');
+            $table->foreign('employ_form_id')->references('id')->on('employ_fors')->onDelete('cascade');
         });
     }
 

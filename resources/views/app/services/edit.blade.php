@@ -108,7 +108,7 @@
         [
         'active' => true,
         'url' => '',
-        'name' => 'Редактирование',
+        'name' => 'Update',
         'disabled' => true
         ],
         ]
@@ -138,26 +138,18 @@
                                     @foreach($langs as $lang)
                                     <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
                                         <div class="form-group">
-                                            <label for="title{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Название</label>
-                                            <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="title[{{ $lang->code }}]" value="{{ old('title.'.$lang->code) ?? $service->title[$lang->code] ?? null }}" id="title{{ $lang->code }}" placeholder="Название...">
+                                            <label for="title{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Title</label>
+                                            <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="title[{{ $lang->code }}]" value="{{ old('title.'.$lang->code) ?? $service->title[$lang->code] ?? null }}" id="title{{ $lang->code }}" placeholder="Title...">
                                             @error('title.'.$lang->code)
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
+
                                         <div class="form-group">
-                                            <label for="subtitle{{ $lang->code }}" class="form-label">Подзаголовок</label>
-                                            <input type="text" class="form-control @error('subtitle.'.$lang->code) is-invalid @enderror" name="subtitle[{{ $lang->code }}]" value="{{ old('subtitle.'.$lang->code) ?? $service->subtitle[$lang->code] ?? null }}" id="subtitle{{ $lang->code }}" placeholder="Подзаголовок...">
-                                            @error('subtitle.'.$lang->code)
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="desc{{ $lang->code }}" class="form-label">Описание</label>
-                                            <textarea name="desc[{{ $lang->code }}]" id="desc{{ $lang->code }}" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" placeholder="Описание...">{{ old('desc.'.$lang->code) ?? $service->desc[$lang->code] ?? null }}</textarea>
+                                            <label for="desc{{ $lang->code }}" class="form-label">Description</label>
+                                            <textarea name="desc[{{ $lang->code }}]" id="desc{{ $lang->code }}" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" placeholder="Description...">{{ old('desc.'.$lang->code) ?? $service->desc[$lang->code] ?? null }}</textarea>
                                             @error('desc.'.$lang->code)
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -166,18 +158,23 @@
                                         </div>
                                     </div>
                                     @endforeach
+                                        <div class="form-group">
+                                            <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Slug</label>
+                                            <input type="text"  class="form-control" name="slug" value="{{ old('slug') ?? $service->slug ?? null }}" id="slug }}" placeholder="Slug...">
+                                            @error('slug')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
                                 </div>
-                                <div class="form-group">
-                                    <!-- Dropzone -->
-                                    <label for="dropzone" class="form-label">Фото</label>
-                                    <div class="dropzone dropzone-multiple" id="dropzone"></div>
-                                </div>
+
                             </div>
                         </div>
                         <!-- Button -->
                         <div class="model-btns d-flex justify-content-end">
-                            <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Отмена</a>
-                            <button type="submit" class="btn btn-primary ms-2">Сохранить</button>
+                            <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary ms-2">Save</button>
                         </div>
                     </div>
                 </div>
@@ -189,27 +186,9 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="parent_id" class="form-label">Родительская услуга</label>
-                                    <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" name="parent_id">
-                                        <option value="">Главная услуга</option>
-                                        @foreach ($all_categories as $key => $item)
-                                        <option value="{{ $item->id }}" {{ old('parent_id') ?? $service->parent_id == $item->id ? 'selected' : '' }}>{{ $item->title[$main_lang->code] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('parent_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="price" class="form-label">Цена</label>
-                                    <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $service->price }}" id="price" placeholder="Цена...">
-                                    @error('price')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                                    <!-- Dropzone -->
+                                    <label for="dropzone" class="form-label">Фото</label>
+                                    <div class="dropzone dropzone-multiple" id="dropzone"></div>
                                 </div>
                             </div>
                         </div>
