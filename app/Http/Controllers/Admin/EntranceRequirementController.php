@@ -112,7 +112,7 @@ class EntranceRequirementController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'name.' . $this->main_lang->code => 'required'
+            'name.' . $this->main_lang->code => 'required',
         ]);
         if ($validator->fails()) {
             return back()->withInput()->with([
@@ -121,17 +121,18 @@ class EntranceRequirementController extends Controller
             ]);
         }
 
-
         DB::beginTransaction();
         try {
+            // Ma'lumotlarni saqlash
             $entrancerequirement = EntranceRequirement::create($data);
 
+            // Agar dropzone_images mavjud bo'lsa, uni photo maydoniga yozish
             if (isset($data['dropzone_images'])) {
-                $data['photo'] = $data['dropzone_images'];
-            } else {
-                $data['photo'] = null;
+                $data['photo'] = $data['dropzone_images'];  // Fayl nomini saqlash
+                $entrancerequirement->update(['photo' => $data['photo']]);  // photo maydonini yangilash
             }
 
+            // Ko'nikmalarni bog'lash
             if (isset($data['skills'])) {
                 $entrancerequirement->skills()->sync($data['skills']);
             }
@@ -208,8 +209,6 @@ class EntranceRequirementController extends Controller
 
             if (isset($data['dropzone_images'])) {
                 $data['photo'] = $data['dropzone_images'];
-            } else {
-                $data['photo'] = null;
             }
 
             if (isset($data['skills'])) {

@@ -165,7 +165,7 @@
                                             <label for="employs" class="form-label">Educational Program</label>
                                             <select class="form-control mb-4 @error('employs') is-invalid @enderror" data-choices='{"": true}'  name="educational_program_id">
                                                 @foreach ($educationalprogram as $key => $item)
-                                                    <option value="{{ $item->id }}"   {{ old('educational_program_id')==$item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
+                                                    <option value="{{ $item->id }}"   {{ old('educational_program_id')==$item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] ?? null}}</option>
                                                 @endforeach
 
                                             </select>

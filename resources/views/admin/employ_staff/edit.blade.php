@@ -110,7 +110,7 @@
                                         <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
                                             <div class="form-group">
                                                 <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Name</label>
-                                                <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="name[{{ $lang->code }}]" value="{{ old('name.'.$lang->code) ?? $employStaff->name[ $lang->code ] }}" id="title" placeholder="Name...">
+                                                <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="name[{{ $lang->code }}]" value="{{ old('name.'.$lang->code) ?? $employStaff->name[ $lang->code ] ?? null }}" id="title" placeholder="Name...">
                                                 @error('name.'.$lang->code)
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

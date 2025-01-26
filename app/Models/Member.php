@@ -20,12 +20,15 @@ class Member extends Model
         'facebook_link',
         'work_time',
         'view_count',
-        'gender'
+        'gender',
+        'dec',
+        'yers'
     ];
 
     protected $casts = [
         'name' => 'array',
         'position' => 'array',
+        'dec' => 'array',
         'work_time' => 'array'
     ];
 

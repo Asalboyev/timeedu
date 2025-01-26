@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('educational_program_id');
             $table->text('title')->nullable();
             $table->text('dec')->nullable();
-            $table->text('photo')->nullable();
+            $table->string('photo')->nullable();
             $table->foreign('educational_program_id')->references('id')->on('educational_programs')->onDelete('cascade');
 
             $table->timestamps();

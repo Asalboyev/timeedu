@@ -92,18 +92,18 @@
                         </thead>
                         <tbody id="menu-list">
                         @foreach ($menus as $menuItem)
-                            {{-- Glavni menyu --}}
+                            {{-- Main Menu --}}
                             <tr>
                                 <td>{{ $menuItem['menu']->id }}</td>
                                 <td><strong>{{ $menuItem['menu']->title[$languages->first()->code] }}</strong></td>
                                 <td>Main Menu</td>
                                 <td>
                                     <input
-                                        type="number"
-                                        class="form-control form-control-sm order-input"
-                                        value="{{ $menuItem['menu']->order }}"
-                                        data-id="{{ $menuItem['menu']->id }}"
-                                        style="width: 80px;">
+                                            type="number"
+                                            class="form-control form-control-sm order-input"
+                                            value="{{ $menuItem['menu']->order }}"
+                                            data-id="{{ $menuItem['menu']->id }}"
+                                            style="width: 80px;">
                                 </td>
                                 <td>
                                     <a href="{{ route($route_name.'.edit', [$route_parameter => $menuItem['menu']]) }}" class="btn btn-sm btn-info">
@@ -120,30 +120,30 @@
                                 </td>
                             </tr>
 
-                            {{-- Sub-menyular --}}
+                            {{-- Sub-menus --}}
                             @if (!empty($menuItem['children']))
                                 @foreach ($menuItem['children'] as $child)
                                     <tr>
-                                        <td>{{ $child['menu']->id }}</td>
-                                        <td>&mdash; {{ $child['menu']->title[$languages->first()->code] }}</td>
+                                        <td>{{ $child->id }}</td>
+                                        <td>&mdash; {{ $child->title[$languages->first()->code] }}</td>
                                         <td>{{ $menuItem['menu']->title[$languages->first()->code] }}</td>
                                         <td>
                                             <input
-                                                type="number"
-                                                class="form-control form-control-sm order-input"
-                                                value="{{ $child['menu']->order }}"
-                                                data-id="{{ $child['menu']->id }}"
-                                                style="width: 80px;">
+                                                    type="number"
+                                                    class="form-control form-control-sm order-input"
+                                                    value="{{ $child->order }}"
+                                                    data-id="{{ $child->id }}"
+                                                    style="width: 80px;">
                                         </td>
                                         <td>
-                                            <a href="{{ route($route_name.'.edit', [$route_parameter => $child['menu']]) }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route($route_name.'.edit', [$route_parameter => $child]) }}" class="btn btn-sm btn-info">
                                                 <i class="fe fe-edit-2"></i>
                                             </a>
                                             <a href="#" class="btn btn-sm btn-danger"
-                                               onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $child['menu']->id }}').submit(); }">
+                                               onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $child->id }}').submit(); }">
                                                 <i class="fe fe-trash"></i>
                                             </a>
-                                            <form id="delete-form-{{ $child['menu']->id }}" action="{{ route($route_name.'.destroy', [$route_parameter => $child['menu']]) }}" method="POST" style="display: none;">
+                                            <form id="delete-form-{{ $child->id }}" action="{{ route($route_name.'.destroy', [$route_parameter => $child]) }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>

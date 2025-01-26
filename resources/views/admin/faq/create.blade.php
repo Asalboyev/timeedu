@@ -80,7 +80,7 @@
         [
         'active' => true,
         'url' => '',
-        'name' => 'Добавление',
+        'name' => 'Add',
         'disabled' => true
         ],
         ]
@@ -88,54 +88,53 @@
     </div>
 </div> <!-- / .header -->
 
-<!-- CARDS -->
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-8">
-            <div class="card mw-50">
-                <div class="card-body">
-                    <form method="post" action="{{ route($route_name . '.store') }}" enctype="multipart/form-data" id="add">
-                        @csrf
+    <form method="post" action="{{ route('education_faqs.store') }}" enctype="multipart/form-data" id="add">
+        @csrf
+        <input type="hidden" name="educational_program_id" value="{{ $id }}">
+        <div class="row">
+            <div class="col-8">
+                <div class="card mw-50">
+                    <div class="card-body">
+
                         <div class="row">
                             <div class="col-12">
-
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     @foreach($langs as $lang)
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="{{ $lang->code }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $lang->code }}" type="button" role="tab" aria-controls="{{ $lang->code }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">{{ $lang->title }}</button>
-                                    </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="{{ $lang->code }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $lang->code }}" type="button" role="tab" aria-controls="{{ $lang->code }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">{{ $lang->title }}</button>
+                                        </li>
                                     @endforeach
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
                                     @foreach($langs as $lang)
-                                    <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
-                                        <div class="form-group">
-                                            <label for="title" class="form-label required">Title</label>
-                                            <input type="text" required class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="title[{{ $lang->code }}]" value="{{ old('title.'.$lang->code) }}" id="title" placeholder="Title...">
-                                            @error('title.'.$lang->code )
-                                            <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="desc" class="form-label">Description</label>
-                                            <textarea name="dec[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Description...">{{ old('desc.'.$lang->code) }}</textarea>
-                                            @error('desc.'.$lang->code)
-                                            <span class="invalid-feedback" role="alert">
+                                        <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
+                                            <div class="form-group">
+                                                <label for="question{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Qauestions</label>
+                                                <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('question.'.$lang->code) is-invalid @enderror" name="question[{{ $lang->code }}]" value="{{ old('question.'.$lang->code) }}" id="question{{ $lang->code }}" placeholder="Вопрос...">
+                                                @error('question.'.$lang->code)
+                                                <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
-                                            @enderror
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="answer{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Answer</label>
+                                                <textarea id="answer{{ $lang->code }}" cols="30" rows="10" class="form-control @error('answer.'.$lang->code) is-invalid @enderror ckeditor" name="answer[{{ $lang->code }}]" placeholder="Ответ...">{{ old('answer.'.$lang->code) }}</textarea>
+                                                @error('answer.'.$lang->code)
+                                                <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
                                     @endforeach
                                 </div>
                                 <div class="form-group">
-                                    <label for="employs" class="form-label">Educational Program</label>
-                                    <select class="form-control mb-4 @error('employs') is-invalid @enderror" data-choices='{"": true}'  name="educational_program_id">
-                                        @foreach ($educationalprogram as $key => $item)
-                                            <option value="{{ $item->id }}" {{ (old('educational_program_id') ? in_array($item->id, old('educational_program_id')) : '') ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
+                                    <label for="employs" class="form-label">Skill</label>
+                                    <select class="form-control mb-4 @error('skill_id') is-invalid @enderror" data-choices='{"1": true}'  name="skill_id" required>
+                                        @foreach ($skills as $key => $item)
+                                            <option value="{{ $item->id }}" {{ (old('skill_id') ?  : '') ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
                                         @endforeach
                                     </select>
                                     @error('employs')
@@ -144,6 +143,7 @@
                                     </span>
                                     @enderror
                                 </div>
+                                <!-- CARDS -->
                             </div>
                         </div>
                         <!-- Button -->
@@ -151,29 +151,12 @@
                             <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary ms-2">Save</button>
                         </div>
-
-
-                </div>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="card mw-50">
-                <div class="card-body">
-                    @csrf
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <!-- Dropzone -->
-                                <label for="dropzone" class="form-label">Logo</label>
-                                <div class="dropzone dropzone-multiple" id="dropzone"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
+            <div class="col-4">
+            </div>
         </div>
-
-    </div>
     </form>
 </div>
 @endsection

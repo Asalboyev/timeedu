@@ -104,7 +104,7 @@
                                         <label for="employ_id" class="form-label">Employ </label>
                                         <select  class="form-select @error('employ_id') is-invalid @enderror" id="employ_id" data-choices='{"": true}' name="employ_id">
                                             @foreach ($employ as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('employ_id') ?? $employMeta->employ_id == $item->id ? 'selected' : '' }}>{{ $item->first_name[$main_lang->code] }}</option>
+                                                <option value="{{ $item->id }}" {{ old('employ_id') ?? $employMeta->employ_id == $item->id ? 'selected' : '' }}>{{ $item->first_name[$main_lang->code] ?? null}}</option>
                                             @endforeach
                                         </select>
                                         @error('employ_id')
@@ -117,7 +117,7 @@
                                         <label for="department_id" class="form-label">Departaments</label>
                                         <select class="form-select @error('department_id') is-invalid @enderror" id="department_id" data-choices='{"": true}' name="department_id">
                                             @foreach ($departaments as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('department_id') ?? $employMeta->department_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
+                                                <option value="{{ $item->id }}" {{ old('department_id') ?? $employMeta->department_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] ?? null}}</option>
                                             @endforeach
                                         </select>
                                         @error('department_id')
@@ -130,7 +130,7 @@
                                         <label for="position_id" class="form-label">Position</label>
                                         <select class="form-select @error('position_id') is-invalid @enderror" id="position_id" data-choices='{"": true}' name="position_id">
                                             @foreach ($position as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('position_id') ?? $employMeta->position_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
+                                                <option value="{{ $item->id }}" {{ old('position_id') ?? $employMeta->position_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] ?? null }}</option>
                                             @endforeach
                                         </select>
                                         @error('position_id')
@@ -143,7 +143,7 @@
                                         <label for="parent_id" class="form-label">EmployStaff</label>
                                         <select class="form-select @error('employ_staff_id') is-invalid @enderror" id="employ_staff_id" data-choices='{"": true}' name="employ_staff_id">
                                             @foreach ($employStaff as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('employ_staff_id') ?? $employMeta->employ_staff_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
+                                                <option value="{{ $item->id }}" {{ old('employ_staff_id') ?? $employMeta->employ_staff_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] ?? null}}</option>
                                             @endforeach
                                         </select>
                                         @error('employ_staff_id')
@@ -156,7 +156,7 @@
                                         <label for="employ_form_id" class="form-label">EmployForm</label>
                                         <select class="form-select @error('employ_form_id') is-invalid @enderror" id="employ_form_id" data-choices='{"": true}' name="employ_form_id">
                                             @foreach ($employForm as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('employ_form_id') ?? $employMeta->employ_form_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
+                                                <option value="{{ $item->id }}" {{ old('employ_form_id') ?? $employMeta->employ_form_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] ?? null }}</option>
                                             @endforeach
                                         </select>
                                         @error('employ_form_id')
@@ -169,7 +169,7 @@
                                         <label for="structure_type_id" class="form-label">EmployType</label>
                                         <select class="form-select @error('employ_type_id') is-invalid @enderror" id="structure_type_id" data-choices='{"": true}' name="employ_type_id">
                                             @foreach ($employType as $key => $item)
-                                                <option value="{{ $item->id }}" {{ old('structure_type_id') ?? $employMeta->structure_type_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
+                                                <option value="{{ $item->id }}" {{ old('structure_type_id') ?? $employMeta->structure_type_id == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] ?? null }}</option>
                                             @endforeach
                                         </select>
                                         @error('employ_type_id')

@@ -16,10 +16,9 @@ class EducationalProgramseed extends Seeder
     public function run()
     {
         EducationalProgram::create([
-            'first_name' => [
+            'name' => [
                 'uz' => 'Magistatura',
-                'ru' => 'Магистратура',
-                'en' => 'Master\'s Program',
+
             ],
             'slug' => Str::slug('Magistatura'), // Slug generatsiya
             'created_at' => now(),
@@ -28,10 +27,9 @@ class EducationalProgramseed extends Seeder
 
         // 2-yangi yozuv
         EducationalProgram::create([
-            'first_name' => [
+            'name' => [
                 'uz' => 'Bakalavr',
-                'ru' => 'Бакалавр',
-                'en' => 'Bachelor\'s Program',
+
             ],
             'slug' => Str::slug('Bakalavr'), // Slug generatsiya
             'created_at' => now(),

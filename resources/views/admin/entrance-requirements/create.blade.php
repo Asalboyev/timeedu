@@ -156,6 +156,11 @@
                                     </span>
                                             @enderror
                                         </div>
+                                        <div class="form-group">
+                                            <!-- Dropzone -->
+                                            <label for="dropzone" class="form-label">Photo</label>
+                                            <div class="dropzone dropzone-multiple" id="dropzone"></div>
+                                        </div>
                                 </div>
                             </div>
                             <!-- Button -->
@@ -163,29 +168,13 @@
                                 <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Cancel</a>
                                 <button type="submit" class="btn btn-primary ms-2">Save</button>
                             </div>
-
-
+                        </form>
                     </div>
+
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card mw-50">
-                    <div class="card-body">
-                        @csrf
-                        <div class="row">
-                            <div class="col-12">
-                                    <div class="form-group">
-                                        <!-- Dropzone -->
-                                        <label for="dropzone" class="form-label">Photo</label>
-                                        <div class="dropzone dropzone-multiple" id="dropzone"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-    </form>
+
     </div>
 @endsection

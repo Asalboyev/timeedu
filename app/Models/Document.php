@@ -13,7 +13,6 @@ class Document extends Model
         'title',
         'file',
         'link',
-        'category_id',
         'date'
     ];
 

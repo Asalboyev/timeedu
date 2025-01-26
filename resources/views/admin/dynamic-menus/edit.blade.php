@@ -273,7 +273,6 @@
                                                             document.getElementById('file-name-display-{{ $lang->code }}').textContent = fileName;
                                                         });
                                                     </script>
-
                                                 </div>
                                             @endforeach
                                         </div>
@@ -286,8 +285,8 @@
                                             <label for="menu_id" class="form-label">Menu</label>
                                             <select class="form-select searchable @error('menu_id') is-invalid @enderror" id="menu_id" name="menu_id" required>
                                                 @foreach ($menus as $key => $item)
-                                                    <option value="{{ $item->id }}" {{ old('menu_id')==$item->id ? 'selected' :
-                                                             '' }}>
+                                                    <option value="{{ $item->id }}" {{ old('menu_id')==$dynamic_menu->id ? 'selected' :
+                                                             '' }} >
                                                         {{ $item->title[$main_lang->code] }}
                                                     </option>
                                                 @endforeach
@@ -313,18 +312,18 @@
                                     @csrf
                                     <div class="row">
                                         <div class="col-12">
-                                            <!-- Close Button -->
+                                            <!-- Yopish tugmasi -->
                                             <button type="button" class="btn-close float-end" aria-label="Close"
                                                     onclick="removeFormMenu('formmenu-card-{{ $loop->index }}')"></button>
 
-                                            <!-- Tabs for Multiple Languages -->
-                                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <!-- Til uchun tablar -->
+                                            <ul class="nav nav-tabs" role="tablist">
                                                 @foreach($langs as $lang)
                                                     <li class="nav-item" role="presentation">
                                                         <button class="nav-link {{ $loop->first ? 'active' : '' }}"
-                                                                id="lang-{{ $lang->code }}-tab" data-bs-toggle="tab"
-                                                                data-bs-target="#lang-{{ $lang->code }}" type="button" role="tab"
-                                                                aria-controls="lang-{{ $lang->code }}"
+                                                                id="lang-{{ $lang->code }}-tab-{{ $loop->parent->index }}" data-bs-toggle="tab"
+                                                                data-bs-target="#lang-{{ $lang->code }}-{{ $loop->parent->index }}" type="button" role="tab"
+                                                                aria-controls="lang-{{ $lang->code }}-{{ $loop->parent->index }}"
                                                                 aria-selected="{{ $loop->first ? 'true' : 'false' }}">
                                                             {{ $lang->title }}
                                                         </button>
@@ -332,71 +331,63 @@
                                                 @endforeach
                                             </ul>
 
-                                            <!-- Content for Each Tab -->
-                                            <div class="tab-content" id="myTabContent">
+                                            <!-- Har bir til uchun kontent -->
+                                            <div class="tab-content">
                                                 @foreach($langs as $lang)
-                                                    <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}"
-                                                         id="lang-{{ $lang->code }}" role="tabpanel"
-                                                         aria-labelledby="lang-{{ $lang->code }}-tab">
-                                                        <!-- Title Input -->
+                                                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }} mt-3"
+                                                         id="lang-{{ $lang->code }}-{{ $loop->parent->index }}" role="tabpanel">
+                                                        <!-- Sarlavha maydoni -->
                                                         <div class="form-group">
-                                                            <label for="title-{{ $lang->code }}"
+                                                            <label for="title-{{ $lang->code }}-{{ $loop->parent->index }}"
                                                                    class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">
                                                                 Title
                                                             </label>
-                                                            <input type="text" {{ $lang->code == $main_lang->code ? 'required' : ''
-                                                }}
+                                                            <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }}
                                                             class="form-control @error('title.'.$lang->code) is-invalid @enderror"
-                                                                   name="formmenu[form1.{{ $loop->iteration }}][title][{{ $lang->code }}]"
-                                                                   value="{{ old('title.'.$lang->code) ?? $fmenu->title[$lang->code] ?? ''
-                                                }}"
-                                                                   id="title-{{ $lang->code }}" placeholder="Title...">
+                                                                   name="formmenu[{{ $loop->parent->index }}][title][{{ $lang->code }}]"
+                                                                   id="title-{{ $lang->code }}-{{ $loop->parent->index }}"
+                                                                   placeholder="Title..."
+                                                                   value="{{ old('title.'.$lang->code, $fmenu->title[$lang->code] ?? '') }}">
                                                             @error('title.'.$lang->code)
-                                                            <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                            <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                             @enderror
                                                         </div>
 
-                                                        <!-- Description Input -->
+                                                        <!-- Tavsif maydoni -->
                                                         <div class="form-group">
-                                                            <label for="desc-{{ $lang->code }}"
-                                                                   class="form-label">Description</label>
-                                                            <textarea
-                                                                    name="formmenu[form1.{{ $loop->iteration }}][text][{{ $lang->code }}]"
-                                                                    id="desc-{{ $lang->code }}"
-                                                                    class="form-control @error('text.'.$lang->code) is-invalid @enderror ckeditor"
-                                                                    placeholder="Description...">{{ $fmenu->text[$lang->code] ?? '' }}</textarea>
-                                                            @error('desc.'.$lang->code)
-                                                            <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                            <label for="desc-{{ $lang->code }}-{{ $loop->parent->index }}" class="form-label">
+                                                                Description
+                                                            </label>
+                                                            <textarea name="formmenu[{{ $loop->parent->index }}][text][{{ $lang->code }}]"
+                                                                      id="desc-{{ $lang->code }}-{{ $loop->parent->index }}"
+                                                                      class="form-control @error('text.'.$lang->code) is-invalid @enderror ckeditor"
+                                                                      placeholder="Description...">{{ $fmenu->text[$lang->code] ?? '' }}</textarea>
+                                                            @error('text.'.$lang->code)
+                                                            <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                             @enderror
                                                         </div>
                                                     </div>
                                                 @endforeach
                                             </div>
 
-                                            <!-- Order Input -->
+                                            <!-- Tartib maydoni -->
                                             <div class="form-group">
-                                                <label for="order" class="form-label">Order</label>
-                                                <input type="number" value="{{ $fmenu->order }}"
+                                                <label for="order-{{ $loop->index }}" class="form-label">Order</label>
+                                                <input type="number" value="{{ $fmenu->order ?? 0 }}"
                                                        class="form-control @error('order') is-invalid @enderror"
-                                                       name="formmenu[form1.{{ $loop->iteration }}][order]" id="order" placeholder="Order...">
+                                                       name="formmenu[{{ $loop->index }}][order]" id="order-{{ $loop->index }}"
+                                                       placeholder="Order...">
                                                 @error('order')
-                                                <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                                <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
+{{--                                                <input tyname="formmenu[{{ $loop->index }}][dinamik_menu_id]" value="{{$dynamic_menu->id}}">--}}
                                             </div>
 
-                                            <!-- Photo Upload -->
+                                            <!-- Rasm yuklash -->
                                             <div class="form-group">
                                                 <label for="dropzone-{{ $loop->index }}" class="form-label">Photo</label>
                                                 <div class="dropzone dropzone-multiple" id="dropzone-{{ $loop->index }}"></div>
-
-                                                <!-- Hidden Input for Uploaded Image Names -->
-                                                <input type="hidden" name="formmenu[form1.{{ $loop->iteration }}][dropzone_images]"
+                                                <input type="hidden" name="formmenu[{{ $loop->index }}][dropzone_images]"
                                                        id="hiddenInput_dropzone_{{ $loop->index }}"
                                                        value="{{ implode(',', $fmenu->formImages->pluck('img')->toArray()) }}">
                                             </div>
@@ -441,7 +432,7 @@
                                                             class="form-control
                                                 @error('formmenu2.'.$loop->index.'.title.'.$lang->code) is-invalid
                                                 @enderror"
-                                                                   name="formmenu2[form2.{{ $loop->iteration }}][title][{{ $lang->code }}]"
+                                                                   name="formmenu2[{{ $loop->iteration }}][title][{{ $lang->code }}]"
                                                                    value="{{ old('formmenu2.'.$loop->parent->index.'.title.'.$lang->code)
                                                 ?? $fmenu->title[$lang->code] ?? '' }}"
                                                                    id="title" placeholder="Title...">
@@ -460,7 +451,7 @@
                                                 <select id="categories"
                                                         class="form-control mb-4 @error('formmenu2.'.$loop->index.'.categories') is-invalid @enderror"
                                                         data-choices='{"removeItemButton": true}' multiple
-                                                        name="formmenu2[form2.{{ $loop->iteration }}][categories][]">
+                                                        name="formmenu2[{{ $loop->iteration }}][categories][]">
                                                     @foreach ($all_categories as $item)
                                                         <option value="{{ $item->id }}" @if(old('formmenu2.'.$loop->
                                                 index.'.categories') && in_array($item->id,
@@ -487,7 +478,7 @@
                                                 <label for="order" class="form-label">Order</label>
                                                 <input type="number" value="{{ $fmenu1->order }}"
                                                        class="form-control @error('formmenu2.'.$loop->index.'.order') is-invalid @enderror"
-                                                       name="formmenu2[form2.{{ $loop->iteration }}][order]" id="order"
+                                                       name="formmenu2[{{ $loop->iteration }}][order]" id="order"
                                                        placeholder="Order...">
                                                 @error('formmenu2.'.$loop->index.'.order')
                                                 <span class="invalid-feedback" role="alert">
@@ -540,7 +531,7 @@
                                                             <input type="text" {{ $lang->code == $main_lang->code ? 'required' : ''
                                                 }}
                                                             class="form-control @error('title.'.$lang->code) is-invalid @enderror"
-                                                                   name="formmenu3[form3.{{ $loop->iteration }}][title][{{ $lang->code }}]"
+                                                                   name="formmenu3[{{ $loop->iteration }}][title][{{ $lang->code }}]"
                                                                    value="{{ old('title.'.$lang->code) ?? $fmenu3->title[$lang->code] ?? ''
                                                 }}"
                                                                    id="locale-title-{{ $lang->code }}"
@@ -555,7 +546,7 @@
                                                             <label for="locale-desc-{{ $lang->code }}"
                                                                    class="form-label">Description</label>
                                                             <textarea
-                                                                    name="formmenu3[form3.{{ $loop->iteration }}][text][{{ $lang->code }}]"
+                                                                    name="formmenu3[{{ $loop->iteration }}][text][{{ $lang->code }}]"
                                                                     id="locale-desc-{{ $lang->code }}"
                                                                     class="form-control @error('text.'.$lang->code) is-invalid @enderror ckeditor"
                                                                     placeholder="Description...">{{ $fmenu3->text[$lang->code] ?? '' }}</textarea>
@@ -572,7 +563,7 @@
                                             <!-- Position Field -->
                                             <div class="form-group">
                                                 <label for="position" class="form-label">Position</label>
-                                                <select name="formmenu3[form3.{{ $loop->iteration }}][position]" class="form-select">
+                                                <select name="formmenu3[{{ $loop->iteration }}][position]" class="form-select">
                                                     <option value="1" {{ old('menu_id')==1 || $fmenu3->position == 1 ? 'selected'
                                                 : '' }}>Right</option>
                                                     <option value="0" {{ old('menu_id')==0 || $fmenu3->position == 0 ? 'selected'
@@ -584,7 +575,7 @@
                                             <div class="form-group">
                                                 <label for="order" class="form-label">Order</label>
                                                 <input type="number" class="form-control @error('path') is-invalid @enderror"
-                                                       name="formmenu3[form3.{{ $loop->iteration }}][order]"
+                                                       name="formmenu3[{{ $loop->iteration }}][order]"
                                                        value="{{ $fmenu3->order ?? '' }}" id="order" placeholder="Order...">
                                                 @error('in_main')
                                                 <span class="invalid-feedback" role="alert">
@@ -600,7 +591,7 @@
                                                 <div class="dropzone dropzone-multiple" id="dropzoneform3-{{ $loop->index }}"></div>
 
                                                 <!-- Hidden Input for Uploaded Image Names -->
-                                                <input type="hidden" name="formmenu3[form3.{{ $loop->iteration }}][dropzone_images]"
+                                                <input type="hidden" name="formmenu3[{{ $loop->iteration }}][dropzone_images]"
                                                        id="hiddenInput_dropzoneform3_{{ $loop->index }}"
                                                        value="{{ implode(',', $fmenu3->formImages->pluck('img')->toArray()) }}">
                                             </div>
@@ -649,25 +640,30 @@
                 element.remove(); // Elementni DOM'dan olib tashlaydi
             }
         }
+
         document.addEventListener("DOMContentLoaded", function () {
             @foreach($formmenu as $fmenu)
             (() => {
-                // Dropzone configurations for "formmenu"
+                // Dropzone konfiguratsiyasi uchun ID va mavjud rasm ma'lumotlari
                 const dropzoneId = `dropzone-{{ $loop->index }}`;
                 const hiddenInputId = `hiddenInput_dropzone_{{ $loop->index }}`;
-                const existingImages = @json($fmenu->formImages->pluck('img')->toArray()); // Existing images
+                const existingImages = @json($fmenu->formImages->pluck('img')->toArray()); // Mavjud rasmlar
 
+                // Dropzone konfiguratsiyasi chaqiriladi
                 configureDropzone(dropzoneId, hiddenInputId, existingImages);
-
-                // Dropzone configurations for "formmenu3"
-                const dropzoneForm3Id = `dropzoneform3-{{ $loop->index }}`;
-                const hiddenInputForm3Id = `hiddenInput_dropzoneform3_{{ $loop->index }}`;
-                configureDropzone(dropzoneForm3Id, hiddenInputForm3Id, existingImages);
             })();
             @endforeach
 
-            // Function to configure Dropzone
+            // Dropzone konfiguratsiyasi funksiyasi
             function configureDropzone(dropzoneId, hiddenInputId, existingImages) {
+                // Dropzone elementini tekshirish
+                const dropzoneElement = document.getElementById(dropzoneId);
+                if (!dropzoneElement) {
+                    console.error(`Dropzone elementi topilmadi: ${dropzoneId}`);
+                    return;
+                }
+
+                // Dropzone konfiguratsiyasi
                 const dropzone = new Dropzone(`#${dropzoneId}`, {
                     url: "{{ url('/admin/upload_from_dropzone') }}",
                     paramName: "file",
@@ -677,37 +673,44 @@
                     addRemoveLinks: true,
                     maxFiles: 10,
                     maxFilesize: 2, // MB
+                    acceptedFiles: "image/*", // Faqat rasm fayllarini qabul qilish
                     dictDefaultMessage: "Drag files here to upload",
                     dictRemoveFile: "Delete file",
-                    dictMaxFilesExceeded: "Can't load more files",
+                    dictMaxFilesExceeded: "You can't upload more files.",
 
                     init: function () {
                         const hiddenInput = document.getElementById(hiddenInputId);
 
-                        // Load existing images
-                        existingImages.forEach((image) => {
-                            const imagePath = `/upload/images/${image}`; // Full path to images
-                            const mockFile = { name: image, size: 12345, accepted: true };
+                        // Mavjud rasmlarni yuklash
+                        if (existingImages && existingImages.length > 0) {
+                            existingImages.forEach((image) => {
+                                const imagePath = `/upload/images/${image}`; // Rasmning to'liq yo'li
+                                const mockFile = { name: image, size: 12345, accepted: true };
 
-                            this.emit("addedfile", mockFile); // Add file
-                            this.emit("thumbnail", mockFile, imagePath); // Set thumbnail
-                            mockFile.previewElement.classList.add("dz-complete"); // Mark as complete
+                                this.emit("addedfile", mockFile); // Faylni qo'shish
+                                this.emit("thumbnail", mockFile, imagePath); // Thumbnail qo'shish
+                                mockFile.previewElement.classList.add("dz-complete"); // To'liq yuklangan sifatida belgilash
 
-                            // Handle file removal
-                            mockFile.previewElement.querySelector(".dz-remove").addEventListener("click", function () {
-                                let fileNames = hiddenInput.value.split(',');
-                                fileNames = fileNames.filter(name => name !== image);
-                                hiddenInput.value = fileNames.join(',');
+                                // Faylni o'chirishni boshqarish
+                                mockFile.previewElement.querySelector(".dz-remove").addEventListener("click", function () {
+                                    let fileNames = hiddenInput.value.split(',');
+                                    fileNames = fileNames.filter(name => name !== image);
+                                    hiddenInput.value = fileNames.join(',');
+                                });
                             });
-                        });
+                        }
                     },
 
                     success: function (file, response) {
                         const hiddenInput = document.getElementById(hiddenInputId);
-                        if (hiddenInput.value) {
-                            hiddenInput.value += `,${response.file_name}`;
+                        if (response.file_name) {
+                            if (hiddenInput.value) {
+                                hiddenInput.value += `,${response.file_name}`;
+                            } else {
+                                hiddenInput.value = response.file_name;
+                            }
                         } else {
-                            hiddenInput.value = response.file_name;
+                            console.error("Uploaddan keyin fayl nomi qaytarilmadi.");
                         }
                     },
 
@@ -716,14 +719,18 @@
                         let fileNames = hiddenInput.value.split(',');
                         const fileName = file.name;
 
-                        // Remove file name from hidden input
+                        // Fayl nomini yashirin inputdan o'chirish
                         fileNames = fileNames.filter(name => name !== fileName);
                         hiddenInput.value = fileNames.join(',');
 
-                        // Remove Dropzone element
+                        // Dropzone elementini o'chirish
                         if (file.previewElement != null) {
                             file.previewElement.remove();
                         }
+                    },
+
+                    error: function (file, message) {
+                        console.error(`Faylni yuklashda xato: ${message}`);
                     }
                 });
             }
@@ -731,7 +738,7 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            @foreach($formmenu as $fmenu)
+            @foreach($formmenu3 as $fmenu)
             (() => {
                 const dropzoneId = `dropzone-{{ $loop->index }}`;
                 const hiddenInputId = `hiddenInput_dropzone_{{ $loop->index }}`;
@@ -806,7 +813,10 @@
             const selectedForm = document.getElementById('formSelector').value;
 
             // Initialize the count for each form type
-            const form1Count = document.querySelectorAll('.form-section[data-form-type="1"]').length;
+            const form1Count = {{ $formmenu->count() }}; // PHPdan $formmenu'ni soni olinadi.
+            {{--const form2Count = {{ $formmenu1->count() }}; // PHPdan $formmenu'ni soni olinadi.--}}
+            {{--const form3Count = {{ $formmenu3->count() }}; // PHPdan $formmenu'ni soni olinadi.--}}
+
             const form2Count = document.querySelectorAll('.form-section[data-form-type="2"]').length;
             const form3Count = document.querySelectorAll('.form-section[data-form-type="3"]').length;
 
@@ -833,7 +843,9 @@
 
             if (selectedForm === '1') {
                 // Form 1 HTML (same as before)
-                formHTML = ` <div class="card mw-50">
+                formHTML = `
+
+                <div class="card mw-50">
                     <div class="card-body">
                         @csrf
                 <div class="row">
@@ -883,7 +895,7 @@
                 </div>
                   <div class="form-group">
                                         <label for="in_main" class="form-label">Order</label>
-                                        <input type="number"  class="form-control @error('path') is-invalid @enderror" required name="formmenu[${form1Count}][order]" value="{{ old('path') }}" id="order" placeholder="Order...">
+                                        <input type="text"  class="form-control @error('path') is-invalid @enderror" required name="formmenu[${form1Count}][order]" value="{{ old('path') }}" id="order" placeholder="Order...">
 
                                         @error('in_main')
                 <span class="invalid-feedback" role="alert">
@@ -965,7 +977,7 @@
                 </div>
                   <div class="form-group">
                                         <label for="in_main" class="form-label">Order</label>
-                                        <input type="number" required  class="form-control @error('path') is-invalid @enderror" name="formmenu2[${form2Count}][order]" value="{{ old('path') }}" id="order" placeholder="Order...">
+                                        <input type="text" required  class="form-control @error('path') is-invalid @enderror" name="formmenu2[${form2Count}][order]" value="{{ old('path') }}" id="order" placeholder="Order...">
 
                                         @error('in_main')
                 <span class="invalid-feedback" role="alert">
@@ -1040,7 +1052,7 @@
   <div class="form-group">
                                         <label for="in_main" class="form-label">Order</label>
                                         <input type="hidden" name="formmenu3[${form3Count}][type]" value="formmenu3">
-                                        <input type="number"  class="form-control @error('path') is-invalid @enderror" name="formmenu3[${form3Count}][order]" value="{{ old('path') }}" id="order" placeholder="Order...">
+                                        <input type="text"  class="form-control @error('path') is-invalid @enderror" name="formmenu3[${form3Count}][order]" value="{{ old('path') }}" id="order" placeholder="Order...">
                                         @error('in_main')
                 <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

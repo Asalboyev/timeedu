@@ -199,6 +199,7 @@
                         </a>
                     </li>
 
+                    @if(auth()->user()->role == 'admin')
                         <li class="nav-item">
                             <a class="nav-link" href="#menus" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('admin/menus') || request()->is('admin/menus/*') || request()->is('admin/dynamic-menus') || request()->is('admin/dynamic-menus/*') || request()->is('admin/menus') || request()->is('admin/menus/*') || request()->is('admin/menus') || request()->is('admin/menus/*') ? 'true' : 'false' }}" aria-controls="menus">
                                 <i class="fe fe-layers"></i> Menus
@@ -391,6 +392,7 @@
                     @endif
 
                     <hr class="navbar-divider my-3">
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="#static_info" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('admin/site_infos') || request()->is('admin/site_infos/*') || request()->is('admin/additional_functions') || request()->is('admin/additional_functions/*') || request()->is('admin/users') || request()->is('admin/users/*') || request()->is('admin/translations') || request()->is('admin/translations/*') || request()->is('admin/langs') || request()->is('admin/langs/*') || request()->is('admin/logs') || request()->is('admin/logs/*') ? 'true' : 'false' }}" aria-controls="documents">
                             <i class="fe fe-settings"></i> Setting

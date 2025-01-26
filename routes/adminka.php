@@ -68,9 +68,19 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('entrance-requirements', \App\Http\Controllers\Admin\EntranceRequirementController::class);
 
 
-//    Route::get('education-faqs/{id}', \App\Http\Controllers\Admin\EducationFaqController::class,'index')->name('education-faqs.index');
-//    Route::get('education-faqs/create/{id}', \App\Http\Controllers\Admin\EducationFaqController::class,'index')->name('education-faqs.index');
-//    Route::get('education-faqs/create/{id}', \App\Http\Controllers\Admin\EducationFaqController::class,'index')->name('education-faqs.index');
+    Route::get('education-faqs/{id}', [\App\Http\Controllers\Admin\EducationFaqController::class,'index'])->name('education_faqs.index');
+    Route::get('education-faqs/create/{id}', [\App\Http\Controllers\Admin\EducationFaqController::class,'create'])->name('education_faqs.create');
+    Route::post('education-faqs/', [\App\Http\Controllers\Admin\EducationFaqController::class,'store'])->name('education_faqs.store');
+    Route::get('education-faqs/{id}/edit', [\App\Http\Controllers\Admin\EducationFaqController::class, 'edit'])
+        ->name('education_faqs.edit');
+
+    Route::put('education-faqs/{id}', [\App\Http\Controllers\Admin\EducationFaqController::class, 'update'])
+        ->name('education_faqs.update');
+
+    Route::delete('education-faqs/{id}', [\App\Http\Controllers\Admin\EducationFaqController::class, 'destroy'])->name('education_faqs.destroy');
+
+
+//    Route::get('education-faqs/create/{id}', \App\Http\Controllers\Admin\EducationFaqController::class,'index')->name('education_faqs.index');
 
 
 

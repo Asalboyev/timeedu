@@ -121,6 +121,7 @@
     <form method="post" action="{{ route($route_name . '.update', [$route_parameter => $question]) }}" enctype="multipart/form-data" id="add" onsubmit="event.preventDefault(); validateForm();">
         @csrf
         @method('put')
+
         <div class="row">
             <div class="col-8">
                 <div class="card mw-50">

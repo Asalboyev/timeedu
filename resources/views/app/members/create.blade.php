@@ -137,6 +137,15 @@
                                             @enderror
                                         </div>
                                     </div>
+                                        <div class="form-group">
+                                            <label for="answer{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Descrition</label>
+                                            <textarea id="dec.{{ $lang->code }}" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="dec[{{ $lang->code }}]" placeholder="Descrition...">{{ old('dec.'.$lang->code) ?? $employ->dec[$lang->code] ?? null }}</textarea>
+                                            @error('dec.'.$lang->code)
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
                                     @endforeach
                                 </div>
                                 <div class="form-group">
@@ -169,6 +178,15 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="instagram_link" class="form-label">Yers</label>
+                                        <input type="number" class="form-control @error('yers') is-invalid @enderror" name="yers" value="{{ old('yers') }}" id="yers" placeholder="yers...">
+                                        @error('yers')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
                                     <label for="instagram_link" class="form-label">Instagram link</label>
                                     <input type="text" class="form-control @error('instagram_link') is-invalid @enderror" name="instagram_link" value="{{ old('instagram_link') }}" id="instagram_link" placeholder="link...">
                                     @error('instagram_link')
@@ -177,6 +195,7 @@
                                     </span>
                                     @enderror
                                 </div>
+
                                 <div class="form-group">
                                     <label for="menu_id" class="form-label">Gender</label>
                                     <select name="gender" class="form-select">

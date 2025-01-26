@@ -144,7 +144,7 @@ class EducationalProgramsController extends Controller
         $data['date'] = isset($data['date']) ? date('Y-m-d', strtotime($data['date'])) : date('Y-m-d');
 
         $validator = Validator::make($data, [
-            'name.' . $this->main_lang->code => 'required'
+            'first_name.' . $this->main_lang->code => 'required'
         ]);
         if ($validator->fails()) {
             return back()->withInput()->with([
@@ -152,7 +152,7 @@ class EducationalProgramsController extends Controller
                 'message' => 'Ошибка валидации'
             ]);
         }
-        $data['slug'] = Str::slug($data['name'][$this->main_lang->code], '-');
+        $data['slug'] = Str::slug($data['first_name'][$this->main_lang->code], '-');
         if(EducationalProgram::where('slug', $data['slug'])->exists()) {
             $data['slug'] = $data['slug'].'-'.time();
         }

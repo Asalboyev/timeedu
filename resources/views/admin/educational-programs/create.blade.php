@@ -108,18 +108,9 @@
                                     @foreach($langs as $lang)
                                         <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
                                             <div class="form-group">
-                                                <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">First Name</label>
-                                                <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="first_name[{{ $lang->code }}]" value="{{ old('first_name.'.$lang->code) }}" id="title" placeholder="First_name...">
-                                                @error('first_name.'.$lang->code)
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="desc" class="form-label">First Description</label>
-                                                <textarea name="firs_description[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Description...">{{ old('desc.'.$lang->code) }}</textarea>
-                                                @error('desc.'.$lang->code)
+                                                <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}"> Name</label>
+                                                <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('name.'.$lang->code) is-invalid @enderror" name="name[{{ $lang->code }}]" value="{{ old('name.'.$lang->code) }}" id="title" placeholder="Name...">
+                                                @error('name.'.$lang->code)
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -136,13 +127,14 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="desc" class="form-label">First Description</label>
-                                                <textarea name="firs_description[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Description...">{{ old('desc.'.$lang->code) }}</textarea>
-                                                @error('desc.'.$lang->code)
+                                                <textarea name="first_description[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" name="first_description[{{ $lang->code }}]" placeholder="Description...">{{ old('desc.'.$lang->code) }}</textarea>
+                                                @error('first_description.'.$lang->code)
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
                                             </div>
+~
                                             <div class="form-group">
                                                 <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Second Name</label>
                                                 <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('second_name.'.$lang->code) is-invalid @enderror" name="second_name[{{ $lang->code }}]" value="{{ old('second_name.'.$lang->code) }}" id="title" placeholder="Second Name...">
@@ -213,7 +205,7 @@
                                             <label for="parent_id" class="form-label">Parental</label>
                                             <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" data-choices='{"": true}' name="parent_id">
                                                 @foreach ($educationalProgram as $key => $item)
-                                                    <option value="{{ $item->id }}" {{ old('parent_id') == $item->id ? 'selected' : '' }}>{{ $item->first_name[$main_lang->code] ?? null}}</option>
+                                                    <option value="{{ $item->id }}" {{ old('parent_id') == $item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] ?? null}}</option>
                                                 @endforeach
                                             </select>
                                             @error('parent_id')

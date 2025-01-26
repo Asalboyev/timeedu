@@ -19,35 +19,30 @@ class MenusController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $menusQuery = Menu::query();
-
-        // Qidiruv (search)
-        if (isset($_GET['search'])) {
-            $search = trim($_GET['search']);
-            $menusQuery->where('title', 'like', '%' . $search . '%');
-        }
-
-        // Pagination bilan menyu olish
-        $paginatedMenus = $menusQuery
-            ->orderBy('parent_id') // Glavni menyularni avval olib keladi
-            ->orderBy('order')    // Tartibni hisobga oladi
-            ->paginate(12);       // Sahifalash
-
-        // Sahifalashdagi ma'lumotlardan daraxt yaratish
-        $menuTree = $this->buildMenuTree($paginatedMenus->items());
-
         $languages = Lang::all();
+        $search = $request->input('search'); // Qidiruv uchun so'rovdan kelayotgan ma'lumot
+
+        // Faqat asosiy menyularni paginate qilish
+        $paginatedMenus = Menu::whereNull('parent_id')
+            ->when($search, function ($query, $search) {
+                return $query->where('title', 'LIKE', '%' . $search . '%');
+            })
+            ->orderBy('order')
+            ->paginate(2);
+
+        // Hierarxik daraxtni sahifalangan menyular asosida tuzish
+        $menuTree = $this->buildMenuTree($paginatedMenus);
 
         return view('admin.menus.index', [
-            'title' => $this->title,
-            'route_name' => $this->route_name,
-            'route_parameter' => $this->route_parameter,
-            'menus' => $menuTree, // Hierarxik menyu daraxti (faqat sahifalangan ma'lumot)
-            'count' => $paginatedMenus, // Pagination linklari uchun
+            'title' => 'Menus',
+            'route_name' => 'menus',
+            'route_parameter' => 'menu',
+            'menus' => $menuTree, // Hierarxik menyular daraxti
             'languages' => $languages,
-            'search' => isset($_GET['search']) ? $_GET['search'] : '', // Qidiruv qiymati
+            'count' => $paginatedMenus, // Sahifalash obyektini blade-ga yuborish
+            'search' => $search, // Qidiruvni blade-ga yuborish
         ]);
     }
 
@@ -55,33 +50,29 @@ class MenusController extends Controller
 
 
 
+
 // Hierarxik menyular daraxti uchun yordamchi funksiya
-    private function buildMenuTree($menus)
+    private function buildMenuTree($paginatedMenus)
     {
+        // Sahifalangan asosiy menyular ID-lari
+        $menuIds = $paginatedMenus->pluck('id')->toArray();
+
+        // Ushbu asosiy menyularga tegishli bolalarni olish
+        $childMenus = Menu::whereIn('parent_id', $menuIds)
+            ->orderBy('order')
+            ->get();
+
+        // Hierarxik daraxtni tuzish
         $menuTree = [];
-        $menuMap = [];
-
-        // ID bo'yicha menyularni xaritalash
-        foreach ($menus as $menu) {
-            $menuMap[$menu->id] = [
-                'menu' => $menu,
-                'children' => [],
+        foreach ($paginatedMenus as $menu) {
+            $menuTree[] = [
+                'menu' => $menu, // Asosiy menyu
+                'children' => $childMenus->where('parent_id', $menu->id), // Faqat tegishli bolalar
             ];
-        }
-
-        // Menyularni daraxt tuzilmasiga joylashtirish
-        foreach ($menus as $menu) {
-            if ($menu->parent_id && isset($menuMap[$menu->parent_id])) {
-                $menuMap[$menu->parent_id]['children'][] = &$menuMap[$menu->id];
-            } else {
-                $menuTree[] = &$menuMap[$menu->id];
-            }
         }
 
         return $menuTree;
     }
-
-
 
 
 

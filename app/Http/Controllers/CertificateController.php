@@ -75,9 +75,15 @@ class CertificateController extends Controller
         // Faylni yuklash
         if ($request->hasFile('file')) {
             $file = $request->file('file');
+
+            // Faylni tasodifiy nom bilan saqlash (12 ta tasodifiy harf + kengaytma)
             $fileName = Str::random(12) . '.' . $file->getClientOriginalExtension();
+
+            // Faylni public/upload/certificates papkasiga saqlash
             $file->move(public_path('upload/certificates'), $fileName);
-            $data['img'] = $fileName;
+
+            // Fayl nomini data massivi bilan qo'shish
+            $data['file'] = $fileName;  // Yangi nomni $data['file']ga saqlash
         }
 
         // Dropzone rasmlarini qo'shish
@@ -85,6 +91,7 @@ class CertificateController extends Controller
             $data['img'] = $data['dropzone_images'];
         }
 
+        // Ma'lumotni bazaga saqlash
         Certificate::create($data);
 
         return redirect()->route('certificates.index')->with([
@@ -135,9 +142,11 @@ class CertificateController extends Controller
     {
         $data = $request->all();
 
+        // Validatsiya
         $validator = Validator::make($data, [
-            'title.'.$this->main_lang->code => 'required'
+            'title.' . $this->main_lang->code => 'required',
         ]);
+
         if ($validator->fails()) {
             return back()->withInput()->with([
                 'success' => false,
@@ -145,17 +154,41 @@ class CertificateController extends Controller
             ]);
         }
 
+        // Faylni yangilash
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Faylni tasodifiy nom bilan saqlash (12 ta tasodifiy harf + kengaytma)
+            $fileName = Str::random(12) . '.' . $file->getClientOriginalExtension();
+
+            // Eski faylni o'chirish (agar bor bo'lsa)
+            if ($certificate->file && file_exists(public_path('upload/certificates/' . $certificate->file))) {
+                unlink(public_path('upload/certificates/' . $certificate->file));
+            }
+
+            // Faylni public/upload/certificates papkasiga saqlash
+            $file->move(public_path('upload/certificates'), $fileName);
+
+            // Yangi fayl nomini $data massivi bilan qo'shish
+            $data['file'] = $fileName;
+        } else {
+            // Fayl mavjud bo'lmasa, eski fayl nomini saqlash
+            $data['file'] = $certificate->file;
+        }
+
+        // Dropzone rasmlarini qo'shish
         if (isset($data['dropzone_images'])) {
             $data['img'] = $data['dropzone_images'];
         } else {
             $data['img'] = null;
         }
 
+        // Ma'lumotni yangilash
         $certificate->update($data);
 
         return redirect()->route('certificates.index')->with([
             'success' => true,
-            'message' => 'Успешно сохранен'
+            'message' => 'Успешно обновлено'
         ]);
     }
 

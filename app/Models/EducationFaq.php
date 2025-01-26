@@ -11,6 +11,11 @@ class EducationFaq extends Model
     protected $table = 'education_faqs';
     protected $fillable = ['educational_program_id','skill_id','question', 'answer'];
 
+    protected $casts = [
+        'question' => 'array',
+        'answer' => 'array',
+    ];
+
     public function educationalProgram()
     {
         return $this->belongsTo(EducationalProgram::class, 'educational_program_id');

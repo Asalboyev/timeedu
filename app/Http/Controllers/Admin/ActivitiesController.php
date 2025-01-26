@@ -69,6 +69,7 @@ class ActivitiesController extends Controller
      */
     public function store(Request $request)
     {
+
         // Kelgan ma'lumotlarni olish
         $data = $request->all();
 
@@ -83,9 +84,8 @@ class ActivitiesController extends Controller
             ]);
         }
 
-        // `dropzone_images`ni `photo` sifatida qo'shish
         if (isset($data['dropzone_images'])) {
-            $data['photo'] = [$data['dropzone_images']]; // Massiv formatida saqlash
+            $data['photo'] = $data['dropzone_images'];
         }
 
 

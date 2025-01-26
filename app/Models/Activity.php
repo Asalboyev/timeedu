@@ -13,6 +13,7 @@ class Activity extends Model
     protected $casts = [
         'dec' => 'array',
         'title' => 'array',
+
     ];
 
     protected $appends = [
@@ -26,14 +27,14 @@ class Activity extends Model
     }
 
     public function getLgImgAttribute() {
-        return $this->img ? url('').'/upload/images/'.$this->img : null;
+        return $this->photo ? url('').'/upload/images/'.$this->photo : null;
     }
 
     public function getMdImgAttribute() {
-        return $this->img ? url('').'/upload/images/600/'.$this->img : null;
+        return $this->photo ? url('').'/upload/images/600/'.$this->photo : null;
     }
 
     public function getSmImgAttribute() {
-        return $this->img ? url('').'/upload/images/200/'.$this->img : null;
+        return $this->photo ? url('').'/upload/images/200/'.$this->photo : null;
     }
 }

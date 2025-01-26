@@ -164,7 +164,17 @@
                                             </span>
                                             @enderror
                                         </div>
+                                        <div class="form-group">
+                                            <label for="answer{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Descrition</label>
+                                            <textarea id="dec.{{ $lang->code }}" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="dec[{{ $lang->code }}]" placeholder="Descrition...">{{ old('dec.'.$lang->code) ?? $employ->dec[$lang->code] ?? null }}</textarea>
+                                            @error('dec.'.$lang->code)
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
                                     </div>
+
                                     @endforeach
                                 </div>
                                 <div class="form-group">
@@ -197,6 +207,15 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="instagram_link" class="form-label">Yers</label>
+                                        <input type="number" class="form-control @error('yers') is-invalid @enderror" name="yers" value="{{ old('yers') ?? $member->yers ?? null }}" id="yers" placeholder="yers...">
+                                        @error('yers')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
                                     <label for="menu_id" class="form-label">Gender</label>
                                     <select name="gender" class="form-select">
                                         <option value="male" {{ $member->gender == 'male' ? 'selected' : '' }}>Male</option>

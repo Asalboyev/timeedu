@@ -133,6 +133,11 @@
                                             @endif
                                         </td>
                                         <td>
+
+                                            <a href="{{ route('education_faqs.index', $child['program']->id) }}" class="btn btn-sm btn-info">
+                                                <i class="fe fe-download-cloud"></i>
+                                            </a>
+
                                             <a href="{{ route($route_name.'.edit',  $child['program']->id) }}" class="btn btn-sm btn-info">
                                                 <i class="fe fe-edit-2"></i>
                                             </a>

@@ -145,7 +145,7 @@
                                             <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
                                                 <div class="form-group">
                                                     <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">First name</label>
-                                                    <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('first_name.'.$lang->code) is-invalid @enderror" name="first_name[{{ $lang->code }}]" value="{{ old('first_name.'.$lang->code) ?? $employ->first_name[$lang->code]}}" id="title" placeholder="first name...">
+                                                    <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('first_name.'.$lang->code) is-invalid @enderror" name="first_name[{{ $lang->code }}]" value="{{ old('first_name.'.$lang->code) ?? $employ->first_name[$lang->code]?? null}}" id="title" placeholder="first name...">
                                                     @error('first_name.'.$lang->code)
                                                     <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -154,7 +154,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="last_name" class="form-label">Last name</label>
-                                                    <input type="text" class="form-control @error('last_name.'.$lang->code) is-invalid @enderror" name="last_name[{{ $lang->code }}]" value="{{ old('last_name.'.$lang->code) ?? $employ->last_name[$lang->code] }}" id="last_name" placeholder="Last name...">
+                                                    <input type="text" class="form-control @error('last_name.'.$lang->code) is-invalid @enderror" name="last_name[{{ $lang->code }}]" value="{{ old('last_name.'.$lang->code) ?? $employ->last_name[$lang->code] ?? null}}" id="last_name" placeholder="Last name...">
                                                     @error('last_name.'.$lang->code)
                                                     <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -163,7 +163,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="surname" class="form-label">Surname</label>
-                                                    <input type="text" class="form-control @error('surname.'.$lang->code) is-invalid @enderror" name="surname[{{ $lang->code }}]" value="{{ old('surname.'.$lang->code) ?? $employ->surname[$lang->code] }}" id="surname" placeholder="Surname...">
+                                                    <input type="text" class="form-control @error('surname.'.$lang->code) is-invalid @enderror" name="surname[{{ $lang->code }}]" value="{{ old('surname.'.$lang->code) ?? $employ->surname[$lang->code] ?? null }}" id="surname" placeholder="Surname...">
                                                     @error('surname.'.$lang->code)
                                                     <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -172,14 +172,22 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="address" class="form-label">Address</label>
-                                                    <input type="text" class="form-control @error('address.'.$lang->code) is-invalid @enderror" name="address[{{ $lang->code }}]" value="{{ old('address.'.$lang->code)?? $employ->address[$lang->code] }}" id="address" placeholder="Address..">
+                                                    <input type="text" class="form-control @error('address.'.$lang->code) is-invalid @enderror" name="address[{{ $lang->code }}]" value="{{ old('address.'.$lang->code)?? $employ->address[$lang->code] ?? null }}" id="address" placeholder="Address..">
                                                     @error('address.'.$lang->code)
                                                     <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                     @enderror
                                                 </div>
-
+                                                <div class="form-group">
+                                                    <label for="answer{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Descrition</label>
+                                                    <textarea id="dec.{{ $lang->code }}" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="dec[{{ $lang->code }}]" placeholder="Descrition...">{{ old('dec.'.$lang->code) ?? $employ->dec[$lang->code] ?? null }}</textarea>
+                                                    @error('dec.'.$lang->code)
+                                                    <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         @endforeach
                                     </div>

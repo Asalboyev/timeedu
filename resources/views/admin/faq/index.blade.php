@@ -19,9 +19,14 @@
                 <div class="col-auto">
 
                     <!-- Button -->
-                    <a href="{{ route($route_name.'.create') }}" class="btn btn-primary lift">
-                        Add
-                    </a>
+                    @php
+                        $faqCount = \App\Models\EducationFaq::where('educational_program_id', $id)->count();
+                    @endphp
+                    @if ($faqCount < 5)
+                        <a href="{{ route('education_faqs.create', $id) }}" class="btn btn-primary lift">
+                            Add
+                        </a>
+                    @endif
 
                 </div>
             </div> <!-- / .row -->
@@ -41,16 +46,6 @@
 
 <!-- CARDS -->
 <div class="container-fluid">
-    <div class="search">
-        <div class="card">
-            <div class="card-body">
-                <form action="{{ route($route_name.'.index') }}" class="d-flex">
-                    <input type="text" class="form-control" name="search" value="{{$search}}" placeholder="Search...">
-                    <button type="submit" class="btn btn-success ms-3" style="width: 300px;">Search</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <div class="card mt-4">
         <div class="card-body">
@@ -66,24 +61,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($activities as $key => $item)
+                        @foreach ($faqs as $key => $item)
                         <tr>
-                            <th scope="row" style="width: 100px">{{ $activities->firstItem() + $key }}</th>
+                            <th scope="row" style="width: 100px">{{ $faqs->firstItem() + $key }}</th>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <div class="imb-block me-2 rounded-circle overflow-hidden">
-                                        <img src="{{ $item->sm_img ?? asset('assets/img/default.png') }}" alt="">
-                                    </div>
-                                    {{ $item->title[$main_lang->code] ?? '--'}}
+
+                                    {{ $item->question[$main_lang->code] ?? '--'}}
                                 </div>
                             </td>
-                            <td>{{ $item->educationalProgram ? $item->educationalProgram->name[$main_lang->code] : 'null' }}</td>
+                            <td>{{ $item->skill ? $item->skill->name[$main_lang->code] : 'null' }}</td>
 
                             <td style="width: 200px">
                                 <div class="d-flex justify-content-end">
-                                    <a href="{{ route($route_name.'.edit',$item->id) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
+                                    <a href="{{ route('education_faqs.edit',$item->id) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>
                                     <a class="btn btn-sm btn-danger ms-3" onclick="var result = confirm('Want to delete?');if (result){event.preventDefault();document.getElementById('delete-form{{ $item->id }}').submit();}"><i class="fe fe-trash"></i></a>
-                                    <form action="{{ route($route_name.'.destroy', $item->id) }}" id="delete-form{{ $item->id }}" method="POST" style="display: none;">
+                                    <form action="{{ route('education_faqs.destroy', $item->id) }}" id="delete-form{{ $item->id }}" method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
                                     </form>
@@ -95,7 +88,7 @@
                 </table>
             </div>
             <div class="mt-4">
-                {{ $activities->links() }}
+                {{ $faqs->links() }}
             </div>
         </div>
     </div>

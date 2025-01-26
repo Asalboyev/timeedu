@@ -16,6 +16,7 @@ class CreateMembersTable extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->text('name');
+            $table->text('dec')->nullable();
             $table->text('position')->nullable();
             $table->string('img')->nullable();
             $table->string('phone_number')->nullable();
@@ -25,6 +26,7 @@ class CreateMembersTable extends Migration
             $table->string('facebook_link')->nullable();
             $table->string('gender')->nullable();
             $table->string('work_time')->nullable();
+            $table->string('yers')->nullable();
             $table->integer('view_count')->default(0);
             $table->timestamps();
         });

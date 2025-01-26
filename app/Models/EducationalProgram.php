@@ -17,6 +17,7 @@ class EducationalProgram extends Model
         'code',
         'lang',
         'map',
+        'name',
         'active',
         'date',
         'form_education',
@@ -37,6 +38,7 @@ class EducationalProgram extends Model
         'second_name' => 'array',
         'third_name' => 'array',
         'lang' => 'array',
+        'name' => 'array',
         'map' => 'array',
         'first_description' => 'array',
         'second_description' => 'array',
@@ -67,8 +69,9 @@ class EducationalProgram extends Model
     }
     public function faq()
     {
-        return $this->hasOne(EducationFaq::class, 'educational_program_id');
+        return $this->hasMany(EducationFaq::class, 'educational_program_id');
     }
+
     public function EntranceRequirement()
     {
         return $this->hasOne(EntranceRequirement::class, 'educational_program_id');
