@@ -310,6 +310,7 @@
                             <div class="card mw-50" id="formmenu-card-{{ $loop->index }}">
                                 <div class="card-body">
                                     @csrf
+
                                     <div class="row">
                                         <div class="col-12">
                                             <!-- Yopish tugmasi -->
@@ -377,10 +378,20 @@
                                                        class="form-control @error('order') is-invalid @enderror"
                                                        name="formmenu[{{ $loop->index }}][order]" id="order-{{ $loop->index }}"
                                                        placeholder="Order...">
+                                                <input type="hidden" value="{{ $fmenu->id ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
+                                                <input type="hidden" value="{{ $fmenu->dinamik_menu_id ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
+                                                <input type="hidden" value="{{ $fmenu->type ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
+
+                                                {{--                                                shu atroflarga qoyib koring xozr--}}
                                                 @error('order')
                                                 <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
-{{--                                                <input tyname="formmenu[{{ $loop->index }}][dinamik_menu_id]" value="{{$dynamic_menu->id}}">--}}
                                             </div>
 
                                             <!-- Rasm yuklash -->
@@ -480,6 +491,15 @@
                                                        class="form-control @error('formmenu2.'.$loop->index.'.order') is-invalid @enderror"
                                                        name="formmenu2[{{ $loop->iteration }}][order]" id="order"
                                                        placeholder="Order...">
+                                                <input type="hidden" value="{{ $fmenu1->id ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
+                                                <input type="hidden" value="{{ $fmenu1->dinamik_menu_id ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
+                                                <input type="hidden" value="{{ $fmenu1->type ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
                                                 @error('formmenu2.'.$loop->index.'.order')
                                                 <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -577,6 +597,15 @@
                                                 <input type="number" class="form-control @error('path') is-invalid @enderror"
                                                        name="formmenu3[{{ $loop->iteration }}][order]"
                                                        value="{{ $fmenu3->order ?? '' }}" id="order" placeholder="Order...">
+                                                <input type="hidden" value="{{ $fmenu3->id ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
+                                                <input type="hidden" value="{{ $fmenu3->dinamik_menu_id ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
+                                                <input type="hidden" value="{{ $fmenu3->type ?? 0 }}"
+                                                       class="form-control @error('id') is-invalid @enderror"
+                                                       name="formmenu[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
                                                 @error('in_main')
                                                 <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

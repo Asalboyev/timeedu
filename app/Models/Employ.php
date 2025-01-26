@@ -23,6 +23,7 @@ class Employ extends Model
         'phone',
         'dec',
         'started_work',
+        'work_time',
         'leader',
         'professor',
     ];
@@ -31,6 +32,7 @@ class Employ extends Model
         'last_name' => 'array',
         'surname' => 'array',
         'address' => 'array',
+        'work_time' => 'array',
         'dec' => 'array',
 
     ];

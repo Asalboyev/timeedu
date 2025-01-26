@@ -146,6 +146,15 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
+                                                <label for="address" class="form-label">Work time</label>
+                                                <input type="text" class="form-control @error('work_time.'.$lang->code) is-invalid @enderror" name="work_time[{{ $lang->code }}]" value="{{ old('work_time.'.$lang->code)?? $employ->work_time[$lang->code] ?? null }}" id="address" placeholder="Work time..">
+                                                @error('address.'.$lang->code)
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="answer{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Descrition</label>
                                                 <textarea id="dec.{{ $lang->code }}" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="dec[{{ $lang->code }}]" placeholder="Descrition...">{{ old('dec.'.$lang->code) }}</textarea>
                                                 @error('dec.'.$lang->code)
