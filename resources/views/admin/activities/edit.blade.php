@@ -153,7 +153,7 @@
 
                                             <div class="form-group">
                                                 <label for="desc" class="form-label">Description</label>
-                                                <textarea name="dec[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Description...">{{ old('desc.'.$lang->code) ??  $activitie->desc[$lang->code] ?? '' }}</textarea>
+                                                <textarea name="dec[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="dec[{{ $lang->code }}]" placeholder="Description...">{{ old('desc.'.$lang->code) ??  $activitie->dec[$lang->code] ?? '' }}</textarea>
                                                 @error('desc.'.$lang->code)
                                                 <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
