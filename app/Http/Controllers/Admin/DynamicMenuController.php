@@ -369,10 +369,6 @@ class DynamicMenuController extends Controller
                             }
                         }
 
-                        // Kategoriyalarni yangilash
-                        if (isset($menuData['categories']) && is_array($menuData['categories'])) {
-                            $formMenu->postsmenuCategories()->sync($menuData['categories']);
-                        }
                     }
                 } else {
                     // Yangi yozuv yaratish
@@ -403,9 +399,7 @@ class DynamicMenuController extends Controller
                     }
 
                     // Kategoriyalarni biriktirish
-                    if (isset($menuData['categories']) && is_array($menuData['categories'])) {
-                        $formMenu->postsmenuCategories()->sync($menuData['categories']);
-                    }
+
                 }
             }
         }
@@ -515,10 +509,7 @@ class DynamicMenuController extends Controller
                             }
                         }
 
-                        // Kategoriyalarni yangilash
-                        if (isset($menuData['categories']) && is_array($menuData['categories'])) {
-                            $formMenu->postsmenuCategories()->sync($menuData['categories']);
-                        }
+
                     }
                 } else {
                     // Yangi yozuv yaratish
@@ -548,10 +539,6 @@ class DynamicMenuController extends Controller
                         }
                     }
 
-                    // Kategoriyalarni biriktirish
-                    if (isset($menuData['categories']) && is_array($menuData['categories'])) {
-                        $formMenu->postsmenuCategories()->sync($menuData['categories']);
-                    }
                 }
             }
         }

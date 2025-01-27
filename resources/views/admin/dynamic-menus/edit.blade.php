@@ -332,12 +332,12 @@
                                                                 Title
                                                             </label>
                                                             <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }}
-                                                            class="form-control @error('title.'.$lang->code) is-invalid @enderror"
+                                                            class="form-control @error('formmenu.'.$loop->parent->index.'.title.'.$lang->code) is-invalid @enderror"
                                                                    name="formmenu[{{ $loop->parent->index }}][title][{{ $lang->code }}]"
                                                                    id="title-{{ $lang->code }}-{{ $loop->parent->index }}"
                                                                    placeholder="Title..."
-                                                                   value="{{ old('title.'.$lang->code, $fmenu->title[$lang->code] ?? '') }}">
-                                                            @error('title.'.$lang->code)
+                                                                   value="{{ old('formmenu.'.$loop->parent->index.'.title.'.$lang->code, $fmenu->title[$lang->code] ?? '') }}">
+                                                            @error('formmenu.'.$loop->parent->index.'.title.'.$lang->code)
                                                             <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                             @enderror
                                                         </div>
@@ -349,9 +349,9 @@
                                                             </label>
                                                             <textarea name="formmenu[{{ $loop->parent->index }}][text][{{ $lang->code }}]"
                                                                       id="desc-{{ $lang->code }}-{{ $loop->parent->index }}"
-                                                                      class="form-control @error('text.'.$lang->code) is-invalid @enderror ckeditor"
-                                                                      placeholder="Description...">{{ $fmenu->text[$lang->code] ?? '' }}</textarea>
-                                                            @error('text.'.$lang->code)
+                                                                      class="form-control @error('formmenu.'.$loop->parent->index.'.text.'.$lang->code) is-invalid @enderror ckeditor"
+                                                                      placeholder="Description...">{{ old('formmenu.'.$loop->parent->index.'.text.'.$lang->code, $fmenu->text[$lang->code] ?? '') }}</textarea>
+                                                            @error('formmenu.'.$loop->parent->index.'.text.'.$lang->code)
                                                             <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                             @enderror
                                                         </div>
@@ -363,23 +363,15 @@
                                             <div class="form-group">
                                                 <label for="order-{{ $loop->index }}" class="form-label">Order</label>
                                                 <input type="number" value="{{ $fmenu->order ?? 0 }}"
-                                                       class="form-control @error('order') is-invalid @enderror"
+                                                       class="form-control @error('formmenu.'.$loop->index.'.order') is-invalid @enderror"
                                                        name="formmenu[{{ $loop->index }}][order]" id="order-{{ $loop->index }}"
                                                        placeholder="Order...">
                                                 <input type="hidden" value="{{ $fmenu->id ?? 0 }}"
-                                                       class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
+                                                       name="formmenu[{{ $loop->index }}][id]">
                                                 <input type="hidden" value="{{ $fmenu->dinamik_menu_id ?? 0 }}"
-                                                       class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
+                                                       name="formmenu[{{ $loop->index }}][dinamik_menu_id]">
                                                 <input type="hidden" value="{{ $fmenu->type ?? 0 }}"
-                                                       class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
-
-                                                {{--                                                shu atroflarga qoyib koring xozr--}}
-                                                @error('order')
-                                                <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
-                                                @enderror
+                                                       name="formmenu[{{ $loop->index }}][type]">
                                             </div>
 
                                             <!-- Rasm yuklash -->
@@ -405,40 +397,39 @@
                                             <button type="button" class="btn-close float-end" aria-label="Close"
                                                     onclick="removeFormMenu('formmenu-card-{{ $loop->index }}')"></button>
 
-                                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <ul class="nav nav-tabs" id="myTab-{{ $loop->index }}" role="tablist">
                                                 @foreach($langs as $lang)
                                                     <li class="nav-item" role="presentation">
                                                         <button class="nav-link {{ $loop->first ? 'active' : '' }}"
-                                                                id="tab-{{ $lang->code }}-tab" data-bs-toggle="tab"
-                                                                data-bs-target="#tab-{{ $lang->code }}" type="button" role="tab"
-                                                                aria-controls="tab-{{ $lang->code }}"
+                                                                id="tab-{{ $lang->code }}-{{ $loop->parent->index }}-tab" data-bs-toggle="tab"
+                                                                data-bs-target="#tab-{{ $lang->code }}-{{ $loop->parent->index }}" type="button" role="tab"
+                                                                aria-controls="tab-{{ $lang->code }}-{{ $loop->parent->index }}"
                                                                 aria-selected="{{ $loop->first ? 'true' : 'false' }}">
                                                             {{ $lang->title }}
                                                         </button>
                                                     </li>
                                                 @endforeach
                                             </ul>
-                                            <div class="tab-content" id="myTabContent">
+                                            <div class="tab-content" id="myTabContent-{{ $loop->index }}">
                                                 @foreach($langs as $lang)
                                                     <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}"
-                                                         id="tab-{{ $lang->code }}" role="tabpanel"
-                                                         aria-labelledby="tab-{{ $lang->code }}-tab">
+                                                         id="tab-{{ $lang->code }}-{{ $loop->parent->index }}" role="tabpanel"
+                                                         aria-labelledby="tab-{{ $lang->code }}-{{ $loop->parent->index }}-tab">
                                                         <div class="form-group">
-                                                            <label for="title"
-                                                                   class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Title</label>
-                                                            <input type="text" {{ $lang->code == $main_lang->code ? 'required' : ''
-                                                }}
-                                                            class="form-control
-                                                @error('formmenu2.'.$loop->index.'.title.'.$lang->code) is-invalid
-                                                @enderror"
-                                                                   name="formmenu2[{{ $loop->iteration }}][title][{{ $lang->code }}]"
-                                                                   value="{{ old('formmenu2.'.$loop->parent->index.'.title.'.$lang->code)
-                                                ?? $fmenu->title[$lang->code] ?? '' }}"
-                                                                   id="title" placeholder="Title...">
-                                                            @error('formmenu2.'.$loop->index.'.title.'.$lang->code)
+                                                            <label for="title-{{ $lang->code }}-{{ $loop->parent->index }}"
+                                                                   class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">
+                                                                Title
+                                                            </label>
+                                                            <input type="text"
+                                                                   {{ $lang->code == $main_lang->code ? 'required' : '' }}
+                                                                   class="form-control @error('formmenu2.'.$loop->parent->index.'.title.'.$lang->code) is-invalid @enderror"
+                                                                   name="formmenu2[{{ $loop->parent->index }}][title][{{ $lang->code }}]"
+                                                                   value="{{ old('formmenu2.'.$loop->parent->index.'.title.'.$lang->code) ?? $fmenu1->title[$lang->code] ?? '' }}"
+                                                                   id="title-{{ $lang->code }}-{{ $loop->parent->index }}" placeholder="Title...">
+                                                            @error('formmenu2.'.$loop->parent->index.'.title.'.$lang->code)
                                                             <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                                             @enderror
                                                         </div>
                                                     </div>
@@ -447,56 +438,54 @@
 
                                             <div class="form-group">
                                                 <label for="categories_{{ $loop->index }}" class="form-label">Category</label>
-                                                <select id="categories_{{ $loop->index }} class="form-control mb-4 @error('categories') is-invalid @enderror" data-choices='{"removeItemButton": true}' multiple name="categories[]">
-                                                    @foreach ($all_categories as $key => $item)
+                                                <select id="categories_{{ $loop->index }}" class="form-control mb-4 @error('categories') is-invalid @enderror"
+                                                        data-choices='{"removeItemButton": true}' multiple name="formmenu2[{{ $loop->index }}][categories][]">
+                                                    @foreach ($all_categories as $item)
                                                         <option value="{{ $item->id }}"
                                                                 @if (
-                                                                 (old('formmenu2.'.$loop->index.'.categories') &&
-                                                                 in_array($item->id, old('formmenu2.'.$loop->index.'.categories'))) ||
-                                                                 (isset($fmenu1->postsmenuCategories) &&
-                                                                 in_array($item->id, $fmenu1->postsmenuCategories->pluck('id')->toArray()))
-                                                             )
+                                                                    (old('formmenu2.'.$loop->index.'.categories') &&
+                                                                    in_array($item->id, old('formmenu2.'.$loop->index.'.categories'))) ||
+                                                                    (isset($fmenu1->postsmenuCategories) &&
+                                                                    in_array($item->id, $fmenu1->postsmenuCategories->pluck('id')->toArray()))
+                                                                )
                                                                     selected
-                                                                @endif >{{ $item->title[$main_lang->code] }}</option>
+                                                                @endif >
+                                                            {{ $item->title[$main_lang->code] }}
+                                                        </option>
                                                     @endforeach
-
                                                 </select>
                                                 @error('categories')
                                                 <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                            <strong>{{ $message }}</strong>
+                        </span>
                                                 @enderror
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="order" class="form-label">Order</label>
-                                                <input type="number" value="{{ $fmenu1->order }}"
+                                                <label for="order-{{ $loop->index }}" class="form-label">Order</label>
+                                                <input type="number"
+                                                       value="{{ $fmenu1->order }}"
                                                        class="form-control @error('formmenu2.'.$loop->index.'.order') is-invalid @enderror"
-                                                       name="formmenu2[{{ $loop->iteration }}][order]" id="order"
+                                                       name="formmenu2[{{ $loop->index }}][order]" id="order-{{ $loop->index }}"
                                                        placeholder="Order...">
                                                 <input type="hidden" value="{{ $fmenu1->id ?? 0 }}"
-                                                       class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu2[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
+                                                       name="formmenu2[{{ $loop->index }}][id]">
                                                 <input type="hidden" value="{{ $fmenu1->dinamik_menu_id ?? 0 }}"
-                                                       class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu2[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
+                                                       name="formmenu2[{{ $loop->index }}][dinamik_menu_id]">
                                                 <input type="hidden" value="{{ $fmenu1->type ?? 0 }}"
-                                                       class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu2[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
+                                                       name="formmenu2[{{ $loop->index }}][type]">
                                                 @error('formmenu2.'.$loop->index.'.order')
                                                 <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                            <strong>{{ $message }}</strong>
+                        </span>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-
                         @endforeach
+
                         {{--     formmnenu3                   --}}
                         @foreach($formmenu3 as $fmenu3)
                             <div class="card mw-50" id="formmenu-card-{{ $loop->index }}">
@@ -534,10 +523,12 @@
                                                             <input type="text" {{ $lang->code == $main_lang->code ? 'required' : ''
                                                 }}
                                                             class="form-control @error('title.'.$lang->code) is-invalid @enderror"
-                                                                   name="formmenu3[{{ $loop->iteration }}][title][{{ $lang->code }}]"
+
+                                                                   name="formmenu3[{{ $loop->parent->index }}][title][{{ $lang->code }}]"
                                                                    value="{{ old('title.'.$lang->code) ?? $fmenu3->title[$lang->code] ?? ''
                                                 }}"
                                                                    id="locale-title-{{ $lang->code }}"
+
                                                                    placeholder="Title...">
                                                             @error('title.'.$lang->code)
                                                             <span class="invalid-feedback" role="alert">
@@ -549,7 +540,7 @@
                                                             <label for="locale-desc-{{ $lang->code }}"
                                                                    class="form-label">Description</label>
                                                             <textarea
-                                                                    name="formmenu3[{{ $loop->iteration }}][text][{{ $lang->code }}]"
+                                                                    name="formmenu3[{{ $loop->parent->index }}][text][{{ $lang->code }}]"
                                                                     id="locale-desc-{{ $lang->code }}"
                                                                     class="form-control @error('text.'.$lang->code) is-invalid @enderror ckeditor"
                                                                     placeholder="Description...">{{ $fmenu3->text[$lang->code] ?? '' }}</textarea>
@@ -566,7 +557,7 @@
                                             <!-- Position Field -->
                                             <div class="form-group">
                                                 <label for="position" class="form-label">Position</label>
-                                                <select name="formmenu3[{{ $loop->iteration }}][position]" class="form-select">
+                                                <select name="formmenu3[{{ $loop->index }}][position]" class="form-select">
                                                     <option value="1" {{ old('menu_id')==1 || $fmenu3->position == 1 ? 'selected'
                                                 : '' }}>Right</option>
                                                     <option value="0" {{ old('menu_id')==0 || $fmenu3->position == 0 ? 'selected'
@@ -578,7 +569,7 @@
                                             <div class="form-group">
                                                 <label for="order" class="form-label">Order</label>
                                                 <input type="number" class="form-control @error('path') is-invalid @enderror"
-                                                       name="formmenu3[{{ $loop->iteration }}][order]"
+                                                       name="formmenu3[{{ $loop->index }}][order]"
                                                        value="{{ $fmenu3->order ?? '' }}" id="order" placeholder="Order...">
                                                 <input type="hidden" value="{{ $fmenu3->id ?? 0 }}"
                                                        class="form-control @error('id') is-invalid @enderror"
@@ -603,7 +594,7 @@
                                                 <div class="dropzone dropzone-multiple" id="dropzoneform3-{{ $loop->index }}"></div>
 
                                                 <!-- Hidden Input for Uploaded Image Names -->
-                                                <input type="hidden" name="formmenu3[{{ $loop->iteration }}][dropzone_images]"
+                                                <input type="hidden" name="formmenu3[{{ $loop->index }}][dropzone_images]"
                                                        id="hiddenInput_dropzoneform3_{{ $loop->index }}"
                                                        value="{{ implode(',', $fmenu3->formImages->pluck('img')->toArray()) }}">
                                             </div>
@@ -826,11 +817,11 @@
 
             // Initialize the count for each form type
             const form1Count = {{ $formmenu->count() }}; // PHPdan $formmenu'ni soni olinadi.
-            {{--const form2Count = {{ $formmenu1->count() }}; // PHPdan $formmenu'ni soni olinadi.--}}
-            {{--const form3Count = {{ $formmenu3->count() }}; // PHPdan $formmenu'ni soni olinadi.--}}
+            const form2Count = {{ $formmenu1->count() }}; // PHPdan $formmenu'ni soni olinadi.
+            const form3Count = {{ $formmenu3->count() }}; // PHPdan $formmenu'ni soni olinadi.
 
-            const form2Count = document.querySelectorAll('.form-section[data-form-type="2"]').length;
-            const form3Count = document.querySelectorAll('.form-section[data-form-type="3"]').length;
+            // const form2Count = document.querySelectorAll('.form-section[data-form-type="2"]').length;
+            // const form3Count = document.querySelectorAll('.form-section[data-form-type="3"]').length;
 
             // Check if the number of forms for the selected type is below the limit (10)
             if (selectedForm === '1' && form1Count >= 10) {
