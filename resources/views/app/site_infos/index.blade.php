@@ -368,15 +368,15 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <label for="work_time" class="form-label">Opening hours</label>
-                                            <textarea name="work_time[{{ $lang->code }}]" id="work_time" cols="4" rows="4" class="form-control @error('work_time.'.$lang->code) is-invalid @enderror" name="work_time[{{ $lang->code }}]">{{ old('work_time.'.$lang->code) ?? $site_info->work_time[$lang->code] ?? '' }}</textarea>
-                                            @error('work_time.'.$lang->code)
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
+{{--                                        <div class="form-group">--}}
+{{--                                            <label for="work_time" class="form-label">Opening hours</label>--}}
+{{--                                            <textarea name="work_time[{{ $lang->code }}]" id="work_time" cols="4" rows="4" class="form-control @error('work_time.'.$lang->code) is-invalid @enderror" name="work_time[{{ $lang->code }}]">{{ old('work_time.'.$lang->code) ?? $site_info->work_time[$lang->code] ?? '' }}</textarea>--}}
+{{--                                            @error('work_time.'.$lang->code)--}}
+{{--                                            <span class="invalid-feedback" role="alert">--}}
+{{--                                                <strong>{{ $message }}</strong>--}}
+{{--                                            </span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
                                     </div>
                                     @endforeach
                                 </div>
@@ -466,13 +466,7 @@
                                             <div class="dropzone dropzone-multiple" id="dropzone_logo"></div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <!-- Dropzone -->
-                                            <label for="dropzone" class="form-label">Logo(second)</label>
-                                            <div class="dropzone dropzone-multiple" id="dropzone_logo_dark"></div>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-6">

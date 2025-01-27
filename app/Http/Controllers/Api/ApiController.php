@@ -803,7 +803,6 @@ class ApiController extends Controller
         $translatedSiteInfo = [
             'id' => $site_info->id,
             'title' => $site_info->title[$locale] ?? $site_info->title,  // Foydalanuvchi tiliga mos nom
-            'logo' => $site_info->logo,  // Logo
             'logo_dark' => $site_info->logo_dark,  // Qorong'u logo
             'desc' => $site_info->desc[$locale] ?? $site_info->desc,  // Tavsif
             'address' => $site_info->address[$locale] ?? $site_info->address,  // Manzil
@@ -812,7 +811,8 @@ class ApiController extends Controller
             'work_time' => $site_info->work_time[$locale] ?? $site_info->work_time ?? null,  // Ish vaqti
             'map' => $site_info->map,  // Xarita
             'exchange' => $site_info->exchange,  // Kurs o'zgarishlari
-            'favicon' => $site_info->favicon,  // Favicon
+            'favicon' => $site_info->favicon ? url('/upload/images/' . $site_info->favicon) : null,
+            'logo' => $site_info->logo ? url('/upload/images/' . $site_info->logo) : null,
             'telegram' => $site_info->telegram,  // Telegram
             'instagram' => $site_info->instagram,  // Instagram
             'facebook' => $site_info->facebook,  // Facebook

@@ -75,8 +75,7 @@ Route::middleware('locale')->group(function () {
     Route::get('/categories/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_categories']);
     Route::get('/categories/filter/{id}', [\App\Http\Controllers\Api\NewsController::class, 'show_categor_product']);
 
-    Route::get('/products', [ApiController::class, 'get_products']);
-    Route::get('/product/{slug}', [ApiController::class, 'show_products']);
+
     Route::get('/translations', [ApiController::class, 'translations']);
     Route::post('/contacts', [ApiController::class, 'store']);
 
