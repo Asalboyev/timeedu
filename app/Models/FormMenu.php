@@ -30,6 +30,7 @@ class FormMenu extends Model
 
     // Fayllar bilan bog‘lanish
 
+
     public function postsmenuCategories()
     {
         return $this->belongsToMany(PostsCategory::class, 'form_menu_category', 'form_menu_id', 'category_id');

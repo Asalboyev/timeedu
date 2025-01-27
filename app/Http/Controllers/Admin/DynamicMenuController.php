@@ -257,21 +257,24 @@ class DynamicMenuController extends Controller
     {
         $langs = Lang::all();
         $menus = Menu::all();
+        $all_categories = PostsCategory::all();
+
         $formmenu = FormMenu::where('dinamik_menu_id', $dynamic_menu->id)
-            ->where('type', 'formmenu') // Filtering by type
-            ->with('formImages', 'postsmenuCategories') // Eager loading relationships
+            ->where('type', 'formmenu')
+            ->with('formImages', 'postsmenuCategories')
+            ->get();
+//        $formmenu1 = FormMenu::where('dinamik_menu_id', $dynamic_menu->id)
+//            ->where('type', 'formmenu1')
+//            ->with('formImages', 'postsmenuCategories')
+//            ->get();
+        $formmenu3 = FormMenu::where('dinamik_menu_id', $dynamic_menu->id)
+            ->where('type', 'formmenu3')
+            ->with('formImages', 'postsmenuCategories')
             ->get();
         $formmenu1 = FormMenu::where('dinamik_menu_id', $dynamic_menu->id)
-            ->where('type', 'formmenu1') // Filtering by type
-            ->with('formImages', 'postsmenuCategories') // Eager loading relationships
+            ->where('type', 'formmenu1')
+            ->with('postsmenuCategories')
             ->get();
-        $formmenu3 = FormMenu::where('dinamik_menu_id', $dynamic_menu->id)
-            ->where('type', 'formmenu3') // Filtering by type
-            ->with('formImages', 'postsmenuCategories') // Eager loading relationships
-            ->get();
-
-
-        $all_categories = PostsCategory::all(); // Barcha kategoriyalar
 
         return view('admin.dynamic-menus.edit', [
             'title' => $this->title,

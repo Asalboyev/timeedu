@@ -2,16 +2,6 @@
 @extends('layouts.app')
 
 @section('links')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
-
-    <!-- Add this in your <head> -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
-
-    <!-- Add this before the closing </body> tag -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
 
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -456,30 +446,25 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="categories" class="form-label">Categories</label>
-                                                <select id="categories"
-                                                        class="form-control mb-4 @error('formmenu2.'.$loop->index.'.categories') is-invalid @enderror"
-                                                        data-choices='{"removeItemButton": true}' multiple
-                                                        name="formmenu2[{{ $loop->iteration }}][categories][]">
-                                                    @foreach ($all_categories as $item)
-                                                        <option value="{{ $item->id }}" @if(old('formmenu2.'.$loop->
-                                                index.'.categories') && in_array($item->id,
-                                                old('formmenu2.'.$loop->index.'.categories')))
-                                                            selected
-                                                                @elseif(isset($fmenu1) && $fmenu->postsmenuCategories &&
-                                                                in_array($item->id,
-                                                                $fmenu1->postsmenuCategories->pluck('id')->toArray()))
+                                                <label for="categories_{{ $loop->index }}" class="form-label">Category</label>
+                                                <select id="categories_{{ $loop->index }} class="form-control mb-4 @error('categories') is-invalid @enderror" data-choices='{"removeItemButton": true}' multiple name="categories[]">
+                                                    @foreach ($all_categories as $key => $item)
+                                                        <option value="{{ $item->id }}"
+                                                                @if (
+                                                                 (old('formmenu2.'.$loop->index.'.categories') &&
+                                                                 in_array($item->id, old('formmenu2.'.$loop->index.'.categories'))) ||
+                                                                 (isset($fmenu1->postsmenuCategories) &&
+                                                                 in_array($item->id, $fmenu1->postsmenuCategories->pluck('id')->toArray()))
+                                                             )
                                                                     selected
-                                                                @endif>
-                                                            {{ $item->title[$main_lang->code] }}
-                                                        </option>
+                                                                @endif >{{ $item->title[$main_lang->code] }}</option>
                                                     @endforeach
-                                                </select>
 
-                                                @error('formmenu2.'.$loop->index.'.categories')
+                                                </select>
+                                                @error('categories')
                                                 <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                                 @enderror
                                             </div>
 
@@ -767,11 +752,11 @@
         document.addEventListener("DOMContentLoaded", function () {
             @foreach($formmenu3 as $fmenu)
             (() => {
-                const dropzoneId = `dropzone-{{ $loop->index }}`;
-                const hiddenInputId = `hiddenInput_dropzone_{{ $loop->index }}`;
-                const existingImages = @json($fmenu->formImages->pluck('img')->toArray()); // Mavjud rasmlarni olish
+                const dropzoneId = `dropzoneform3-{{ $loop->index }}`;
+                const hiddenInputId = `hiddenInput_dropzoneform3_{{ $loop->index }}`;
+                const existingImages = @json($fmenu->formImages->pluck('img')->toArray()); // Existing images
 
-                // Dropzone sozlamalari
+                // Initialize Dropzone
                 const dropzone = new Dropzone(`#${dropzoneId}`, {
                     url: "{{ url('/admin/upload_from_dropzone') }}",
                     paramName: "file",
@@ -788,16 +773,16 @@
                     init: function () {
                         const hiddenInput = document.getElementById(hiddenInputId);
 
-                        // Mavjud rasmlarni yuklash
+                        // Load existing images
                         existingImages.forEach((image) => {
-                            const imagePath = `/upload/images/${image}`; // Rasmlarning to'liq yo'lini kiriting
+                            const imagePath = `/upload/images/${image}`; // Full path of the images
                             const mockFile = { name: image, size: 12345, accepted: true };
 
-                            this.emit("addedfile", mockFile); // Faylni qo'shadi
-                            this.emit("thumbnail", mockFile, imagePath); // Thumbnail o'rnatadi
-                            mockFile.previewElement.classList.add("dz-complete"); // Fayl yuklangan deb belgilaydi
+                            this.emit("addedfile", mockFile); // Add file to Dropzone
+                            this.emit("thumbnail", mockFile, imagePath); // Set thumbnail
+                            mockFile.previewElement.classList.add("dz-complete"); // Mark file as complete
 
-                            // O'chirish tugmasini boshqarish
+                            // Handle remove button
                             mockFile.previewElement.querySelector(".dz-remove").addEventListener("click", function () {
                                 let fileNames = hiddenInput.value.split(',');
                                 fileNames = fileNames.filter(name => name !== image);
@@ -820,11 +805,11 @@
                         let fileNames = hiddenInput.value.split(',');
                         const fileName = file.name;
 
-                        // Fayl nomini yashirin inputdan olib tashlash
+                        // Remove file name from hidden input
                         fileNames = fileNames.filter(name => name !== fileName);
                         hiddenInput.value = fileNames.join(',');
 
-                        // Dropzone elementini o'chirish
+                        // Remove Dropzone preview element
                         if (file.previewElement != null) {
                             file.previewElement.remove();
                         }
