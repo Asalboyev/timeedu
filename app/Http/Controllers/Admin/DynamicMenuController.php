@@ -315,7 +315,7 @@ class DynamicMenuController extends Controller
         ]);
 
 
-        $formMenus1 = ['formmenu' => $request->formmenu ]; // shu qayerda
+        $formMenus1 = ['formmenu' => $request->formmenu ?? []]; // shu qayerda
         $formMenus2 = ['formmenu2'=>$request->formmenu2 ?? []];
         $formMenus3 = ['formmenu3'=>$request->formmenu3 ?? []];
 

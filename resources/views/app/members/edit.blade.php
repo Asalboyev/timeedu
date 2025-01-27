@@ -174,7 +174,6 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                     @endforeach
                                 </div>
                                 <div class="form-group">

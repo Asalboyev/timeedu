@@ -493,13 +493,13 @@
                                                        placeholder="Order...">
                                                 <input type="hidden" value="{{ $fmenu1->id ?? 0 }}"
                                                        class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
+                                                       name="formmenu2[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
                                                 <input type="hidden" value="{{ $fmenu1->dinamik_menu_id ?? 0 }}"
                                                        class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
+                                                       name="formmenu2[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
                                                 <input type="hidden" value="{{ $fmenu1->type ?? 0 }}"
                                                        class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
+                                                       name="formmenu2[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
                                                 @error('formmenu2.'.$loop->index.'.order')
                                                 <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -599,13 +599,13 @@
                                                        value="{{ $fmenu3->order ?? '' }}" id="order" placeholder="Order...">
                                                 <input type="hidden" value="{{ $fmenu3->id ?? 0 }}"
                                                        class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
+                                                       name="formmenu3[{{ $loop->index }}][id]" id="id-{{ $loop->index }}">
                                                 <input type="hidden" value="{{ $fmenu3->dinamik_menu_id ?? 0 }}"
                                                        class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
+                                                       name="formmenu3[{{ $loop->index }}][dinamik_menu_id]" id="id-{{ $loop->index }}">
                                                 <input type="hidden" value="{{ $fmenu3->type ?? 0 }}"
                                                        class="form-control @error('id') is-invalid @enderror"
-                                                       name="formmenu[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
+                                                       name="formmenu3[{{ $loop->index }}][type]" id="id-{{ $loop->index }}">
                                                 @error('in_main')
                                                 <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
