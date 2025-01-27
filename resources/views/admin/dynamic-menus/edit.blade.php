@@ -284,24 +284,22 @@
                                         <div class="form-group">
                                             <label for="menu_id" class="form-label">Menu</label>
                                             <select class="form-select searchable @error('menu_id') is-invalid @enderror" id="menu_id" name="menu_id" required>
-                                                @foreach ($menus as $key => $item)
-                                                    <option value="{{ $item->id }}" {{ old('menu_id')==$dynamic_menu->id ? 'selected' :
-                                                             '' }} >
+                                                @foreach ($menus as $item)
+                                                    <option value="{{ $item->id }}"
+                                                            {{ old('menu_id', $dynamic_menu->menu_id) == $item->id ? 'selected' : '' }}>
                                                         {{ $item->title[$main_lang->code] }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                             @error('menu_id')
                                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
 
                                     </div>
-
                                 </div>
-
                         </div>
                     </div>
                     <div id="formContainer">

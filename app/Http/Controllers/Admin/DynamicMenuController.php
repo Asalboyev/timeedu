@@ -291,28 +291,41 @@ class DynamicMenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DinamikMenu $dinamikMenu)
+    public function update(Request $request, DinamikMenu $dinamikMenu,$id)
     {
-//        dd($request->all());
-        $filePaths = $dinamikMenu->file ? json_decode($dinamikMenu->file, true) : [];
+        $dinamikMenu = DinamikMenu::findOrFail($id);
+
+        // Fayllarni saqlash uchun massiv
+        $filePaths = $dinamikMenu->file ?? []; // Oldingi fayllarni olib kelamiz
 
         if ($request->hasFile('file')) {
             foreach ($request->file('file') as $lang => $file) {
                 if ($file->isValid()) {
+                    // Faylni saqlash yo'li
                     $destinationPath = 'uploads/dynamic_menus/' . $lang;
                     $fileName = time() . '_' . $file->getClientOriginalName();
+
+                    // Eski faylni o'chirish
+                    if (isset($filePaths[$lang]) && \Storage::disk('public')->exists($filePaths[$lang])) {
+                        \Storage::disk('public')->delete($filePaths[$lang]);
+                    }
+
+                    // Yangi faylni saqlash
                     $filePaths[$lang] = $file->storeAs($destinationPath, $fileName, 'public');
                 }
             }
         }
 
+        // Dinamik menyu ma'lumotlarini yangilash
         $dinamikMenu->update([
             'menu_id' => $request->menu_id,
             'title' => $request->title, // JSON formatdagi title
             'short_title' => $request->short_title ?? null,
             'background' => $request->dropzone_images, // Dropzone'dan olingan rasmlar
-            'file' => json_encode($filePaths), // JSON formatda fayllarni saqlash
+            'file' => $filePaths, // JSON formatda fayllarni saqlash
         ]);
+
+
 
 
         $formMenus1 = ['formmenu' => $request->formmenu ?? []]; // shu qayerda
