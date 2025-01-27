@@ -164,19 +164,22 @@
                                     @endforeach
                                 </div>
                                 <div class="form-group">
-                                    <label for="employs" class="form-label">Educational Program</label>
-                                    <select class="form-control mb-4 @error('employs') is-invalid @enderror" data-choices='{"": true}'  name="educational_program_id">
+                                    <label for="educational_program_id" class="form-label">Educational Program</label>
+                                    <select class="form-control mb-4 @error('educational_program_id') is-invalid @enderror" data-choices='{"": true}' name="educational_program_id">
                                         @foreach ($educationalprogram as $key => $item)
-                                            <option value="{{ $item->id }}"   {{ old('educational_program_id')==$item->id ? 'selected' : '' }}>{{ $item->name[$main_lang->code] }}</option>
+                                            <option value="{{ $item->id }}"
+                                                    {{ old('educational_program_id', $record->educational_program_id ?? '') == $item->id ? 'selected' : '' }}>
+                                                {{ $item->name[$main_lang->code] }}
+                                            </option>
                                         @endforeach
-
                                     </select>
-                                    @error('employs')
+                                    @error('educational_program_id')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <strong>{{ $message }}</strong>
+                            </span>
                                     @enderror
                                 </div>
+
                             </div>
                         </div>
                         <!-- Button -->
