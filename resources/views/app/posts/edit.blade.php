@@ -110,7 +110,7 @@
         [
         'active' => true,
         'url' => '',
-        'name' => 'Добавление',
+        'name' => 'Update',
         'disabled' => true
         ],
         ]
@@ -142,7 +142,7 @@
                                         @foreach($langs as $lang)
                                         <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
                                             <div class="form-group">
-                                                <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Заголовок</label>
+                                                <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Title</label>
                                                 <input type="text" {{ $lang->code == $main_lang->code ? 'required' : '' }} class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="title[{{ $lang->code }}]" value="{{ old('title.'.$lang->code) ?? $post->title[$lang->code] ?? null }}" id="title" placeholder="Заголовок...">
                                                 @error('title.'.$lang->code)
                                                 <span class="invalid-feedback" role="alert">
@@ -151,7 +151,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="subtitle" class="form-label">Подзаголовок</label>
+                                                <label for="subtitle" class="form-label">Sub Title</label>
                                                 <input type="text" class="form-control @error('subtitle.'.$lang->code) is-invalid @enderror" name="subtitle[{{ $lang->code }}]" value="{{ old('subtitle.'.$lang->code) ?? $post->subtitle[$lang->code] ?? null }}" id="subtitle" placeholder="Подзаголовок...">
                                                 @error('subtitle.'.$lang->code)
                                                 <span class="invalid-feedback" role="alert">
@@ -160,7 +160,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="desc" class="form-label">Описание</label>
+                                                <label for="desc" class="form-label">Description</label>
                                                 <textarea name="desc[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('desc.'.$lang->code) is-invalid @enderror ckeditor" name="desc[{{ $lang->code }}]" placeholder="Описание...">{{ old('desc.'.$lang->code) ?? $post->desc[$lang->code] ?? null }}</textarea>
                                                 @error('desc.'.$lang->code)
                                                 <span class="invalid-feedback" role="alert">
@@ -175,8 +175,8 @@
                             </div>
                             <!-- Button -->
                             <div class="model-btns d-flex justify-content-end">
-                                <a href="{{ route('posts_categories.index') }}" type="button" class="btn btn-secondary">Отмена</a>
-                                <button type="submit" class="btn btn-primary ms-2">Сохранить</button>
+                                <a href="{{ route('posts_categories.index') }}" type="button" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary ms-2">Update </button>
                             </div>
                     </div>
                 </div>
@@ -188,11 +188,11 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="date" class="form-label">Дата</label>
+                                    <label for="date" class="form-label">Date</label>
                                     <input type="text" id="date" name="date" class="form-control" value="{{ old('date') ?? date('d-m-Y', strtotime($post->date)) }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
                                 </div>
                                 <div class="form-group">
-                                    <label for="categories" class="form-label">Категории</label>
+                                    <label for="categories" class="form-label">Category</label>
                                     <select class="form-control mb-4 @error('categories') is-invalid @enderror" data-choices='{"removeItemButton": true}' multiple name="categories[]">
                                         @foreach ($all_categories as $key => $item)
                                         <option value="{{ $item->id }}" {{ (old('categories') || $post->postsCategories ? in_array($item->id, (old('categories') ?? $post->postsCategories()->pluck('posts_category_id')->toArray())) : '') ? 'selected' : '' }}>{{ $item->title[$main_lang->code] }}</option>
@@ -206,7 +206,7 @@
                                 </div>
                                 <div class="form-group">
                                     <!-- Dropzone -->
-                                    <label for="dropzone" class="form-label">Пост</label>
+                                    <label for="dropzone" class="form-label">Photo</label>
                                     <div class="dropzone dropzone-multiple" id="dropzone"></div>
                                 </div>
                                 <div class="form-group">

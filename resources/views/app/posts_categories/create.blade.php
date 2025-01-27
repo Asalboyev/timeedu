@@ -41,10 +41,10 @@
             },
 
             // change default texts
-            dictDefaultMessage: "Перетащите сюда файлы для загрузки",
-            dictRemoveFile: "Удалить файл",
-            dictCancelUpload: "Отменить загрузку",
-            dictMaxFilesExceeded: "Не можете загружать больше"
+            dictDefaultMessage: "Drag files here to upload",
+            dictRemoveFile: "Delete file",
+            dictCancelUpload: "Cancel download",
+            dictMaxFilesExceeded: "Can't load more"
         });
     };
 </script>
@@ -80,7 +80,7 @@
         [
         'active' => true,
         'url' => '',
-        'name' => 'Добавление',
+        'name' => 'Create',
         'disabled' => true
         ],
         ]
@@ -109,8 +109,8 @@
                                     @foreach($langs as $lang)
                                     <div class="tab-pane mt-3 fade {{ $loop->first ? 'show active' : '' }}" id="{{ $lang->code }}" role="tabpanel" aria-labelledby="{{ $lang->code }}-tab">
                                         <div class="form-group">
-                                            <label for="title" class="form-label">Название</label>
-                                            <input type="text" class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="title[{{ $lang->code }}]" value="{{ old('title.'.$lang->code) }}" id="title" placeholder="Название...">
+                                            <label for="title" class="form-label">Title</label>
+                                            <input type="text" class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="title[{{ $lang->code }}]" value="{{ old('title.'.$lang->code) }}" id="title" placeholder="Title...">
                                             @error('title.'.$lang->code)
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -120,31 +120,18 @@
                                     </div>
                                     @endforeach
                                 </div>
-                                <div class="form-group">
-                                    <label for="parent_id" class="form-label">Родительская категория</label>
-                                    <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" name="parent_id">
-                                        <option value="">Главная категория</option>
-                                        @foreach ($all_categories as $key => $item)
-                                        <option value="{{ $item->id }}" {{ old('parent_id') == $item->id ? 'selected' : '' }}>{{ $item->title[$main_lang->code] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('parent_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
+
                                 <div class="form-group">
                                     <!-- Dropzone -->
-                                    <label for="dropzone" class="form-label">Картина</label>
+                                    <label for="dropzone" class="form-label">Photo</label>
                                     <div class="dropzone dropzone-multiple" id="dropzone"></div>
                                 </div>
                             </div>
                         </div>
                         <!-- Button -->
                         <div class="model-btns d-flex justify-content-end">
-                            <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Отмена</a>
-                            <button type="submit" class="btn btn-primary ms-2">Сохранить</button>
+                            <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary ms-2">Save</button>
                         </div>
 
                     </form>

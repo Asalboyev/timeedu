@@ -20,7 +20,7 @@
 
                     <!-- Button -->
                     <a href="{{ route('posts_categories.create') }}" class="btn btn-primary lift">
-                        Добавить
+                        Add
                     </a>
 
                 </div>
@@ -49,8 +49,8 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Название</th>
-                            <th scope="col">Родительская категория</th>
+                            <th scope="col">Photo</th>
+                            <th scope="col"> Title</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -63,10 +63,9 @@
                                     <div class="imb-block me-2 rounded-circle overflow-hidden">
                                         <img src="{{ $item->sm_img ?? asset('assets/img/default.png') }}" alt="">
                                     </div>
-                                    {{ $item->title[$main_lang->code] }}
                                 </div>
                             </td>
-                            <td>{{ $item->parent ? $item->parent->title[$main_lang->code] : 'Главная категория' }}</td>
+                         <td>{{ $item->title[$main_lang->code] }}</td>
                             <td style="width: 200px">
                                 <div class="d-flex justify-content-end">
                                     <a href="{{ route($route_name.'.edit', [$route_parameter => $item]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>

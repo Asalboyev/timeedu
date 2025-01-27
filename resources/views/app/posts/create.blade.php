@@ -109,7 +109,7 @@
         [
         'active' => true,
         'url' => '',
-        'name' => 'Добавление',
+        'name' => 'Add',
         'disabled' => true
         ],
         ]
