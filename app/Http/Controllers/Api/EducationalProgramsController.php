@@ -33,6 +33,7 @@ class EducationalProgramsController extends Controller
                         'id' => $child->id,
                         'name' => $child->name[$locale] ?? null,
                         'slug' => $child->slug,
+                        'icon' => $child->icon,
                         'code' => $child->code,
                         'lang' => $child->lang[$locale] ?? null,
                         'active' => $child->active,
@@ -124,6 +125,7 @@ class EducationalProgramsController extends Controller
             'lg_img' => $program->lg_img,
             'md_img' => $program->md_img,
             'sm_img' => $program->sm_img,
+            'icon' => $program->icon,
             'employs' => $program->employs->map(function ($employ) use ($locale) {
                 return [
                     'id' => $employ->id,
