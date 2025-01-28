@@ -291,7 +291,7 @@
                                     </div>
                                             <div class="form-group">
                                         <label for="date" class="form-label">icon</label>
-                                        <input type="icon" id="icon" name="icon" class="form-control" value="{{ old('icon')?? $educationalProgram->icon ?? null }}" placeholder="" />
+                                        <input type="file" id="icon" name="icon" class="form-control" value="{{ old('icon')?? $educationalProgram->icon ?? null }}" placeholder="" />
                                     </div>
 
                                     <div class="form-group">

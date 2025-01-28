@@ -144,21 +144,30 @@ class EducationalProgramsController extends Controller
         $data['date'] = isset($data['date']) ? date('Y-m-d', strtotime($data['date'])) : date('Y-m-d');
 
         $validator = Validator::make($data, [
-            'first_name.' . $this->main_lang->code => 'required'
+            'first_name.' . $this->main_lang->code => 'required',
         ]);
+
         if ($validator->fails()) {
             return back()->withInput()->with([
                 'success' => false,
                 'message' => 'Ошибка валидации'
             ]);
         }
+
         $data['slug'] = Str::slug($data['first_name'][$this->main_lang->code], '-');
-        if(EducationalProgram::where('slug', $data['slug'])->exists()) {
-            $data['slug'] = $data['slug'].'-'.time();
+        if (EducationalProgram::where('slug', $data['slug'])->exists()) {
+            $data['slug'] = $data['slug'] . '-' . time();
         }
 
         DB::beginTransaction();
         try {
+            // Handle icon upload if provided
+            if ($request->hasFile('icon')) {
+                $icon = $request->file('icon');
+                $iconPath = $icon->store('educational-programs/icons', 'public'); // Save in 'storage/app/public/educational-programs/icons'
+                $data['icon'] = $iconPath; // Save the path in the database
+            }
+
             $post = EducationalProgram::create($data);
 
             if (isset($data['dropzone_images'])) {
