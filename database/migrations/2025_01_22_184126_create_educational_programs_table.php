@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('educational_programs', function (Blueprint $table) {
             $table->id();
             $table->text('name')->nullable();
+            $table->text('icon')->nullable();
             $table->text('first_name')->nullable();
             $table->text('second_name')->nullable();
             $table->text('third_name')->nullable();

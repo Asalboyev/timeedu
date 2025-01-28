@@ -249,6 +249,10 @@
                                     <label for="date" class="form-label">Date</label>
                                     <input type="text" id="date" name="date" class="form-control" value="{{ old('date') }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
                                 </div>
+                                <div class="form-group">
+                                    <label for="date" class="form-label">icon</label>
+                                    <input type="text" id="date" name="icon" class="form-control" value="{{ old('icon') }}" placeholder="icon..."  />
+                                </div>
 
                                     <div class="form-group">
                                         <label for="date" class="form-label">Daytime price</label>

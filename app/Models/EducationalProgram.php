@@ -16,6 +16,7 @@ class EducationalProgram extends Model
         'slug',
         'code',
         'lang',
+        'icon',
         'map',
         'name',
         'active',
