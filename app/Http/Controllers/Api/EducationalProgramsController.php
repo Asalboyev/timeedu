@@ -139,7 +139,7 @@ class EducationalProgramsController extends Controller
             'first_descriptionv' => $program->first_descriptionv[$locale] ?? null,
             'second_description'=> $program->second_description[$locale] ?? null,
             'third_description' => $program->third_description[$locale] ?? null,
-            'icon' => $program->icon,
+            'icon' => $program->icon ? url('educational-programs/icons' . $program->icon) : null,
             'code' => $program->code,
             'lang' => $program->lang[$locale] ?? null,
             'date' => $program->date,
