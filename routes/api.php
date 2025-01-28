@@ -65,8 +65,16 @@ Route::middleware('locale')->group(function () {
     Route::get('/leaderships', [\App\Http\Controllers\Api\LeadershipController::class, 'getRahbariyatEmployees']);
     Route::get('/leaderships/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'getEmployeeDetails']);
 
-    Route::get('/department', [\App\Http\Controllers\Api\LeadershipController::class, 'getDepartmentEmployees']);
-    Route::get('/department/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showEmployeesByPosition']);
+    Route::get('/department', [\App\Http\Controllers\Api\LeadershipController::class, 'showEmployeesByPosition']);
+    Route::get('/department/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'getDepartmentEmployees']);
+
+
+    Route::get('/fakultet', [\App\Http\Controllers\Api\LeadershipController::class, 'getfakultet']);
+    Route::get('/fakultet/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showfakultet']);
+
+    Route::get('/kafedralar', [\App\Http\Controllers\Api\LeadershipController::class, 'getKafedralar']);
+    Route::get('/kafedralar/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showKafedralar']);
+//    Route::get('/department/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showEmployeesByPosition']);
 
 
 

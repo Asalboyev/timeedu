@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
+use App\Models\Employ;
 use App\Models\EmployMeta;
 use Illuminate\Http\Request;
 
@@ -367,246 +369,137 @@ class LeadershipController extends Controller
     }
 
 
-    public function getDepartmentEmployees()
+    public function getDepartmentEmployees($id)
     {
         $locale = app()->getLocale(); // Get the current locale
 
-        // Fetch all employees in the "Rahbariyat" department
-        $employees = EmployMeta::with([
-            'department.structureType',
-            'department.parent',
-            'position',
-            'employ',
-        ])
-            ->whereHas('department', function ($query) {
-                $query->where('id', 1); // Filter by department ID
-            })
-            ->get();
-
-        // Group employees by department and map the response
-        $response = $employees->groupBy('department.id')->map(function ($group) use ($locale) {
-            $department = $group->first()->department;
-
-            return [
-                'id' => $department->id,
-                'name' => $department->name[$locale] ?? $department->name,
-                'structure_type' => $department->structureType ? [
-                    'id' => $department->structureType->id,
-                    'name' => $department->structureType->name[$locale] ?? $department->structureType->name,
-                ] : null,
-                'parent' => $department->parent ? [
-                    'id' => $department->parent->id,
-                    'name' => $department->parent->name[$locale] ?? $department->parent->name,
-                ] : null,
-                'active' => $department->active,
-                'code' => $department->code,
-
-                // Professor employees
-                'professor_employ' => $group->filter(function ($employee) {
-                    return $employee->position->id === 4; // Filter by position ID for professors
-                })->map(function ($employee) use ($locale, $group) {
-                    return [
-                        'id' => $employee->id,
-                        'id_employ' => $employee->employ->id,
-                        'first_name' => $employee->employ->first_name[$locale],
-                        'last_name' => $employee->employ->last_name[$locale],
-                        'surname' => $employee->employ->surname[$locale],
-                        'email' => $employee->employ->email,
-                        'address' => $employee->employ->address[$locale],
-                        'status' => $employee->employ->status,
-                        'birthday' => $employee->employ->birthday,
-                        'gender' => $employee->employ->gender,
-                        'special' => $employee->employ->special,
-                        'photo' => $employee->employ->photo ? url('/upload/images/' . $employee->employ->photo) : null,
-                        'phone' => $employee->employ->phone,
-                        'dec' => $employee->employ->dec[$locale] ?? $employee->employ->dec,
-                        'started_work' => $employee->employ->started_work,
-                        'leader' => $employee->employ->leader,
-                        'professor' => $employee->employ->professor,
-                        'department_id' => $employee->department_id,
-                        'position_id' => $employee->position_id,
-                        'employ_staff_id' => $employee->employ_staff_id,
-                        'employ_form_id' => $employee->employ_form_id,
-                        'employ_type_id' => $employee->employ_type_id,
-                        'active' => $employee->active,
-                        'contrakt_date' => $employee->contrakt_date,
-                        'contrakt_number' => $employee->contrakt_number,
-
-                        'employ_form' => $employee->employ_form->name[$locale],
-                        'employ_staff' => $employee->employ_staff->name[$locale],
-                        'employ_type' => $employee->employ_type->name[$locale],
-                        'position' => $employee->position->id,
-
-                        // Add manage_employ list inside the professor_employ array
-                        'manage_employ' => $group->filter(function ($employee) {
-                            return $employee->position->id === 7; // Filter by position ID for managers
-                        })->map(function ($employee) use ($locale) {
-                            return [
-                                'id' => $employee->id,
-                                'id_employ' => $employee->employ->id,
-                                'first_name' => $employee->employ->first_name[$locale],
-                                'last_name' => $employee->employ->last_name[$locale],
-                                'surname' => $employee->employ->surname[$locale],
-                                'email' => $employee->employ->email,
-                                'address' => $employee->employ->address[$locale],
-                                'status' => $employee->employ->status,
-                                'birthday' => $employee->employ->birthday,
-                                'gender' => $employee->employ->gender,
-                                'special' => $employee->employ->special,
-                                'photo' => $employee->employ->photo ? url('/upload/images/' . $employee->employ->photo) : null,
-                                'phone' => $employee->employ->phone,
-                                'dec' => $employee->employ->dec[$locale] ?? $employee->employ->dec,
-                                'started_work' => $employee->employ->started_work,
-                                'leader' => $employee->employ->leader,
-                                'professor' => $employee->employ->professor,
-                                'department_id' => $employee->department_id,
-                                'position_id' => $employee->position_id,
-                                'employ_staff_id' => $employee->employ_staff_id,
-                                'employ_form_id' => $employee->employ_form_id,
-                                'employ_type_id' => $employee->employ_type_id,
-                                'active' => $employee->active,
-                                'contrakt_date' => $employee->contrakt_date,
-                                'contrakt_number' => $employee->contrakt_number,
-
-                                'employ_form' => $employee->employ_form->name[$locale],
-                                'employ_staff' => $employee->employ_staff->name[$locale],
-                                'employ_type' => $employee->employ_type->name[$locale],
-                            ];
-                        })->values(),
-                    ];
-                })->values(),
+//        $employeeBoss = Employ::whereHas('employMeta',function ($query){
+//            $query->whereHas('position', function ($subQuery){
+//                $subQuery->where('id',4);
+//            });
+//        })->with(['employMeta'=>function ($query) {
+//            $query->with(['department.structureType','department.parent','position']);
+//        }])->get();
+//        return $employeeBoss;
 
 
-                // Management employees
+        $employeeBoss = Employ::whereHas('employMeta',function ($query) use ($id){
+            $query->whereHas('department', function ($subQuery) use ($id){
+               $subQuery->where('id', $id);
+            })->whereHas('position', function ($subQuery){
+                $subQuery->where('active', 1)->where('id',4);
+            });
+        })->with(['employMeta'=>function ($query) {
+            $query->with(['department.structureType','department.parent','position']);
+        }])->first();
+        $simpleEmployees = Employ::whereHas('employMeta',function ($query) use ($id){
+            $query->whereHas('department', function ($subQuery) use ($id){
+                $subQuery->where('id', $id);
+            })->whereHas('position', function ($subQuery){
+                $subQuery->where('active', 1)->where('id','!=',4);
+            });
+        })->with(['employMeta'=>function ($query) {
+            $query->with(['department.structureType','department.parent','position']);
+        }])->get();
+        $employees =  [
+            'department_boss' => $employeeBoss,
+            'simple_employee'=> $simpleEmployees,
+        ];
+         return response()->json($employees);
 
-            ];
-        })->values();
 
-        return response()->json($response);
+
     }
     public function showEmployeesByPosition(Request $request)
     {
         $locale = app()->getLocale(); // Get the current locale
 
-        // Get position_id from the request (e.g., from the URL or query parameters)
-        $professorPositionId = $request->input('professor_position_id', 4); // Default to 4 if not provided
-        $managerPositionId = $request->input('manager_position_id', 5); // Default to 5 if not provided
-
-        // Fetch all employees in the "Rahbariyat" department
-        $employees = EmployMeta::with([
-            'department.structureType',
-            'department.parent',
-            'position',
-            'employ',
-            'employ_form',
-            'employ_staff',
-            'employ_type',
-        ])
-            ->whereHas('department', function ($query) {
-                $query->where('id', 1); // Filter by department ID (Rahbariyat)
-            })
-            ->get();
-
-        if ($employees->isEmpty()) {
-            return response()->json(['message' => 'No employees found for the specified position.'], 404);
-        }
-
-        // Group employees by department and map the response
-        $response = $employees->groupBy('department.id')->map(function ($group) use ($locale, $professorPositionId, $managerPositionId) {
-            $department = $group->first()->department;
-
-            return [
-                'id' => $department->id,
-                'name' => $department->name[$locale] ?? $department->name,
-                'structure_type' => $department->structureType ? [
-                    'id' => $department->structureType->id,
-                    'name' => $department->structureType->name[$locale] ?? $department->structureType->name,
-                ] : null,
-                'parent' => $department->parent ? [
-                    'id' => $department->parent->id,
-                    'name' => $department->parent->name[$locale] ?? $department->parent->name,
-                ] : null,
-                'active' => $department->active,
-                'code' => $department->code,
-
-                // Professor employees filtered by dynamic position ID
-                'professor_employ' => $group->filter(function ($employee) use ($professorPositionId) {
-                    return $employee->position->id === $professorPositionId;
-                })->map(function ($employee) use ($locale) {
-                    return [
-                        'id' => $employee->id,
-                        'id_employ' => $employee->employ->id,
-                        'first_name' => $employee->employ->first_name[$locale],
-                        'last_name' => $employee->employ->last_name[$locale],
-                        'surname' => $employee->employ->surname[$locale],
-                        'email' => $employee->employ->email,
-                        'address' => $employee->employ->address[$locale],
-                        'status' => $employee->employ->status,
-                        'birthday' => $employee->employ->birthday,
-                        'gender' => $employee->employ->gender,
-                        'special' => $employee->employ->special,
-                        'photo' => $employee->employ->photo ? url('/upload/images/' . $employee->employ->photo) : null,
-                        'phone' => $employee->employ->phone,
-                        'dec' => $employee->employ->dec[$locale] ?? $employee->employ->dec,
-                        'started_work' => $employee->employ->started_work,
-                        'leader' => $employee->employ->leader,
-                        'professor' => $employee->employ->professor,
-                        'department_id' => $employee->department_id,
-                        'position_id' => $employee->position_id,
-                        'employ_staff_id' => $employee->employ_staff_id,
-                        'employ_form_id' => $employee->employ_form_id,
-                        'employ_type_id' => $employee->employ_type_id,
-                        'active' => $employee->active,
-                        'contrakt_date' => $employee->contrakt_date,
-                        'contrakt_number' => $employee->contrakt_number,
-
-                        'employ_form' => $employee->employ_form->name[$locale],
-                        'employ_staff' => $employee->employ_staff->name[$locale],
-                        'employ_type' => $employee->employ_type->name[$locale],
-                    ];
-                })->values(),
-
-                // Management employees filtered by dynamic position ID
-                'manage_employ' => $group->filter(function ($employee) use ($managerPositionId) {
-                    return $employee->position->id === $managerPositionId;
-                })->map(function ($employee) use ($locale) {
-                    return [
-                        'id' => $employee->id,
-                        'id_employ' => $employee->employ->id,
-                        'first_name' => $employee->employ->first_name[$locale],
-                        'last_name' => $employee->employ->last_name[$locale],
-                        'surname' => $employee->employ->surname[$locale],
-                        'email' => $employee->employ->email,
-                        'address' => $employee->employ->address[$locale],
-                        'status' => $employee->employ->status,
-                        'birthday' => $employee->employ->birthday,
-                        'gender' => $employee->employ->gender,
-                        'special' => $employee->employ->special,
-                        'photo' => $employee->employ->photo ? url('/upload/images/' . $employee->employ->photo) : null,
-                        'phone' => $employee->employ->phone,
-                        'dec' => $employee->employ->dec[$locale] ?? $employee->employ->dec,
-                        'started_work' => $employee->employ->started_work,
-                        'leader' => $employee->employ->leader,
-                        'professor' => $employee->employ->professor,
-                        'department_id' => $employee->department_id,
-                        'position_id' => $employee->position_id,
-                        'employ_staff_id' => $employee->employ_staff_id,
-                        'employ_form_id' => $employee->employ_form_id,
-                        'employ_type_id' => $employee->employ_type_id,
-                        'active' => $employee->active,
-                        'contrakt_date' => $employee->contrakt_date,
-                        'contrakt_number' => $employee->contrakt_number,
-
-                        'employ_form' => $employee->employ_form->name[$locale],
-                        'employ_staff' => $employee->employ_staff->name[$locale],
-                        'employ_type' => $employee->employ_type->name[$locale],
-                    ];
-                })->values(),
-            ];
-        })->values();
-
-        return response()->json($response);
+        $employeeBoss = Employ::whereHas('employMeta',function ($query){
+            $query->whereHas('position', function ($subQuery){
+                $subQuery->where('id',4);
+            });
+        })->with(['employMeta'=>function ($query) {
+            $query->with(['department.structureType','department.parent','position']);
+        }])->get();
+        return $employeeBoss;
     }
+
+
+    public function getfakultet()
+    {
+        $locale = app()->getLocale(); // Get the current locale
+
+        $faculted = Department::where('structure_type_id',3)->get();
+        return $faculted;
+    }
+
+    public function showfakultet($id)
+    {
+        $locale = app()->getLocale(); // Get the current locale
+
+        $employeeBoss = Employ::whereHas('employMeta',function ($query) use ($id){
+            $query->whereHas('department', function ($subQuery) use ($id){
+                $subQuery->where('id', $id);
+            })->whereHas('position', function ($subQuery){
+                $subQuery->where('active', 1)->where('id',8);
+            });
+        })->with(['employMeta'=>function ($query) {
+            $query->with(['department.structureType','department.parent','position']);
+        }])->first();
+        $simpleEmployees = Employ::whereHas('employMeta',function ($query) use ($id){
+            $query->whereHas('department', function ($subQuery) use ($id){
+                $subQuery->where('id', $id);
+            })->whereHas('position', function ($subQuery){
+                $subQuery->where('active', 1)->where('id',9);
+            });
+        })->with(['employMeta'=>function ($query) {
+            $query->with(['department.structureType','department.parent','position']);
+        }])->get();
+        $employees =  [
+            'department_boss' => $employeeBoss,
+            'simple_employee'=> $simpleEmployees,
+        ];
+        return response()->json($employees);
+    }
+
+    public function getKafedralar()
+    {
+        $locale = app()->getLocale(); // Get the current locale
+
+        $faculted = Department::where('structure_type_id',4)->get();
+        return $faculted;
+    }
+
+    public function showKafedralar($id)
+    {
+        $locale = app()->getLocale(); // Get the current locale
+
+        $employeeBoss = Employ::whereHas('employMeta',function ($query) use ($id){
+            $query->whereHas('department', function ($subQuery) use ($id){
+                $subQuery->where('id', $id);
+            })->whereHas('position', function ($subQuery){
+                $subQuery->where('active', 1)->where('id',10);
+            });
+        })->with(['employMeta'=>function ($query) {
+            $query->with(['department.structureType','department.parent','position']);
+        }])->first();
+        $simpleEmployees = Employ::whereHas('employMeta',function ($query) use ($id){
+            $query->whereHas('department', function ($subQuery) use ($id){
+                $subQuery->where('id', $id);
+            })->whereHas('position', function ($subQuery){
+                $subQuery->where('active', 1)->where('id',11);
+            });
+        })->with(['employMeta'=>function ($query) {
+            $query->with(['department.structureType','department.parent','position']);
+        }])->get();
+        $employees =  [
+            'department_boss' => $employeeBoss,
+            'simple_employee'=> $simpleEmployees,
+        ];
+        return response()->json($employees);
+    }
+
+
 
 
 
