@@ -62,8 +62,19 @@ Route::middleware('locale')->group(function () {
     Route::get('/journals', [ApiController::class, 'get_journals']);
     Route::get('/journals/{id}', [ApiController::class, 'show_journals']);
 
-    Route::get('/leaderships', [\App\Http\Controllers\Api\EducationalProgramsController::class, 'get_employ_meta']);
-    Route::get('/leaderships/{id}', [\App\Http\Controllers\Api\EducationalProgramsController::class, 'show_employ_meta']);
+    Route::get('/leaderships', [\App\Http\Controllers\Api\LeadershipController::class, 'getRahbariyatEmployees']);
+    Route::get('/leaderships/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'getEmployeeDetails']);
+
+    Route::get('/department', [\App\Http\Controllers\Api\LeadershipController::class, 'getDepartmentEmployees']);
+    Route::get('/department/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showDepartmentEmployees']);
+
+
+
+//    Route::get('/leaderships1/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'show_employ_meta']);
+//
+//
+//    Route::get('/leaderships1', [\App\Http\Controllers\Api\LeadershipController::class, 'get_employ_meta']);
+//    Route::get('/leaderships1/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'show_employ_meta']);
 
     Route::get('/banners', [ApiController::class, 'get_banner']);
 
