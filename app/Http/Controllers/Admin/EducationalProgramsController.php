@@ -160,6 +160,11 @@ class EducationalProgramsController extends Controller
         if (EducationalProgram::where('slug', $data['slug'])->exists()) {
             $data['slug'] = $data['slug'] . '-' . time();
         }
+        if (isset($data['dropzone_images'])) {
+            $data['photo'] = $data['dropzone_images'];
+        } else {
+            $data['photo'] = null;
+        }
 
         DB::beginTransaction();
         try {
@@ -172,11 +177,7 @@ class EducationalProgramsController extends Controller
 
             $post = EducationalProgram::create($data);
 
-            if (isset($data['dropzone_images'])) {
-                $data['photo'] = $data['dropzone_images'];
-            } else {
-                $data['photo'] = null;
-            }
+
 
             if (isset($data['employs'])) {
                 $post->employs()->sync($data['employs']);
@@ -235,6 +236,7 @@ class EducationalProgramsController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        dd($request->all());
         $data = $request->all();
         $data['date'] = isset($data['date']) ? date('Y-m-d', strtotime($data['date'])) : date('Y-m-d');
 
@@ -255,6 +257,12 @@ class EducationalProgramsController extends Controller
             $data['slug'] = $data['slug'] . '-' . time();
         }
 
+        if (isset($data['dropzone_images'])) {
+            $data['photo'] = $data['dropzone_images'];
+        } else {
+            $data['photo'] = null;
+        }
+
         DB::beginTransaction();
         try {
             $post = EducationalProgram::findOrFail($id);
@@ -273,11 +281,7 @@ class EducationalProgramsController extends Controller
 
             $post->update($data);
 
-            if (isset($data['dropzone_images'])) {
-                $data['photo'] = $data['dropzone_images'];
-            } else {
-                $data['photo'] = null;
-            }
+
 
             if (isset($data['employs'])) {
                 $post->employs()->sync($data['employs']);

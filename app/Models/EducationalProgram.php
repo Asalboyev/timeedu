@@ -11,6 +11,7 @@ class EducationalProgram extends Model
     protected $fillable = [
         'first_name',
         'second_name',
+        'photo',
         'third_name',
         'parent_id',
         'slug',
