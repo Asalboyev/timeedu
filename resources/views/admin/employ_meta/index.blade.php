@@ -1,108 +1,49 @@
 @extends('layouts.app')
 @section('links')
     <style>
-        #menu-list tr {
-            cursor: move;
-        }
-
-        .submenu-row {
+        .nested-row {
+            display: none;
             background-color: #f9f9f9;
         }
-
-        .menu-row {
-            background-color: #fff;
-        }
-
-        .ui-sortable-helper {
-            background-color: #d1ecf1 !important;
+        .toggle-btn {
+            cursor: pointer;
+            font-weight: bold;
+            color: blue;
         }
     </style>
-
-
 @endsection
 @section('content')
-    <!-- HEADER -->
-    <div class="header">
-        <div class="container-fluid">
-
-            <!-- Body -->
-            <div class="header-body">
-                <div class="row align-items-end">
-                    <div class="col">
-
-                        <!-- Title -->
-                        <h1 class="header-title">
-                                {{ $title }}
-                        </h1>
-
-                    </div>
-                    <div class="col-auto">
-
-                        <!-- Button -->
-                        <a href="{{ route($route_name.'.create') }}" class="btn btn-primary lift">
-                            Add
-                        </a>
-
-                    </div>
-                </div> <!-- / .row -->
-            </div> <!-- / .header-body -->
-            @include('app.components.breadcrumb', [
-            'datas' => [
-            [
-            'active' => true,
-            'url' => '',
-            'name' => $title,
-            'disabled' => false
-            ]
-            ]
-            ])
-        </div>
-    </div> <!-- / .header -->
-
-    <!-- CARDS -->
     <div class="container-fluid">
-        <div class="search">
-            <div class="card">
-                <div class="card-body">
-                    <form action="{{ route($route_name.'.index') }}" class="d-flex">
-                        <input type="text" class="form-control" name="search" value="{{$search}}" placeholder="Search...">
-                        <button type="submit" class="btn btn-success ms-3" style="width: 300px;">Search</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
         <div class="card mt-4">
             <div class="card-body">
-                <!-- Table -->
                 <div class="table-responsive">
                     <table class="table table-sm table-hover mb-0">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Employ</th>
-                            <th scope="col">Department</th>
-                            <th scope="col">Position</th>
-                            <th scope="col">Employ staff</th>
-                            <th scope="col">Employ form</th>
-                            <th scope="col">Employ_staff</th>
-                            <th scope="col">Active</th>
-                            <th scope="col"></th>
-
+                            <th>#</th>
+                            <th>Employ</th>
+                            <th>Department</th>
+                            <th>Position</th>
+                            <th>Employ staff</th>
+                            <th>Employ form</th>
+                            <th>Employ staff type</th>
+                            <th>Active</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
-                        <tbody >
+                        <tbody>
                         @foreach ($employ_meta as $employ_meta_item)
-                            {{-- Glavni menyu --}}
-                            <tr>
+                            <tr class="main-row">
                                 <td>{{ $employ_meta_item->id }}</td>
-                                <td>{{ $employ_meta_item->employ ? $employ_meta_item->employ->first_name[$main_lang->code] : 'Main' }}</td>
-                                <td>{{ $employ_meta_item->department ? $employ_meta_item->department->name[$main_lang->code] : 'Main' }}</td>
+                                <td>
+                                    <span class="toggle-btn" data-target="nested-{{ $employ_meta_item->id }}">+</span>
+                                    {{ $employ_meta_item->employ ? $employ_meta_item->employ->first_name[$main_lang->code] : 'Main' }}
+                                </td>
+                                <td >{{ $employ_meta_item->department ? $employ_meta_item->department->name[$main_lang->code] : 'Main' }}</td>
                                 <td>{{ $employ_meta_item->position ? $employ_meta_item->position->name[$main_lang->code] : 'Main' }}</td>
                                 <td>{{ $employ_meta_item->employ_staff ? $employ_meta_item->employ_staff->name[$main_lang->code] : 'Main' }}</td>
                                 <td>{{ $employ_meta_item->employ_form ? $employ_meta_item->employ_form->name[$main_lang->code] : 'Main' }}</td>
                                 <td>{{ $employ_meta_item->employ_type ? $employ_meta_item->employ_type->name[$main_lang->code] : 'Main' }}</td>
-
                                 <td>
                                     @if($employ_meta_item->active == 1)
                                         <span style="color: green; font-weight: bold;">Active</span>
@@ -110,13 +51,11 @@
                                         <span style="color: red; font-weight: bold;">Inactive</span>
                                     @endif
                                 </td>
-
                                 <td>
                                     <a href="{{ route('employ_meta.edit',$employ_meta_item->id) }}" class="btn btn-sm btn-info">
                                         <i class="fe fe-edit-2"></i>
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-danger"
-                                       onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $employ_meta_item->id }}').submit(); }">
+                                    <a href="#" class="btn btn-sm btn-danger" onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $employ_meta_item->id }}').submit(); }">
                                         <i class="fe fe-trash"></i>
                                     </a>
                                     <form id="delete-form-{{ $employ_meta_item->id }}" action="{{ route($route_name.'.destroy', $employ_meta_item->id) }}" method="POST" style="display: none;">
@@ -125,8 +64,18 @@
                                     </form>
                                 </td>
                             </tr>
-
-                            {{-- Sub-menyular --}}
+                            <tr id="nested-{{ $employ_meta_item->id }}" class="nested-row">
+                                <td colspan="9">
+                                    <strong>Details:</strong>
+                                    <ul>
+                                        <li>Department: {{ $employ_meta_item->department->name[$main_lang->code] ?? 'N/A' }}</li>
+                                        <li>Position: {{ $employ_meta_item->position->name[$main_lang->code] ?? 'N/A' }}</li>
+                                        <li>Employ Staff: {{ $employ_meta_item->employ_staff->name[$main_lang->code] ?? 'N/A' }}</li>
+                                        <li>Employ Form: {{ $employ_meta_item->employ_form->name[$main_lang->code] ?? 'N/A' }}</li>
+                                        <li>Employ Staff Type: {{ $employ_meta_item->employ_type->name[$main_lang->code] ?? 'N/A' }}</li>
+                                    </ul>
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
@@ -137,8 +86,23 @@
             </div>
         </div>
     </div>
-
 @endsection
 @section('scripts')
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".toggle-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    let targetId = this.getAttribute("data-target");
+                    let targetRow = document.getElementById(targetId);
+                    if (targetRow.style.display === "none" || targetRow.style.display === "") {
+                        targetRow.style.display = "table-row";
+                        this.innerText = "-";
+                    } else {
+                        targetRow.style.display = "none";
+                        this.innerText = "+";
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -331,6 +331,7 @@ class ApiController extends Controller
                 'id' => $member->id ?? null, //
                 'title' => $member->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
                 'desc' => $member->desc[$locale] ?? null, //
+                'date' => $member->created_at?? null, //
                 'file' => url('upload/certificates/' . $member->file),
                 'photo' => [
                     'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
@@ -374,6 +375,7 @@ class ApiController extends Controller
                 'id' => $member->id ?? null, //
                 'title' => $member->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
                 'desc' => $member->desc[$locale] ?? null, //
+                'date' => $member->created_at?? null, //
                 'file' => url('upload/certificates/' . $member->file),
                 'photo' => [
                     'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
