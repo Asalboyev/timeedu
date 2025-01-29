@@ -19,6 +19,8 @@ class EducationalProgram extends Model
         'icon',
         'map',
         'name',
+        'education_years',
+        'yt_link',
         'active',
         'date',
         'form_education',

@@ -253,7 +253,19 @@
                                     <label for="date" class="form-label">icon</label>
                                     <input type="file" id="date" name="icon" class="form-control" value="{{ old('icon') }}" placeholder="icon..."  />
                                 </div>
-
+                                <div class="form-group">
+                                    <label for="date" class="form-label">Education years</label>
+                                    <input type="text" id="date" name="education_years" class="form-control" value="{{ old('education_years') }}" placeholder="education_years..."  />
+                                </div>
+                                <div class="form-group">
+                                    <label for="map" class="form-label">Youtobe  link (<code>iframe</code>)</label>
+                                    <textarea name="yt_link" id="map" cols="4" rows="4" class="form-control @error('yt_link') is-invalid @enderror" name="yt_link">{{ old('yt_link')  }}</textarea>
+                                    @error('yt_link')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                                     <div class="form-group">
                                         <label for="date" class="form-label">Daytime price</label>
                                         <input type="text" id="date" name="daytime" class="form-control" value="{{ old('daytime') }}" placeholder="Daytime price..."/>

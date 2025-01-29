@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->text('name')->nullable();
             $table->text('icon')->nullable();
+            $table->string('education_years')->nullable();
+            $table->string('yt_link')->nullable();
             $table->text('first_name')->nullable();
             $table->text('second_name')->nullable();
             $table->text('third_name')->nullable();
