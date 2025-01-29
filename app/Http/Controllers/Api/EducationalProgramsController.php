@@ -30,6 +30,8 @@ class EducationalProgramsController extends Controller
                 'name' => $program->name[$locale] ?? null,
                 'slug' => $program->slug,
                 'active' => $program->active,
+                'education_years' => $program->education_years,
+                'yt_link' => $program->yt_link,
                 'children' => $program->children->map(function ($child) use ($locale) {
                     return [
                         'id' => $child->id,
@@ -145,6 +147,8 @@ class EducationalProgramsController extends Controller
             'code' => $program->code,
             'lang' => $program->lang[$locale] ?? null,
             'date' => $program->date,
+            'education_years' => $program->education_years,
+            'yt_link' => $program->yt_link,
             'employs' => $program->employs->map(function ($employ) use ($locale) {
                 return [
                     'id' => $employ->id,
