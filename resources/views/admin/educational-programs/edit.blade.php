@@ -289,7 +289,7 @@
                                         <label for="date" class="form-label">Date</label>
                                         <input type="text" id="date" name="date" class="form-control" value="{{ old('date')?? $educationalProgram->date ?? null }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
                                     </div>
-                                            <div class="form-group">
+                                    <div class="form-group">
                                         <label for="date" class="form-label">icon</label>
                                         <input type="file" id="icon" name="icon" class="form-control" value="{{ old('icon')?? $educationalProgram->icon ?? null }}" placeholder="" />
                                     </div>

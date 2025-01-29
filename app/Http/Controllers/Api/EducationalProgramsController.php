@@ -59,6 +59,11 @@ class EducationalProgramsController extends Controller
                                 'id' => $employ->id,
                                 'name' => $employ->first_name[$locale] ?? $employ->first_name, // Add localization if applicable
                                 'dec' => $employ->dec[$locale] ?? $employ->first_name, // Add localization if applicable
+                                'photo' => [
+                                    'lg' => $employ->photo ? url('/upload/images/' . $employ->photo) : null, // Katta o'lchamdagi rasm
+                                    'md' => $employ->photo ? url('/upload/images/600/' . $employ->photo) : null, // O'rtacha o'lchamdagi rasm
+                                    'sm' => $employ->photo ? url('/upload/images/200/' . $employ->photo) : null, // Kichik o'lchamdagi rasm
+                                ],
                             ];
                         }),
                         'activity' => $child->activity ? [
@@ -149,11 +154,21 @@ class EducationalProgramsController extends Controller
             'date' => $program->date,
             'education_years' => $program->education_years,
             'yt_link' => $program->yt_link,
+            'photo' => [
+                'lg' => $employ->photo ? url('/upload/images/' . $employ->photo) : null, // Katta o'lchamdagi rasm
+                'md' => $employ->photo ? url('/upload/images/600/' . $employ->photo) : null, // O'rtacha o'lchamdagi rasm
+                'sm' => $employ->photo ? url('/upload/images/200/' . $employ->photo) : null, // Kichik o'lchamdagi rasm
+            ],
             'employs' => $program->employs->map(function ($employ) use ($locale) {
                 return [
                     'id' => $employ->id,
                     'name' => $employ->first_name[$locale] ?? $employ->first_name,
                     'dec' => $employ->dec[$locale] ?? $employ->first_name,
+                    'photo' => [
+                        'lg' => $employ->photo ? url('/upload/images/' . $employ->photo) : null, // Katta o'lchamdagi rasm
+                        'md' => $employ->photo ? url('/upload/images/600/' . $employ->photo) : null, // O'rtacha o'lchamdagi rasm
+                        'sm' => $employ->photo ? url('/upload/images/200/' . $employ->photo) : null, // Kichik o'lchamdagi rasm
+                    ],
                 ];
             }),
             'activity' => $program->activity ? [

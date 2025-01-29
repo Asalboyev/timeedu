@@ -230,7 +230,7 @@ class LeadershipController extends Controller
 
                 // Professor employees
                 'professor_employ' => $group->filter(function ($employee) {
-                    return $employee->position->id === 4; // Filter by position ID
+                    return $employee->position->id === 12; // Filter by position ID
                 })->map(function ($employee) use ($locale) {
                     return [
                         'id' => $employee->id,
@@ -267,7 +267,7 @@ class LeadershipController extends Controller
 
                 // Management employees
                 'manage_employ' => $group->filter(function ($employee) {
-                    return $employee->position->id === 5; // Filter by position ID
+                    return $employee->position->id === 13; // Filter by position ID
                 })->map(function ($employee) use ($locale) {
                     return [
                         'id' => $employee->id,
