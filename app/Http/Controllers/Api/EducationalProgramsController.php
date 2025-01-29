@@ -53,6 +53,11 @@ class EducationalProgramsController extends Controller
                         'code' => $child->code,
                         'lang' => $child->lang[$locale] ?? null,
                         'date' => $child->date,
+                        'photo' => [
+                            'lg' => $child->photo ? url('/upload/images/' . $child->photo) : null, // Katta o'lchamdagi rasm
+                            'md' => $child->photo ? url('/upload/images/600/' . $child->photo) : null, // O'rtacha o'lchamdagi rasm
+                            'sm' => $child->photo ? url('/upload/images/200/' . $child->photo) : null, // Kichik o'lchamdagi rasm
+                        ],
 
                         'employs' => $child->employs->map(function ($employ) use ($locale) {
                             return [
@@ -155,9 +160,9 @@ class EducationalProgramsController extends Controller
             'education_years' => $program->education_years,
             'yt_link' => $program->yt_link,
             'photo' => [
-                'lg' => $employ->photo ? url('/upload/images/' . $employ->photo) : null, // Katta o'lchamdagi rasm
-                'md' => $employ->photo ? url('/upload/images/600/' . $employ->photo) : null, // O'rtacha o'lchamdagi rasm
-                'sm' => $employ->photo ? url('/upload/images/200/' . $employ->photo) : null, // Kichik o'lchamdagi rasm
+                'lg' => $program->photo ? url('/upload/images/' . $program->photo) : null, // Katta o'lchamdagi rasm
+                'md' => $program->photo ? url('/upload/images/600/' . $program->photo) : null, // O'rtacha o'lchamdagi rasm
+                'sm' => $program->photo ? url('/upload/images/200/' . $program->photo) : null, // Kichik o'lchamdagi rasm
             ],
             'employs' => $program->employs->map(function ($employ) use ($locale) {
                 return [
@@ -227,6 +232,11 @@ class EducationalProgramsController extends Controller
                             'id' => $employ->id,
                             'name' => $employ->first_name[$locale] ?? $employ->first_name,
                             'dec' => $employ->dec[$locale] ?? $employ->first_name,
+                            'photo' => [
+                                'lg' => $employ->activity->photo ? url('/upload/images/' . $employ->activity->photo) : null,
+                                'md' => $employ->activity->photo ? url('/upload/images/600/' . $employ->activity->photo) : null,
+                                'sm' => $employ->activity->photo ? url('/upload/images/200/' . $employ->activity->photo) : null,
+                            ],
                         ];
                     }),
                     'activity' => $child->activity ? [
