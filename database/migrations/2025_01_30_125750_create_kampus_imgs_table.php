@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('positions', function (Blueprint $table) {
+        Schema::create('kampus_imgs', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
-            $table->string('slug');
-            $table->integer('order')->nullable();
-            $table->integer('active')->default(1);
+            $table->bigInteger('kampus_id');
+            $table->string('img');
             $table->timestamps();
-            $table->softDeletes(); // Soft delete qo'shish
-
         });
     }
 
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('positions');
+        Schema::dropIfExists('kampus_imgs');
     }
 };

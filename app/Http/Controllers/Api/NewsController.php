@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kampus;
 use App\Models\PostsCategory;
 use Illuminate\Http\Request;
 use App\Models\Post;
@@ -106,6 +107,108 @@ class NewsController extends Controller
             'views_count' => $post->views_count, // Yangilangan views_count
             'meta_keywords' => $post->meta_keywords,
         ];
+
+        return response()->json($translatedPost);
+    }
+
+    public function get_kampus()
+    {
+        // Foydalanuvchi tilini olish
+        $locale = App::getLocale();
+
+        // Postlarni oxirgi qo'shilganidan boshlab olish va 10 tadan paginate qilish
+        $posts = Kampus::latest()
+            ->with('kampusImages')
+            ->paginate(10);
+
+        // Agar postlar topilmasa, 404 xatolikni qaytaradi
+        if ($posts->isEmpty()) {
+            return response()->json([
+                'message' => 'No records found'
+            ], 404);
+        }
+
+        // Postlarni foydalanuvchi tiliga moslashtirish
+        $translatedPosts = collect($posts->items())->map(function ($post) use ($locale) {
+            return [
+                'id' => $post->id,
+                'name' => $post->name[$locale] ?? null,
+                'first_name' => $post->first_name[$locale] ?? null,
+                'first_description' => $post->first_description[$locale] ?? null,
+                'second_name' => $post->second_name[$locale] ?? null,
+                'second_description' => $post->second_description[$locale] ?? null,
+                'third_name' => $post->third_name[$locale] ?? null,
+                'third_description' => $post->third_description[$locale] ?? null,
+                'slug' => $post->slug?? null,
+                'audience_size' => $post->audience_size   ?? null,
+                'educational_programs' => $post->educational_programs   ?? null,
+                'green_zone' => $post->green_zone   ?? null,
+
+                'images' => $post->kampusImages->map(function ($image) {
+                    return [
+                        'lg' => $image->lg_img, // Katta o'lchamdagi rasm URL
+                        'md' => $image->md_img, // O'rta o'lchamdagi rasm URL
+                        'sm' => $image->sm_img, // Kichik o'lchamdagi rasm URL
+                    ];
+                })->toArray(),
+                'date' => $post->date,
+                'views_count' => $post->views_count,
+                'slug' => $post->slug,
+                'meta_keywords' => $post->meta_keywords,
+            ];
+        });
+
+        // Postlar va paginate ma'lumotlarini JSON formatida qaytarish
+        return response()->json([
+            'data' => $translatedPosts, // Tilga mos postlar
+            'total' => $posts->total(), // Umumiy postlar soni
+            'per_page' => $posts->perPage(), // Har bir sahifadagi postlar soni
+            'current_page' => $posts->currentPage(), // Hozirgi sahifa raqami
+            'last_page' => $posts->lastPage(), // Oxirgi sahifa raqami
+            'next_page_url' => $posts->nextPageUrl(), // Keyingi sahifa URLi
+            'prev_page_url' => $posts->previousPageUrl(), // Oldingi sahifa URLi
+        ]);
+    }
+
+    public function show_kampus($slug)
+    {
+        // Foydalanuvchi tilini olish
+        $locale = App::getLocale();
+
+        // Slug orqali postni olish
+        $post = Kampus::with( 'kampusImages')->where('slug', $slug)->first();
+
+        if (is_null($post)) {
+            return response()->json(['message' => 'Post not found or URL is not null'], 404);
+        }
+        // Postni foydalanuvchi tiliga moslashtirish
+        $translatedPost = [
+            'id' => $post->id,
+            'name' => $post->name[$locale] ?? null,
+            'first_name' => $post->first_name[$locale] ?? null,
+            'first_description' => $post->first_description[$locale] ?? null,
+            'second_name' => $post->second_name[$locale] ?? null,
+            'second_description' => $post->second_description[$locale] ?? null,
+            'third_name' => $post->third_name[$locale] ?? null,
+            'third_description' => $post->third_description[$locale] ?? null,
+            'slug' => $post->slug?? null,
+            'audience_size' => $post->audience_size   ?? null,
+            'educational_programs' => $post->educational_programs   ?? null,
+            'green_zone' => $post->green_zone   ?? null,
+
+            'images' => $post->kampusImages->map(function ($image) {
+                return [
+                    'lg' => $image->lg_img, // Katta o'lchamdagi rasm URL
+                    'md' => $image->md_img, // O'rta o'lchamdagi rasm URL
+                    'sm' => $image->sm_img, // Kichik o'lchamdagi rasm URL
+                ];
+            })->toArray(),
+            'date' => $post->date,
+            'views_count' => $post->views_count,
+            'slug' => $post->slug,
+            'meta_keywords' => $post->meta_keywords,
+        ];
+
 
         return response()->json($translatedPost);
     }

@@ -24,6 +24,10 @@ Route::middleware('locale')->group(function () {
     Route::get('/news', [\App\Http\Controllers\Api\NewsController::class, 'get_posts']);
     Route::get('/news/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_post']);
 
+
+    Route::get('/kampus', [\App\Http\Controllers\Api\NewsController::class, 'get_kampus']);
+    Route::get('/kampus/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_kampus']);
+
     Route::get('/video_news', [\App\Http\Controllers\Api\NewsController::class, 'get_video_post']);
     Route::get('/video_news/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_video_post']);
 
@@ -48,6 +52,7 @@ Route::middleware('locale')->group(function () {
     Route::get('/educational-programs/{id}', [\App\Http\Controllers\Api\EducationalProgramsController::class, 'show_educational_program']);
 
     Route::post('/contacts', [ApiController::class, 'store']);
+
 
 
     Route::get('/partner-link', [ApiController::class, 'get_partners_link']);

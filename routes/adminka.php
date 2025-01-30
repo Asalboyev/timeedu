@@ -86,6 +86,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::resource('positions', \App\Http\Controllers\Admin\PositionController::class);
 
+    Route::resource('kampuses', \App\Http\Controllers\Admin\KampusController::class);
+
     Route::resource('employ_staff', \App\Http\Controllers\Admin\EmployStaffController::class);
 
     Route::resource('employ_forms', \App\Http\Controllers\Admin\EmployFormController::class);

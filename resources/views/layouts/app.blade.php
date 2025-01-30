@@ -331,10 +331,10 @@
 
                 @if($menu_items_groups->where('title', 'Компания')->where('is_active', 1)->first())
                         <li class="nav-item">
-                            <a class="nav-link" href="#company" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') || request()->is('admin/certificates') || request()->is('admin/certificates/*')  || request()->is('admin/documents') || request()->is('admin/documents/*') || request()->is('admin/services') || request()->is('admin/services/*') ? 'true' : 'false' }}" aria-controls="documents">
+                            <a class="nav-link" href="#company" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') || request()->is('admin/certificates') || request()->is('admin/certificates/*')  || request()->is('admin/documents') || request()->is('admin/documents/*') || request()->is('admin/services') || request()->is('admin/services/*') || request()->is('admin/kampuses') || request()->is('admin/kampuses/*') ? 'true' : 'false' }}" aria-controls="documents">
                                 <i class="fe fe-star"></i> Group
                             </a>
-                            <div class="collapse {{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') || request()->is('admin/certificates') || request()->is('admin/certificates/*')  || request()->is('admin/documents') || request()->is('admin/documents/*') || request()->is('admin/services') || request()->is('admin/services/*') ? 'show' : '' }}" id="company">
+                            <div class="collapse {{ request()->is('admin/feedbacks') || request()->is('admin/feedbacks/*') || request()->is('admin/students') || request()->is('admin/students/*') || request()->is('admin/partners') || request()->is('admin/partners/*') || request()->is('admin/questions') || request()->is('admin/questions/*') || request()->is('admin/banners') || request()->is('admin/banners/*') || request()->is('admin/vacancies') || request()->is('admin/vacancies/*') || request()->is('admin/certificates') || request()->is('admin/certificates/*')  || request()->is('admin/documents') || request()->is('admin/documents/*') || request()->is('admin/services') || request()->is('admin/services/*') || request()->is('admin/kampuses') || request()->is('admin/kampuses/*') ? 'show' : '' }}" id="company">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->is('admin/banners') || request()->is('admin/banners/*') ? 'active' : '' }}" href="{{ route('banners.index') }}">
@@ -386,6 +386,11 @@
                                                 Services
                                             </a>
                                         </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->is('admin/kampuses') || request()->is('admin/kampuses/*') ? 'active' : '' }}" href="{{ route('kampuses.index') }}">
+                                            kampuses
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

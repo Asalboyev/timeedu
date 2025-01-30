@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('name');
             $table->unsignedBigInteger('structure_type_id');
 //            $table->unsignedBigInteger('type_id');
+            $table->string('slug');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->boolean('active')->default(1);
             $table->string('code')->nullable();

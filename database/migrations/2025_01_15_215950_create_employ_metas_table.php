@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('employ_form_id');
             $table->string('contrakt_date')->nullable();
             $table->string('contrakt_number')->nullable();
+            $table->string('slug');
             $table->unsignedBigInteger('employ_type_id');
             $table->boolean('active')->default(true);
             $table->timestamps();
