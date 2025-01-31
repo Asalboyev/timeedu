@@ -399,26 +399,39 @@ class LeadershipController extends Controller
     }
     public function getDepartmentEmployeesuser($id)
     {
-        // EmployMeta modelini id orqali olish
-        $simpleEmployee = EmployMeta::with(['employ' => function ($query) {
-        }])->find($id);
+        // EmployMeta modelini id orqali olish va barcha bog'liq ma'lumotlarni yuklash
+        $simpleEmployee = EmployMeta::with([
+            'employ',
+            'department',
+            'position',
+            'employ_form',
+            'employ_staff',
+            'employ_type'
+        ])->find($id);
+
         // Agar ma'lumot topilmasa, 404 xato qaytarish
         if (!$simpleEmployee) {
             return response()->json(['message' => 'Employ meta topilmadi'], 404);
         }
+
         // Topilgan ma'lumotlarni JSON formatida qaytarish
         return response()->json([
             'id' => $simpleEmployee->id,
-            'first_name' => $simpleEmployee->employ->first_name,
-            'last_name' => $simpleEmployee->employ->last_name,
-            'surname' => $simpleEmployee->employ->surname,
-            'email' => $simpleEmployee->employ->email,
-            'phone' => $simpleEmployee->employ->phone,
-            'birthday' => $simpleEmployee->employ->birthday,
-            'gender' => $simpleEmployee->employ->gender,
-            'status' => $simpleEmployee->employ->status,
-            'photo' => $simpleEmployee->employ->photo,
-            'employ_meta' => $simpleEmployee // employMeta ma'lumotlarini qaytarish
+            'first_name' => $simpleEmployee->employ->first_name ?? null,
+            'last_name' => $simpleEmployee->employ->last_name ?? null,
+            'surname' => $simpleEmployee->employ->surname ?? null,
+            'email' => $simpleEmployee->employ->email ?? null,
+            'phone' => $simpleEmployee->employ->phone ?? null,
+            'birthday' => $simpleEmployee->employ->birthday ?? null,
+            'gender' => $simpleEmployee->employ->gender ?? null,
+            'status' => $simpleEmployee->employ->status ?? null,
+            'photo' => $simpleEmployee->employ->photo ?? null,
+            'department' => $simpleEmployee->department->name ?? null,
+            'position' => $simpleEmployee->position->name ?? null,
+            'employ_form' => $simpleEmployee->employ_form->name ?? null,
+            'employ_staff' => $simpleEmployee->employ_staff->name ?? null,
+            'employ_type' => $simpleEmployee->employ_type->name ?? null,
+            'employ_meta' => $simpleEmployee
         ]);
     }
     public function showEmployeesByPosition(Request $request)
@@ -474,9 +487,16 @@ class LeadershipController extends Controller
     }
     public function showfakultetuser($id)
     {
-        // EmployMeta modelini id orqali olish
-        $simpleEmployee = EmployMeta::with(['employ' => function ($query) {
-        }])->find($id);
+        // EmployMeta modelini id orqali olish va barcha bog'liq ma'lumotlarni yuklash
+        $simpleEmployee = EmployMeta::with([
+            'employ',
+            'department',
+            'position',
+            'employ_form',
+            'employ_staff',
+            'employ_type'
+        ])->find($id);
+
         // Agar ma'lumot topilmasa, 404 xato qaytarish
         if (!$simpleEmployee) {
             return response()->json(['message' => 'Employ meta topilmadi'], 404);
@@ -485,16 +505,21 @@ class LeadershipController extends Controller
         // Topilgan ma'lumotlarni JSON formatida qaytarish
         return response()->json([
             'id' => $simpleEmployee->id,
-            'first_name' => $simpleEmployee->employ->first_name,
-            'last_name' => $simpleEmployee->employ->last_name,
-            'surname' => $simpleEmployee->employ->surname,
-            'email' => $simpleEmployee->employ->email,
-            'phone' => $simpleEmployee->employ->phone,
-            'birthday' => $simpleEmployee->employ->birthday,
-            'gender' => $simpleEmployee->employ->gender,
-            'status' => $simpleEmployee->employ->status,
-            'photo' => $simpleEmployee->employ->photo,
-            'employ_meta' => $simpleEmployee // employMeta ma'lumotlarini qaytarish
+            'first_name' => $simpleEmployee->employ->first_name ?? null,
+            'last_name' => $simpleEmployee->employ->last_name ?? null,
+            'surname' => $simpleEmployee->employ->surname ?? null,
+            'email' => $simpleEmployee->employ->email ?? null,
+            'phone' => $simpleEmployee->employ->phone ?? null,
+            'birthday' => $simpleEmployee->employ->birthday ?? null,
+            'gender' => $simpleEmployee->employ->gender ?? null,
+            'status' => $simpleEmployee->employ->status ?? null,
+            'photo' => $simpleEmployee->employ->photo ?? null,
+            'department' => $simpleEmployee->department->name ?? null,
+            'position' => $simpleEmployee->position->name ?? null,
+            'employ_form' => $simpleEmployee->employ_form->name ?? null,
+            'employ_staff' => $simpleEmployee->employ_staff->name ?? null,
+            'employ_type' => $simpleEmployee->employ_type->name ?? null,
+            'employ_meta' => $simpleEmployee
         ]);
     }
 
@@ -559,15 +584,4 @@ class LeadershipController extends Controller
             'employ_meta' => $simpleEmployee // employMeta ma'lumotlarini qaytarish
         ]);
     }
-
-
-
-
-
-
-
-
-
-
-
 }
