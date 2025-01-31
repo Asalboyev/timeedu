@@ -15,6 +15,7 @@ use App\Models\SiteInfo;
 use App\Models\Translation;
 use App\Models\Partner;
 use App\Models\Brand;
+use App\Models\Application;
 
 
 

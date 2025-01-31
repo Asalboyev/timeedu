@@ -396,8 +396,6 @@ class LeadershipController extends Controller
         ];
          return response()->json($employees);
 
-
-
     }
     public function getDepartmentEmployeesuser($id)
     {
