@@ -72,6 +72,7 @@ Route::middleware('locale')->group(function () {
 
     Route::get('/department', [\App\Http\Controllers\Api\LeadershipController::class, 'showEmployeesByPosition']);
     Route::get('/department/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'getDepartmentEmployees']);
+    Route::get('/department/user/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'getDepartmentEmployeesuser']);
 
 
     Route::get('/fakultet', [\App\Http\Controllers\Api\LeadershipController::class, 'getfakultet']);
