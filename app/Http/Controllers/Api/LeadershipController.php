@@ -461,6 +461,31 @@ class LeadershipController extends Controller
         ];
         return response()->json($employees);
     }
+    public function showfakultetuser($id)
+    {
+        // EmployMeta modelini id orqali olish
+        $simpleEmployee = EmployMeta::with(['employ' => function ($query) {
+        }])->find($id);
+        // Agar ma'lumot topilmasa, 404 xato qaytarish
+        if (!$simpleEmployee) {
+            return response()->json(['message' => 'Employ meta topilmadi'], 404);
+        }
+
+        // Topilgan ma'lumotlarni JSON formatida qaytarish
+        return response()->json([
+            'id' => $simpleEmployee->id,
+            'first_name' => $simpleEmployee->employ->first_name,
+            'last_name' => $simpleEmployee->employ->last_name,
+            'surname' => $simpleEmployee->employ->surname,
+            'email' => $simpleEmployee->employ->email,
+            'phone' => $simpleEmployee->employ->phone,
+            'birthday' => $simpleEmployee->employ->birthday,
+            'gender' => $simpleEmployee->employ->gender,
+            'status' => $simpleEmployee->employ->status,
+            'photo' => $simpleEmployee->employ->photo,
+            'employ_meta' => $simpleEmployee // employMeta ma'lumotlarini qaytarish
+        ]);
+    }
 
     public function getKafedralar()
     {
@@ -498,6 +523,37 @@ class LeadershipController extends Controller
         ];
         return response()->json($employees);
     }
+    public function showkafedralaruser($id)
+    {
+        // EmployMeta modelini id orqali olish
+        $simpleEmployee = EmployMeta::with(['employ' => function ($query) {
+        }])->find($id);
+        // Agar ma'lumot topilmasa, 404 xato qaytarish
+        if (!$simpleEmployee) {
+            return response()->json(['message' => 'Employ meta topilmadi'], 404);
+        }
+
+        // Topilgan ma'lumotlarni JSON formatida qaytarish
+        return response()->json([
+            'id' => $simpleEmployee->id,
+            'first_name' => $simpleEmployee->employ->first_name,
+            'last_name' => $simpleEmployee->employ->last_name,
+            'surname' => $simpleEmployee->employ->surname,
+            'email' => $simpleEmployee->employ->email,
+            'phone' => $simpleEmployee->employ->phone,
+            'birthday' => $simpleEmployee->employ->birthday,
+            'gender' => $simpleEmployee->employ->gender,
+            'status' => $simpleEmployee->employ->status,
+            'photo' => $simpleEmployee->employ->photo,
+            'employ_meta' => $simpleEmployee // employMeta ma'lumotlarini qaytarish
+        ]);
+    }
+
+
+
+
+
+
 
 
 

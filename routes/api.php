@@ -76,9 +76,12 @@ Route::middleware('locale')->group(function () {
 
     Route::get('/fakultet', [\App\Http\Controllers\Api\LeadershipController::class, 'getfakultet']);
     Route::get('/fakultet/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showfakultet']);
+    Route::get('/fakultet/user/{user_id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showfakultetuser']);
 
     Route::get('/kafedralar', [\App\Http\Controllers\Api\LeadershipController::class, 'getKafedralar']);
     Route::get('/kafedralar/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showKafedralar']);
+    Route::get('/kafedralar/user/{id}', [\App\Http\Controllers\Api\LeadershipController::class, 'showkafedralaruser']);
+
 
 
 
