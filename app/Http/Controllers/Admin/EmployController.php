@@ -32,7 +32,8 @@ class EmployController extends Controller
         // Agar "search" parametri bo'lsa, qidiruv sharti qo'shamiz
         if (isset($_GET['search']) && !empty($_GET['search'])) {
             $search = trim($_GET['search']);
-            $employ_typesQuery->where('name', 'like', '%' . $search . '%'); // Menyu sarlavhasida qidirish
+            $employ_typesQuery->where('first_name', 'like', '%' . $search . '%')
+           ; // Menyu sarlavhasida qidirish
 
         }
 
