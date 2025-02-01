@@ -75,7 +75,7 @@
                                     <div class="imb-block me-2 overflow-hidden">
                                         <img src="{{ $item->sm_img ?? asset('assets/img/default.png') }}" alt="">
                                     </div>
-                                    {{ $item->first_name[$main_lang->code]?? null}}
+                                    {{ $item->first_name[$main_lang->code]?? null}} {{ $item->last_name[$main_lang->code]?? null}}
                                 </div>
                             </td>
                             <td>{{ isset($item->birthday) ? date('d-m-Y', strtotime($item->birthday)) : '--' }}</td>

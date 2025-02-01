@@ -96,7 +96,7 @@
                             {{-- Glavni menyu --}}
                             <tr>
                                 <td>{{ $employ_meta_item->id }}</td>
-                                <td>{{ $employ_meta_item->employ ? $employ_meta_item->employ->first_name[$main_lang->code] : 'Main' }}</td>
+                                <td>{{ $employ_meta_item->employ ? $employ_meta_item->employ->first_name[$main_lang->code] : 'Main' }} {{ $employ_meta_item->employ ? $employ_meta_item->employ->last_name[$main_lang->code] : 'Main' }}</td>
                                 <td>{{ $employ_meta_item->department ? $employ_meta_item->department->name[$main_lang->code] : 'Main' }}</td>
                                 <td>{{ $employ_meta_item->position ? $employ_meta_item->position->name[$main_lang->code] : 'Main' }}</td>
                                 <td>{{ $employ_meta_item->employ_staff ? $employ_meta_item->employ_staff->name[$main_lang->code] : 'Main' }}</td>
