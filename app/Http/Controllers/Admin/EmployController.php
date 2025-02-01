@@ -32,8 +32,7 @@ class EmployController extends Controller
         // Agar "search" parametri bo'lsa, qidiruv sharti qo'shamiz
         if (isset($_GET['search']) && !empty($_GET['search'])) {
             $search = trim($_GET['search']);
-            $employ_typesQuery->where('first_name', 'like', '%' . $search . '%')
-           ; // Menyu sarlavhasida qidirish
+            $employ_typesQuery->where('first_name', 'like', '%' . $search . '%'); // Menyu sarlavhasida qidirish
 
         }
 
@@ -62,6 +61,7 @@ class EmployController extends Controller
      */
     public function create()
     {
+
         $langs = Lang::all();
         $all_categories = PostsCategory::all();
 
@@ -83,7 +83,6 @@ class EmployController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
         $validator = Validator::make($data, [
             'first_name.' . $this->main_lang->code => 'required'
         ]);
