@@ -350,6 +350,7 @@ class DynamicMenuController extends Controller
                             'position' => $menuData['position'] ?? 1,
                             'photo' => $menuData['dropzone_images'] ?? null,
                             'dinamik_menu_id' => $menuData['dinamik_menu_id'] ?? null,
+
                         ]);
 
                         // Suratlarni yangilash
@@ -380,6 +381,8 @@ class DynamicMenuController extends Controller
                         'position' => $menuData['position'] ?? 1,
                         'photo' => $menuData['dropzone_images'] ?? null,
                         'dinamik_menu_id' => $menuData['dinamik_menu_id'] ?? null,
+                        'dinamik_menu_id' => $id->id ?? null,
+
                     ]);
 
                     // Suratlarni saqlash
@@ -450,7 +453,8 @@ class DynamicMenuController extends Controller
                         'order' => $menuData['order'] ?? null,
                         'position' => $menuData['position'] ?? 1,
                         'photo' => $menuData['dropzone_images'] ?? null,
-                        'dinamik_menu_id' => $menuData['dinamik_menu_id'] ?? null,
+                        'dinamik_menu_id' => $id->id ?? null,
+
                     ]);
 
                     // Suratlarni saqlash
@@ -520,7 +524,7 @@ class DynamicMenuController extends Controller
                         'order' => $menuData['order'] ?? null,
                         'position' => $menuData['position'] ?? 1,
                         'photo' => $menuData['dropzone_images'] ?? null,
-                        'dinamik_menu_id' => $menuData['dinamik_menu_id'] ?? null,
+                        'dinamik_menu_id' => $id->id ?? null,
                     ]);
 
                     // Suratlarni saqlash
