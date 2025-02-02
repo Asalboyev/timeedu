@@ -92,11 +92,11 @@
                         @foreach ($educational_programs as $programItem)
                             {{-- Asosiy (parent) element --}}
                             <tr>
-                                <td>{{ $programItem['program']->id }}</td>
-                                <td><strong>{{ $programItem['program']->name[$languages->first()->code] ?? null }}</strong></td>
+                                <td>{{ $programItem['menu']->id }}</td>
+                                <td><strong>{{ $programItem['menu']->name[$languages->first()->code] ?? null }}</strong></td>
                                 <td>Parent Educational_programs</td>
                                 <td>
-                                    @if($programItem['program']->active == 1)
+                                    @if($programItem['menu']->active == 1)
                                         <span style="color: green; font-weight: bold;">Active</span>
                                     @else
                                         <span style="color: red; font-weight: bold;">Inactive</span>
@@ -104,14 +104,14 @@
                                 </td>
 
                                 <td>
-                                    <a href="{{ route($route_name.'.edit',  $programItem['program']->id) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route($route_name.'.edit',  $programItem['menu']->id) }}" class="btn btn-sm btn-info">
                                         <i class="fe fe-edit-2"></i>
                                     </a>
                                     <a href="#" class="btn btn-sm btn-danger"
-                                       onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $programItem['program']->id }}').submit(); }">
+                                       onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $programItem['menu']->id }}').submit(); }">
                                         <i class="fe fe-trash"></i>
                                     </a>
-                                    <form id="delete-form-{{ $programItem['program']->id }}" action="{{ route($route_name.'.destroy', $programItem['program']->id) }}" method="POST" style="display: none;">
+                                    <form id="delete-form-{{ $programItem['menu']->id }}" action="{{ route($route_name.'.destroy', $programItem['menu']->id) }}" method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
                                     </form>
@@ -122,11 +122,11 @@
                             @if (!empty($programItem['children']))
                                 @foreach ($programItem['children'] as $child)
                                     <tr>
-                                        <td>{{ $child['program']->id }}</td>
-                                        <td>&mdash; {{ $child['program']->name[$languages->first()->code] ?? null }}</td>
-                                        <td>{{ $programItem['program']->name[$languages->first()->code]?? null }}</td>
+                                        <td>{{ $child['menu']->id }}</td>
+                                        <td>&mdash; {{ $child['menu']->name[$languages->first()->code] ?? null }}</td>
+                                        <td>{{ $programItem['menu']->name[$languages->first()->code]?? null }}</td>
                                         <td>
-                                            @if($programItem['program']->active == 1)
+                                            @if($programItem['menu']->active == 1)
                                                 <span style="color: green; font-weight: bold;">Active</span>
                                             @else
                                                 <span style="color: red; font-weight: bold;">Inactive</span>
@@ -134,18 +134,18 @@
                                         </td>
                                         <td>
 
-                                            <a href="{{ route('education_faqs.index', $child['program']->id) }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route('education_faqs.index', $child['menu']->id) }}" class="btn btn-sm btn-info">
                                                 <i class="fe fe-download-cloud"></i>
                                             </a>
 
-                                            <a href="{{ route($route_name.'.edit',  $child['program']->id) }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route($route_name.'.edit',  $child['menu']->id) }}" class="btn btn-sm btn-info">
                                                 <i class="fe fe-edit-2"></i>
                                             </a>
                                             <a href="#" class="btn btn-sm btn-danger"
-                                               onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $child['program']->id }}').submit(); }">
+                                               onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $child['menu']->id }}').submit(); }">
                                                 <i class="fe fe-trash"></i>
                                             </a>
-                                            <form id="delete-form-{{ $child['program']->id }}" action="{{ route($route_name.'.destroy', $child['program']->id) }}" method="POST" style="display: none;">
+                                            <form id="delete-form-{{ $child['menu']->id }}" action="{{ route($route_name.'.destroy', $child['menu']->id) }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>

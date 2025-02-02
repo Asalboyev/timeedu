@@ -85,11 +85,6 @@ class EducationalProgramsController extends Controller
     }
 
 
-
-
-
-
-// Hierarxik menyular daraxti uchun yordamchi funksiya
     private function buildMenuTree($paginatedMenus)
     {
         // Sahifalangan asosiy menyular ID-lari
