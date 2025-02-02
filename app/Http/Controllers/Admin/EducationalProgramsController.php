@@ -69,7 +69,7 @@ class EducationalProgramsController extends Controller
         // Pagination bilan ma'lumot olish
         $paginatedPrograms = $programsQuery
             ->orderBy('parent_id') // Glavni (asosiy) elementlar avval keladi
-            ->paginate(12);
+            ->paginate(2);
 
         // Daraxtli tuzilma yaratish
         $educational_programs = $this->buildTree($paginatedPrograms->items());
