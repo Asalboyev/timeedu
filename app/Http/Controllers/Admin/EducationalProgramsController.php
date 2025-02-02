@@ -56,61 +56,63 @@ class EducationalProgramsController extends Controller
 //        ]);
 //    }
 
-    public function index()
+
+    public function index(Request $request)
     {
-        $programsQuery = EducationalProgram::query();
+        $languages = Lang::all();
+        $search = $request->input('search'); // Qidiruv uchun so'rovdan kelayotgan ma'lumot
 
-        // Qidiruv (search)
-        if (isset($_GET['search'])) {
-            $search = trim($_GET['search']);
-            $programsQuery->where('name', 'like', '%' . $search . '%');
-        }
-
-        // Pagination bilan ma'lumot olish
-        $paginatedPrograms = $programsQuery
-            ->orderBy('parent_id') // Glavni (asosiy) elementlar avval keladi
+        // Faqat asosiy menyularni paginate qilish
+        $paginatedMenus = EducationalProgram::whereNull('parent_id')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'LIKE', '%' . $search . '%');
+            })
+            ->orderBy('order')
             ->paginate(2);
 
-        // Daraxtli tuzilma yaratish
-        $educational_programs = $this->buildTree($paginatedPrograms->items());
-
-        $languages = Lang::all();
+        // Hierarxik daraxtni sahifalangan menyular asosida tuzish
+        $menuTree = $this->buildMenuTree($paginatedMenus);
 
         return view('admin.educational-programs.index', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
-            'educational_programs' => $educational_programs,
-            'count' => $paginatedPrograms, // Pagination linklari uchun
+
+            'educational_programs' => $menuTree, // Hierarxik menyular daraxti
             'languages' => $languages,
-            'search' => $_GET['search'] ?? '',
+            'count' => $paginatedMenus, // Sahifalash obyektini blade-ga yuborish
+            'search' => $search, // Qidiruvni blade-ga yuborish
         ]);
     }
 
-    private function buildTree($programs)
-    {
-        $programMap = [];
-        $tree = [];
 
-        // ID bo'yicha xaritalash
-        foreach ($programs as $program) {
-            $programMap[$program->id] = [
-                'program' => $program,
-                'children' => [],
+
+
+
+
+// Hierarxik menyular daraxti uchun yordamchi funksiya
+    private function buildMenuTree($paginatedMenus)
+    {
+        // Sahifalangan asosiy menyular ID-lari
+        $menuIds = $paginatedMenus->pluck('id')->toArray();
+
+        // Ushbu asosiy menyularga tegishli bolalarni olish
+        $childMenus = EducationalProgram::whereIn('parent_id', $menuIds)
+            ->orderBy('order')
+            ->get();
+
+        // Hierarxik daraxtni tuzish
+        $menuTree = [];
+        foreach ($paginatedMenus as $menu) {
+            $menuTree[] = [
+                'menu' => $menu, // Asosiy menyu
+                'children' => $childMenus->where('parent_id', $menu->id), // Faqat tegishli bolalar
             ];
         }
 
-        // Daraxtga joylashtirish
-        foreach ($programs as $program) {
-            if ($program->parent_id && isset($programMap[$program->parent_id])) {
-                $programMap[$program->parent_id]['children'][] = &$programMap[$program->id];
-            } else {
-                $tree[] = &$programMap[$program->id];
-            }
-        }
-
-        return $tree;
+        return $menuTree;
     }
+
 
 
     /**
