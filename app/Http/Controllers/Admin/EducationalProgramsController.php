@@ -67,7 +67,6 @@ class EducationalProgramsController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             })
-            ->orderBy('order')
             ->paginate(2);
 
         // Hierarxik daraxtni sahifalangan menyular asosida tuzish
@@ -98,7 +97,6 @@ class EducationalProgramsController extends Controller
 
         // Ushbu asosiy menyularga tegishli bolalarni olish
         $childMenus = EducationalProgram::whereIn('parent_id', $menuIds)
-            ->orderBy('order')
             ->get();
 
         // Hierarxik daraxtni tuzish
