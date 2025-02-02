@@ -90,62 +90,57 @@
                         </thead>
                         <tbody >
                         @foreach ($educational_programs as $programItem)
-                            {{-- Asosiy (parent) element --}}
                             <tr>
-                                <td>{{ $programItem['menu']->id }}</td>
-                                <td><strong>{{ $programItem['menu']->name[$languages->first()->code] ?? null }}</strong></td>
-                                <td>Parent Educational_programs</td>
+                                <td>{{ $programItem['menu']->id ?? '-' }}</td>
+                                <td><strong>{{ $programItem['menu']->name[$languages->first()->code] ?? 'No Name' }}</strong></td>
+                                <td>Parent Educational_program</td>
                                 <td>
                                     @if($programItem['menu']->active == 1)
-                                        <span style="color: green; font-weight: bold;">Active</span>
+                                        <span class="text-success font-weight-bold">Active</span>
                                     @else
-                                        <span style="color: red; font-weight: bold;">Inactive</span>
+                                        <span class="text-danger font-weight-bold">Inactive</span>
                                     @endif
                                 </td>
-
                                 <td>
-                                    <a href="{{ route($route_name.'.edit',  $programItem['menu']->id) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route('educational-programs.edit', $programItem['menu']->id) }}" class="btn btn-sm btn-info">
                                         <i class="fe fe-edit-2"></i>
                                     </a>
                                     <a href="#" class="btn btn-sm btn-danger"
                                        onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $programItem['menu']->id }}').submit(); }">
                                         <i class="fe fe-trash"></i>
                                     </a>
-                                    <form id="delete-form-{{ $programItem['menu']->id }}" action="{{ route($route_name.'.destroy', $programItem['menu']->id) }}" method="POST" style="display: none;">
+                                    <form id="delete-form-{{ $programItem['menu']->id }}" action="{{ route('educational-programs.destroy', $programItem['menu']->id) }}" method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
                                     </form>
                                 </td>
                             </tr>
 
-                            {{-- Bolalar (children) elementlari --}}
                             @if (!empty($programItem['children']))
                                 @foreach ($programItem['children'] as $child)
                                     <tr>
-                                        <td>{{ $child['menu']->id }}</td>
-                                        <td>&mdash; {{ $child['menu']->name[$languages->first()->code] ?? null }}</td>
-                                        <td>{{ $programItem['menu']->name[$languages->first()->code]?? null }}</td>
+                                        <td>{{ $child->id ?? '-' }}</td>
+                                        <td>&mdash; {{ $child->name[$languages->first()->code] ?? 'No Name' }}</td>
+                                        <td>{{ $programItem['menu']->name[$languages->first()->code] ?? 'No Parent' }}</td>
                                         <td>
-                                            @if($programItem['menu']->active == 1)
-                                                <span style="color: green; font-weight: bold;">Active</span>
+                                            @if($child->active == 1)
+                                                <span class="text-success font-weight-bold">Active</span>
                                             @else
-                                                <span style="color: red; font-weight: bold;">Inactive</span>
+                                                <span class="text-danger font-weight-bold">Inactive</span>
                                             @endif
                                         </td>
                                         <td>
-
-                                            <a href="{{ route('education_faqs.index', $child['menu']->id) }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route('education_faqs.index', $child->id) }}" class="btn btn-sm btn-info">
                                                 <i class="fe fe-download-cloud"></i>
                                             </a>
-
-                                            <a href="{{ route($route_name.'.edit',  $child['menu']->id) }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route('educational-programs.edit', $child->id) }}" class="btn btn-sm btn-info">
                                                 <i class="fe fe-edit-2"></i>
                                             </a>
                                             <a href="#" class="btn btn-sm btn-danger"
-                                               onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $child['menu']->id }}').submit(); }">
+                                               onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $child->id }}').submit(); }">
                                                 <i class="fe fe-trash"></i>
                                             </a>
-                                            <form id="delete-form-{{ $child['menu']->id }}" action="{{ route($route_name.'.destroy', $child['menu']->id) }}" method="POST" style="display: none;">
+                                            <form id="delete-form-{{ $child->id }}" action="{{ route('educational-programs.destroy', $child->id) }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
@@ -154,7 +149,6 @@
                                 @endforeach
                             @endif
                         @endforeach
-
                         </tbody>
                     </table>
                 </div>
