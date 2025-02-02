@@ -22,51 +22,34 @@ class DynamicMenuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $languages = Lang::all();
-        $search = $request->input('search'); // Qidiruv so‘rovi
+        // Query yaratamiz
+        $menusQuery = DinamikMenu::query();
 
-        // Faqat asosiy menyularni paginate qilish
-        $paginatedMenus = EducationalProgram::whereNull('parent_id')
-            ->when($search, function ($query, $search) {
-                return $query->where('name', 'LIKE', '%' . $search . '%');
-            })
-            ->paginate(5); // 5 tadan sahifalash
+        // Agar "search" parametri bo'lsa, qidiruv sharti qo'shamiz
+        if (isset($_GET['search']) && !empty($_GET['search'])) {
+            $search = trim($_GET['search']);
+            $menusQuery->where('title', 'like', '%' . $search . '%'); // Menyu sarlavhasida qidirish
 
-        // Agar hech narsa topilmasa, bo‘sh massiv qaytarish
-        $menuTree = $paginatedMenus->isEmpty() ? [] : $this->buildMenuTree($paginatedMenus);
-
-        return view('admin.educational-programs.index', [
-            'title' => 'Educational Programs',
-            'route_name' => 'educational-programs',
-            'educational_programs' => $menuTree,
-            'languages' => $languages,
-            'count' => $paginatedMenus,
-            'search' => $search,
-        ]);
-    }
-
-    private function buildMenuTree($paginatedMenus)
-    {
-        // Sahifalangan asosiy menyular ID-lari
-        $menuIds = $paginatedMenus->pluck('id')->toArray();
-
-        // Ushbu asosiy menyularga tegishli bolalarni olish va `groupBy()` bilan tartiblash
-        $childMenus = EducationalProgram::whereIn('parent_id', $menuIds)
-            ->get()
-            ->groupBy('parent_id');
-
-        // Hierarxik daraxtni tuzish
-        $menuTree = [];
-        foreach ($paginatedMenus as $menu) {
-            $menuTree[] = [
-                'menu' => $menu, // Asosiy menyu
-                'children' => $childMenus->get($menu->id, collect()), // Null bo‘lsa, bo‘sh kolleksiya qaytarish
-            ];
         }
 
-        return $menuTree;
+        // Pagination va tartib
+        $menus = $menusQuery->latest()
+            ->paginate(12);
+
+        // Mavjud tillar
+        $languages = Lang::all();
+
+        // View qaytariladi
+        return view('admin.dynamic-menus.index', [
+            'title' => $this->title,
+            'route_name' => $this->route_name,
+            'route_parameter' => $this->route_parameter,
+            'menus' => $menus,
+            'languages' => $languages,
+            'search' => isset($_GET['search']) ? $_GET['search'] : '', // Qidiruv qiymati
+        ]);
     }
 
 

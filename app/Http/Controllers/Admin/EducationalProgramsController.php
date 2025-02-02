@@ -56,56 +56,52 @@ class EducationalProgramsController extends Controller
 //        ]);
 //    }
 
-
     public function index(Request $request)
     {
         $languages = Lang::all();
-        $search = $request->input('search'); // Qidiruv uchun so'rovdan kelayotgan ma'lumot
+        $search = $request->input('search'); // Qidiruv so‘rovi
 
         // Faqat asosiy menyularni paginate qilish
         $paginatedMenus = EducationalProgram::whereNull('parent_id')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             })
-            ->paginate(2);
+            ->paginate(5); // 5 tadan sahifalash
 
-        // Hierarxik daraxtni sahifalangan menyular asosida tuzish
-        $menuTree = $this->buildMenuTree($paginatedMenus);
+        // Agar hech narsa topilmasa, bo‘sh massiv qaytarish
+        $menuTree = $paginatedMenus->isEmpty() ? [] : $this->buildMenuTree($paginatedMenus);
 
         return view('admin.educational-programs.index', [
-            'title' => $this->title,
-            'route_name' => $this->route_name,
-            'route_parameter' => $this->route_parameter,
-
-            'educational_programs' => $menuTree, // Hierarxik menyular daraxti
+            'title' => 'Educational Programs',
+            'route_name' => 'educational-programs',
+            'educational_programs' => $menuTree,
             'languages' => $languages,
-            'count' => $paginatedMenus, // Sahifalash obyektini blade-ga yuborish
-            'search' => $search, // Qidiruvni blade-ga yuborish
+            'count' => $paginatedMenus,
+            'search' => $search,
         ]);
     }
-
 
     private function buildMenuTree($paginatedMenus)
     {
         // Sahifalangan asosiy menyular ID-lari
         $menuIds = $paginatedMenus->pluck('id')->toArray();
 
-        // Ushbu asosiy menyularga tegishli bolalarni olish
+        // Ushbu asosiy menyularga tegishli bolalarni olish va `groupBy()` bilan tartiblash
         $childMenus = EducationalProgram::whereIn('parent_id', $menuIds)
-            ->get();
+            ->get()
+            ->groupBy('parent_id');
 
         // Hierarxik daraxtni tuzish
         $menuTree = [];
         foreach ($paginatedMenus as $menu) {
             $menuTree[] = [
                 'menu' => $menu, // Asosiy menyu
-                'children' => $childMenus->where('parent_id', $menu->id), // Faqat tegishli bolalar
+                'children' => $childMenus->get($menu->id, collect()), // Null bo‘lsa, bo‘sh kolleksiya qaytarish
             ];
         }
 
         return $menuTree;
     }
-
 
 
     /**
