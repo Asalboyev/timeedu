@@ -374,15 +374,13 @@ class DynamicMenuController extends Controller
                 } else {
                     // Yangi yozuv yaratish
                     $formMenu = FormMenu::create([
+                        'dinamik_menu_id' => $dinamikMenu ? $dinamikMenu->id : null, // ✅ NULL bo‘lsa, xato bermaydi
                         'title' => $menuData['title'] ?? null,
                         'text' => $menuData['text'] ?? null,
                         'type' => $menuData['type'] ?? null,
                         'order' => $menuData['order'] ?? null,
                         'position' => $menuData['position'] ?? 1,
                         'photo' => $menuData['dropzone_images'] ?? null,
-                        'dinamik_menu_id' => $menuData['dinamik_menu_id'] ?? null,
-                        'dinamik_menu_id' => $id->id ?? null,
-
                     ]);
 
                     // Suratlarni saqlash
@@ -453,7 +451,7 @@ class DynamicMenuController extends Controller
                         'order' => $menuData['order'] ?? null,
                         'position' => $menuData['position'] ?? 1,
                         'photo' => $menuData['dropzone_images'] ?? null,
-                        'dinamik_menu_id' => $id->id ?? null,
+                        'dinamik_menu_id' => $dinamikMenu ? $dinamikMenu->id : null, // ✅ NULL bo‘lsa, xato bermaydi
 
                     ]);
 
@@ -524,7 +522,7 @@ class DynamicMenuController extends Controller
                         'order' => $menuData['order'] ?? null,
                         'position' => $menuData['position'] ?? 1,
                         'photo' => $menuData['dropzone_images'] ?? null,
-                        'dinamik_menu_id' => $id->id ?? null,
+                        'dinamik_menu_id' => $dinamikMenu ? $dinamikMenu->id : null, // ✅ NULL bo‘lsa, xato bermaydi
                     ]);
 
                     // Suratlarni saqlash
