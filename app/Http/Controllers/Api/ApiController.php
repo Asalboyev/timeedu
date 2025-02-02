@@ -517,6 +517,7 @@ class ApiController extends Controller
                 'linkedin_link' => $member->linkedin_link ?? null,
                 'facebook_link' => $member->facebook_link ?? null,
                 'work_time' => $member->work_time ?? null,
+                'date' => $member->created_at ?? null,
                 'photo' => [
                     'lg' => $member->img ? url('/upload/images/' . $member->img) : null,
                     'md' => $member->img ? url('/upload/images/600/' . $member->img) : null,
@@ -560,6 +561,7 @@ class ApiController extends Controller
                 'desc' => $member->desc[$locale]  ?? null, //
                 'views_count' => $member->views_count ?? null, //
                 'slug' => $member->slug ?? null, //
+                'date' => $member->created_at ?? null,
                 'photo' => [
                     'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
                     'md' => $member->img ? url('/upload/images/600/' . $member->img) : null, // O'rtacha o'lchamdagi rasm
@@ -603,6 +605,8 @@ class ApiController extends Controller
                 'desc' => $member->desc[$locale]  ?? null, //
                 'views_count' => $member->views_count ?? null, //
                 'slug' => $member->slug ?? null, //
+                'date' => $member->created_at ?? null,
+
                 'photo' => [
                     'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
                     'md' => $member->img ? url('/upload/images/600/' . $member->img) : null, // O'rtacha o'lchamdagi rasm
