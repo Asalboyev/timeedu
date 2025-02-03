@@ -163,6 +163,29 @@
                                     @endforeach
                                 </div>
                                 <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="form-check form-switch">
+                                                <!-- Yashirin input: agar checkbox belgilanmasa, 0 qiymati yuboriladi -->
+                                                <input type="hidden" name="action" value="0">
+
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       name="action"
+                                                       id="switchTwo"
+                                                       value="1"
+                                                        {{ $brand->action ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="switchTwo"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col ms-n2">
+                                            <small class="text-muted">
+                                                Special
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <!-- Dropzone -->
                                     <label for="dropzone" class="form-label">Лого</label>
                                     <div class="dropzone dropzone-multiple" id="dropzone"></div>

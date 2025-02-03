@@ -344,8 +344,8 @@ class DynamicMenuController extends Controller
                     $formMenu = FormMenu::find($menuData['id']);
                     if ($formMenu) {
                         $formMenu->update([
-                            'title' => $menuData['title'][0] ?? null,
-                            'text' => $menuData['text'][0] ?? null,
+                            'title' => $menuData['title'] ?? null,
+                            'text' => $menuData['text'] ?? null,
                             'type' => $menuData['type'] ?? null,
                             'order' => $menuData['order'] ?? null,
                             'position' => $menuData['position'] ?? 1,
@@ -601,3 +601,4 @@ class DynamicMenuController extends Controller
         }
     }
 }
+
