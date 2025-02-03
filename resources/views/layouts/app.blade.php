@@ -383,7 +383,7 @@
                                         </li>
                                     <li class="nav-item">
                                             <a class="nav-link {{ request()->is('admin/services') || request()->is('admin/services/*') ? 'active' : '' }}" href="{{ route('services.index') }}">
-                                                Services
+                                                Journals
                                             </a>
                                         </li>
                                     <li class="nav-item">
