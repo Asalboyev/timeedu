@@ -16,6 +16,7 @@ class CreateCertificatesTable extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
             $table->text('title');
+            $table->string('action')->nullable();
             $table->string('img')->nullable();
             $table->text('desc')->nullable();
             $table->string('file')->nullable();

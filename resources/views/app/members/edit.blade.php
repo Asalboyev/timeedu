@@ -166,7 +166,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="answer{{ $lang->code }}" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Descrition</label>
-                                            <textarea id="dec.{{ $lang->code }}" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="dec[{{ $lang->code }}]" placeholder="Descrition...">{{ old('dec.'.$lang->code) ?? $employ->dec[$lang->code] ?? null }}</textarea>
+                                            <textarea id="dec.{{ $lang->code }}" cols="30" rows="10" class="form-control @error('dec.'.$lang->code) is-invalid @enderror ckeditor" name="dec[{{ $lang->code }}]" placeholder="Descrition...">{{ old('dec.'.$lang->code) ?? $member->dec[$lang->code] ?? null }}</textarea>
                                             @error('dec.'.$lang->code)
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

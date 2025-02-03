@@ -61,6 +61,9 @@ Route::middleware('locale')->group(function () {
     Route::get('/certificates', [ApiController::class, 'get_certificates']);
     Route::get('/certificates/{id}', [ApiController::class, 'show_certificates']);
 
+    Route::get('/certificates-other', [ApiController::class, 'get_certificates_other']);
+    Route::get('/certificates-other/{id}', [ApiController::class, 'show_certificates_other']);
+
     Route::get('/documents', [ApiController::class, 'get_documents']);
     Route::get('/documents/{id}', [ApiController::class, 'show_documents']);
 

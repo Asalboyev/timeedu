@@ -51,6 +51,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Название</th>
                             <th scope="col">Сертификат</th>
+                            <th scope="col">Action</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -66,6 +67,13 @@
                                 --
                                 @endif
                             </td>
+                            <td> @if($item->action == 1)
+                                    <span style=" font-weight: bold;">Litsenziya va sertifikatlar</span>
+                                @else
+                                    <span style="font-weight: bold;">Sertifikatlar</span>
+                                @endif</td>
+
+
                             <td style="width: 200px">
                                 <div class="d-flex justify-content-end">
                                     <a href="{{ route($route_name.'.edit', [$route_parameter => $item]) }}" class="btn btn-sm btn-info"><i class="fe fe-edit-2"></i></a>

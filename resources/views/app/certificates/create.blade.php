@@ -130,6 +130,13 @@
                                     @endforeach
                                 </div>
                                 <div class="form-group">
+                                    <label for="menu_id" class="form-label">Action</label>
+                                    <select name="action" class="form-select">
+                                        <option value="1">Litsenziya va sertifikatlar</option>
+                                        <option value="0">Sertifikatlar</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <!-- Dropzone -->
                                     <label for="dropzone" class="form-label text-capitalize">file</label>
                                     <input type="file"  class="form-control" name="file" value="{{ old('file') }}" id="title" placeholder="file...">

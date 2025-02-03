@@ -157,6 +157,15 @@
                                     </div>
                                     @endforeach
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="menu_id" class="form-label">Status</label>
+                                    <select name="action" class="form-select">
+                                        <option value="1" {{ $certificate->active == 1 ? 'selected' : '' }}>Litsenziya va sertifikatlar</option>
+                                        <option value="0" {{ $certificate->active == 0 ? 'selected' : '' }}>Sertifikatlar</option>
+                                    </select>
+
+                                </div>
                                 <div class="form-group">
                                     <!-- Dropzone -->
                                     <label for="dropzone" class="form-label">Сертификат</label>

@@ -344,91 +344,93 @@ class DynamicMenuController extends Controller
                     $formMenu = FormMenu::find($menuData['id']);
                     if ($formMenu) {
                         $formMenu->update([
-                            'title' => $menuData['title'] ?? null,
-                            'text' => $menuData['text'] ?? null,
+                            'title' => $menuData['title'][0] ?? null,
+                            'text' => $menuData['text'][0] ?? null,
                             'type' => $menuData['type'] ?? null,
                             'order' => $menuData['order'] ?? null,
                             'position' => $menuData['position'] ?? 1,
                             'photo' => $menuData['dropzone_images'] ?? null,
                             'dinamik_menu_id' => $menuData['dinamik_menu_id'] ?? null,
-
                         ]);
 
                         // Suratlarni yangilash
                         if (isset($menuData['dropzone_images'])) {
                             $dropzoneImages = is_string($menuData['dropzone_images'])
-                                ? json_decode($menuData['dropzone_images'], true)
+                                ? explode(',', $menuData['dropzone_images']) // Stringni arrayga aylantiramiz
                                 : $menuData['dropzone_images'];
 
                             if (is_array($dropzoneImages)) {
-                                FormImage::where('form_id', $formMenu->id)->delete(); // Eski suratlarni o'chirish
+                                FormImage::where('form_id', $formMenu->id)->delete(); // Eski rasmlarni o‘chiramiz
                                 foreach ($dropzoneImages as $img) {
                                     FormImage::create([
                                         'form_id' => $formMenu->id,
-                                        'img' => trim($img),
+                                        'img' => trim($img), // Rasm nomidan bo‘sh joylarni olib tashlaymiz
                                     ]);
                                 }
                             }
                         }
-
                     }
-                } else {
-                    // Yangi yozuv yaratish
-                    $formMenu = FormMenu::create([
-                        'dinamik_menu_id' => $dinamikMenu ? $dinamikMenu->id : null, // ✅ NULL bo‘lsa, xato bermaydi
-                        'title' => $menuData['title'] ?? null,
-                        'text' => $menuData['text'] ?? null,
-                        'type' => $menuData['type'] ?? null,
-                        'order' => $menuData['order'] ?? null,
-                        'position' => $menuData['position'] ?? 1,
-                        'photo' => $menuData['dropzone_images'] ?? null,
-                    ]);
-
-                    // Suratlarni saqlash
-                    if (isset($menuData['dropzone_images'])) {
-                        $dropzoneImages = is_string($menuData['dropzone_images'])
-                            ? json_decode($menuData['dropzone_images'], true)
-                            : $menuData['dropzone_images'];
-
-                        if (is_array($dropzoneImages)) {
-                            foreach ($dropzoneImages as $img) {
-                                FormImage::create([
-                                    'form_id' => $formMenu->id,
-                                    'img' => trim($img),
-                                ]);
-                            }
-                        }
-                    }
-
-                    // Kategoriyalarni biriktirish
-
                 }
             }
         }
-        foreach ($formMenus2 as $formMenuData) {
-            foreach ($formMenuData as $menuData) {
-                if (isset($menuData['id'])) {
-                    // Mavjud yozuvni yangilash
-                    $formMenu = FormMenu::find($menuData['id']);
-                    if ($formMenu) {
-                        $formMenu->update([
+        foreach ([$formMenus2, $formMenus3] as $formMenus) {
+            foreach ($formMenus as $formMenuData) {
+                foreach ($formMenuData as $menuData) {
+                    if (isset($menuData['id'])) {
+                        // Mavjud yozuvni yangilash
+                        $formMenu = FormMenu::find($menuData['id']);
+                        if ($formMenu) {
+                            $formMenu->update([
+                                'title' => $menuData['title'] ?? null,
+                                'text' => $menuData['text'] ?? null,
+                                'type' => $menuData['type'] ?? null,
+                                'order' => $menuData['order'] ?? null,
+                                'position' => $menuData['position'] ?? 1,
+                                'photo' => $menuData['dropzone_images'] ?? null,
+                                'dinamik_menu_id' => $menuData['dinamik_menu_id'] ?? null,
+                            ]);
+
+                            // Suratlarni yangilash
+                            if (isset($menuData['dropzone_images'])) {
+                                $dropzoneImages = is_string($menuData['dropzone_images'])
+                                    ? explode(',', $menuData['dropzone_images']) // ✅ Stringni arrayga aylantiramiz
+                                    : $menuData['dropzone_images'];
+
+                                if (is_array($dropzoneImages)) {
+                                    FormImage::where('form_id', $formMenu->id)->delete(); // ✅ Eski suratlarni o‘chiramiz
+                                    foreach ($dropzoneImages as $img) {
+                                        FormImage::create([
+                                            'form_id' => $formMenu->id,
+                                            'img' => trim($img),
+                                        ]);
+                                    }
+                                }
+                            }
+
+                            // Kategoriyalarni yangilash
+                            if (isset($menuData['categories']) && is_array($menuData['categories'])) {
+                                $formMenu->postsmenuCategories()->sync($menuData['categories']);
+                            }
+                        }
+                    } else {
+                        // Yangi yozuv yaratish
+                        $formMenu = FormMenu::create([
                             'title' => $menuData['title'] ?? null,
                             'text' => $menuData['text'] ?? null,
                             'type' => $menuData['type'] ?? null,
                             'order' => $menuData['order'] ?? null,
                             'position' => $menuData['position'] ?? 1,
                             'photo' => $menuData['dropzone_images'] ?? null,
-                            'dinamik_menu_id' => $menuData['dinamik_menu_id'] ?? null,
+                            'dinamik_menu_id' => $dinamikMenu ? $dinamikMenu->id : null, // ✅ NULL bo‘lsa, xato bermaydi
                         ]);
 
-                        // Suratlarni yangilash
+                        // Suratlarni saqlash
                         if (isset($menuData['dropzone_images'])) {
                             $dropzoneImages = is_string($menuData['dropzone_images'])
-                                ? json_decode($menuData['dropzone_images'], true)
+                                ? explode(',', $menuData['dropzone_images']) // ✅ Stringni arrayga aylantiramiz
                                 : $menuData['dropzone_images'];
 
                             if (is_array($dropzoneImages)) {
-                                FormImage::where('form_id', $formMenu->id)->delete(); // Eski suratlarni o'chirish
                                 foreach ($dropzoneImages as $img) {
                                     FormImage::create([
                                         'form_id' => $formMenu->id,
@@ -438,43 +440,10 @@ class DynamicMenuController extends Controller
                             }
                         }
 
-                        // Kategoriyalarni yangilash
+                        // Kategoriyalarni biriktirish
                         if (isset($menuData['categories']) && is_array($menuData['categories'])) {
                             $formMenu->postsmenuCategories()->sync($menuData['categories']);
                         }
-                    }
-                } else {
-                    // Yangi yozuv yaratish
-                    $formMenu = FormMenu::create([
-                        'title' => $menuData['title'] ?? null,
-                        'text' => $menuData['text'] ?? null,
-                        'type' => $menuData['type'] ?? null,
-                        'order' => $menuData['order'] ?? null,
-                        'position' => $menuData['position'] ?? 1,
-                        'photo' => $menuData['dropzone_images'] ?? null,
-                        'dinamik_menu_id' => $dinamikMenu ? $dinamikMenu->id : null, // ✅ NULL bo‘lsa, xato bermaydi
-
-                    ]);
-
-                    // Suratlarni saqlash
-                    if (isset($menuData['dropzone_images'])) {
-                        $dropzoneImages = is_string($menuData['dropzone_images'])
-                            ? json_decode($menuData['dropzone_images'], true)
-                            : $menuData['dropzone_images'];
-
-                        if (is_array($dropzoneImages)) {
-                            foreach ($dropzoneImages as $img) {
-                                FormImage::create([
-                                    'form_id' => $formMenu->id,
-                                    'img' => trim($img),
-                                ]);
-                            }
-                        }
-                    }
-
-                    // Kategoriyalarni biriktirish
-                    if (isset($menuData['categories']) && is_array($menuData['categories'])) {
-                        $formMenu->postsmenuCategories()->sync($menuData['categories']);
                     }
                 }
             }
@@ -498,11 +467,11 @@ class DynamicMenuController extends Controller
                         // Suratlarni yangilash
                         if (isset($menuData['dropzone_images'])) {
                             $dropzoneImages = is_string($menuData['dropzone_images'])
-                                ? json_decode($menuData['dropzone_images'], true)
+                                ? explode(',', $menuData['dropzone_images']) // ✅ JSON o‘rniga explode() ishlatamiz
                                 : $menuData['dropzone_images'];
 
                             if (is_array($dropzoneImages)) {
-                                FormImage::where('form_id', $formMenu->id)->delete(); // Eski suratlarni o'chirish
+                                FormImage::where('form_id', $formMenu->id)->delete(); // ✅ Eski suratlarni o‘chiramiz
                                 foreach ($dropzoneImages as $img) {
                                     FormImage::create([
                                         'form_id' => $formMenu->id,
@@ -511,8 +480,6 @@ class DynamicMenuController extends Controller
                                 }
                             }
                         }
-
-
                     }
                 } else {
                     // Yangi yozuv yaratish
@@ -529,7 +496,7 @@ class DynamicMenuController extends Controller
                     // Suratlarni saqlash
                     if (isset($menuData['dropzone_images'])) {
                         $dropzoneImages = is_string($menuData['dropzone_images'])
-                            ? json_decode($menuData['dropzone_images'], true)
+                            ? explode(',', $menuData['dropzone_images']) // ✅ JSON o‘rniga explode() ishlatamiz
                             : $menuData['dropzone_images'];
 
                         if (is_array($dropzoneImages)) {
@@ -541,11 +508,9 @@ class DynamicMenuController extends Controller
                             }
                         }
                     }
-
                 }
             }
         }
-
 
         return redirect()->route('dynamic-menus.index')->with([
             'success' => true,

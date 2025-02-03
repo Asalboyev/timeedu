@@ -10,6 +10,7 @@ class Certificate extends Model
     use HasFactory;
 
     protected $fillable = [
+        'action',
         'title',
         'img',
         'file',

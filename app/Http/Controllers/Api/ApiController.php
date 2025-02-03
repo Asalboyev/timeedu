@@ -189,7 +189,7 @@ class ApiController extends Controller
         $locale = App::getLocale();
 
         // Postlarni oxirgi qo'shilganidan boshlab olish va 10 tadan paginate qilish
-        $member = Member::latest()->paginate(15);
+        $member = Certificate::where('action', 0)->latest()->paginate(15);
 
         // Agar postlar topilmasa, 404 xatolikni qaytaradi
         if ($member->isEmpty()) {
@@ -203,6 +203,7 @@ class ApiController extends Controller
             return [
                 'id' => $member->id ?? null, //
                 'name' => $member->name[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
+                'dec' => $member->dec[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
                 'position' => $member->position[$locale] ?? null, //
                 'phone_number' => $member->phone_number ?? null, //
                 'instagram_link' => $member->instagram_link ?? null, //
@@ -252,6 +253,7 @@ class ApiController extends Controller
         $translatedStudent = [
             'id' => $member->id ?? null,
             'name' => $member->name[$locale] ?? null,
+            'dec' => $member->dec[$locale] ?? null,
             'position' => $member->position[$locale] ?? null,
             'phone_number' => $member->phone_number ?? null,
             'instagram_link' => $member->instagram_link ?? null,
@@ -317,7 +319,7 @@ class ApiController extends Controller
         $locale = App::getLocale();
 
         // Postlarni oxirgi qo'shilganidan boshlab olish va 10 tadan paginate qilish
-        $member = Certificate::latest()->paginate(15);
+        $member = Certificate::where('action', 0)->latest()->paginate(15);
 
         // Agar postlar topilmasa, 404 xatolikni qaytaradi
         if ($member->isEmpty()) {
@@ -429,6 +431,127 @@ class ApiController extends Controller
             'prev_page_url' => $members->previousPageUrl(), // Oldingi sahifa URLi
         ]);
     }
+
+
+    public function get_certificates_other()
+    {
+        // Foydalanuvchi tilini olish
+        $locale = App::getLocale();
+
+        // Postlarni oxirgi qo'shilganidan boshlab olish va 10 tadan paginate qilish
+        $member = Certificate::where('action', 1)->latest()->paginate(15);
+
+        // Agar postlar topilmasa, 404 xatolikni qaytaradi
+        if ($member->isEmpty()) {
+            return response()->json([
+                'message' => 'No records found'
+            ], 404);
+        }
+
+        // Postlarni foydalanuvchi tiliga moslashtirish
+        $translatedPosts = collect($member->items())->map(function ($member) use ($locale) {
+            return [
+                'id' => $member->id ?? null, //
+                'title' => $member->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
+                'desc' => $member->desc[$locale] ?? null, //
+                'date' => $member->created_at?? null, //
+                'file' => url('upload/certificates/' . $member->file),
+                'photo' => [
+                    'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
+                    'md' => $member->img ? url('/upload/images/600/' . $member->img) : null, // O'rtacha o'lchamdagi rasm
+                    'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null, // Kichik o'lchamdagi rasm
+                ],
+
+            ];
+        });
+
+
+        // Postlar va paginate ma'lumotlarini JSON formatida qaytarish
+        return response()->json([
+            'data' => $translatedPosts,             // Tilga mos postlar
+            'total' => $member->total(),             // Umumiy postlar soni
+            'per_page' => $member->perPage(),        // Har bir sahifadagi postlar soni
+            'current_page' => $member->currentPage(), // Hozirgi sahifa raqami
+            'last_page' => $member->lastPage(),      // Oxirgi sahifa raqami
+            'next_page_url' => $member->nextPageUrl(), // Keyingi sahifa URLi
+            'prev_page_url' => $member->previousPageUrl(), // Oldingi sahifa URLi
+        ]);
+    }
+    public function show_certificates_other(Request $request, $id = null)
+    {
+        // Foydalanuvchi tilini olish
+        $locale = App::getLocale();
+
+        // Agar id bo'lsa, ma'lum bir studentni qaytarish
+        if ($id) {
+            $member = Certificate::find($id);
+
+            // Agar student topilmasa, 404 xatolikni qaytaradi
+            if (!$member) {
+                return response()->json([
+                    'message' => 'Student not found'
+                ], 404);
+            }
+
+            // Student ma'lumotlarini tilga mos formatda qaytarish
+            $translatedStudent = [
+                'id' => $member->id ?? null, //
+                'title' => $member->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
+                'desc' => $member->desc[$locale] ?? null, //
+                'date' => $member->created_at?? null, //
+                'file' => url('upload/certificates/' . $member->file),
+                'photo' => [
+                    'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
+                    'md' => $member->img ? url('/upload/images/600/' . $member->img) : null, // O'rtacha o'lchamdagi rasm
+                    'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null, // Kichik o'lchamdagi rasm
+                ],
+            ];
+
+            return response()->json($translatedStudent);
+        }
+
+        // Agar id berilmagan bo'lsa, barcha studentlarni paginate qilish
+        $members = Member::latest()->paginate(15);
+
+        // Agar studentlar topilmasa, 404 xatolikni qaytaradi
+        if ($members->isEmpty()) {
+            return response()->json([
+                'message' => 'No records found'
+            ], 404);
+        }
+
+        // Studentlarni foydalanuvchi tiliga moslashtirish
+        $translatedPosts = collect($members->items())->map(function ($member) use ($locale) {
+            return [
+                'id' => $member->id ?? null,
+                'name' => $member->name[$locale] ?? null,
+                'position' => $member->position[$locale] ?? null,
+                'phone_number' => $member->phone_number ?? null,
+                'instagram_link' => $member->instagram_link ?? null,
+                'telegram_link' => $member->telegram_link ?? null,
+                'linkedin_link' => $member->linkedin_link ?? null,
+                'facebook_link' => $member->facebook_link ?? null,
+                'work_time' => $member->work_time ?? null,
+                'photo' => [
+                    'lg' => $member->img ? url('/upload/images/' . $member->img) : null,
+                    'md' => $member->img ? url('/upload/images/600/' . $member->img) : null,
+                    'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null,
+                ],
+            ];
+        });
+
+        // Studentlar va paginate ma'lumotlarini JSON formatida qaytarish
+        return response()->json([
+            'data' => $translatedPosts,             // Tilga mos studentlar
+            'total' => $members->total(),             // Umumiy studentlar soni
+            'per_page' => $members->perPage(),        // Har bir sahifadagi studentlar soni
+            'current_page' => $members->currentPage(), // Hozirgi sahifa raqami
+            'last_page' => $members->lastPage(),      // Oxirgi sahifa raqami
+            'next_page_url' => $members->nextPageUrl(), // Keyingi sahifa URLi
+            'prev_page_url' => $members->previousPageUrl(), // Oldingi sahifa URLi
+        ]);
+    }
+
     public function get_documents()
     {
         // Foydalanuvchi tilini olish
