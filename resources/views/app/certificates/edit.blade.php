@@ -161,8 +161,8 @@
                                 <div class="form-group">
                                     <label for="menu_id" class="form-label">Status</label>
                                     <select name="action" class="form-select">
-                                        <option value="1" {{ $certificate->active == 1 ? 'selected' : '' }}>Litsenziya va sertifikatlar</option>
-                                        <option value="0" {{ $certificate->active == 0 ? 'selected' : '' }}>Sertifikatlar</option>
+                                        <option value="0" {{ $certificate->active == 0 ? 'selected' : '' }}>Litsenziya va sertifikatlar</option>
+                                        <option value="1" {{ $certificate->active == 1 ? 'selected' : '' }}>Sertifikatlar</option>
                                     </select>
 
                                 </div>

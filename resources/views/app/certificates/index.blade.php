@@ -67,7 +67,7 @@
                                 --
                                 @endif
                             </td>
-                            <td> @if($item->action == 1)
+                            <td> @if($item->action == 0)
                                     <span style=" font-weight: bold;">Litsenziya va sertifikatlar</span>
                                 @else
                                     <span style="font-weight: bold;">Sertifikatlar</span>
