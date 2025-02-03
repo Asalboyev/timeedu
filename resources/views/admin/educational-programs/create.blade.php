@@ -146,7 +146,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="desc" class="form-label">Second Description</label>
-                                                <textarea name="second_description[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('second_description.'.$lang->code) is-invalid @enderror ckeditor" name="second_description[{{ $lang->code }}]" placeholder="Second description...">{{ old('second_description.'.$lang->code) }}</textarea>
+                                                <textarea name="second_description[{{ $lang->code }}]" id="desc" cols="30" rows="10" class="form-control @error('second_description.'.$lang->code) is-invalid @enderror ckeditor"  placeholder="Second description...">{{ old('second_description.'.$lang->code) }}</textarea>
                                                 @error('second_description.'.$lang->code)
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

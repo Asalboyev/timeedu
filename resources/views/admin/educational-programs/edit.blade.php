@@ -187,8 +187,8 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}" Third>Name</label>
-                                                    <input type="text" class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="name[{{ $lang->code }}]" value="{{ old('third_name.'.$lang->code) ?? ($educationalProgram->third_name[$lang->code] ?? '') }}" id="title" placeholder="Third Name...">
+                                                    <label for="title" class="form-label {{ $lang->code == $main_lang->code ? 'required' : '' }}">Third Name</label>
+                                                    <input type="text" class="form-control @error('title.'.$lang->code) is-invalid @enderror" name="third_name[{{ $lang->code }}]" value="{{ old('third_name.'.$lang->code) ?? ($educationalProgram->third_name[$lang->code] ?? '') }}" id="title" placeholder="Third Name...">
                                                     @error('third_name.'.$lang->code)
                                                     <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

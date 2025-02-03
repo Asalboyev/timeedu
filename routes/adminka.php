@@ -79,6 +79,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::delete('education-faqs/{id}', [\App\Http\Controllers\Admin\EducationFaqController::class, 'destroy'])->name('education_faqs.destroy');
 
+    Route::delete('/delete-formmenu/{id}', [\App\Http\Controllers\Admin\DynamicMenuController::class, 'delete'])->name('formmenu.destroy');
+
 
 //    Route::get('education-faqs/create/{id}', \App\Http\Controllers\Admin\EducationFaqController::class,'index')->name('education_faqs.index');
 
