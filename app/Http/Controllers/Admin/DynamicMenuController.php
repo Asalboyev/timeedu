@@ -298,7 +298,7 @@ class DynamicMenuController extends Controller
     {
 
         $dinamikMenu = DinamikMenu::findOrFail($id);
-dd($request->all());
+//dd($request->all());
         // Fayllarni saqlash uchun massiv
         $filePaths = $dinamikMenu->file ?? []; // Oldingi fayllarni olib kelamiz
 
