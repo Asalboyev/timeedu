@@ -258,7 +258,7 @@ class LeadershipController extends Controller
                         'active' => $employee->active,
                         'contrakt_date' => $employee->contrakt_date,
                         'contrakt_number' => $employee->contrakt_number,
-
+                        'position' => $employee->position,
                         'employ_form' => $employee->employ_form->name[$locale],
                         'employ_staff' => $employee->employ_staff->name[$locale],
                         'employ_type' => $employee->employ_type->name[$locale],
@@ -295,7 +295,7 @@ class LeadershipController extends Controller
                         'active' => $employee->active,
                         'contrakt_date' => $employee->contrakt_date,
                         'contrakt_number' => $employee->contrakt_number,
-
+                        'position' => $employee->position,
                         'employ_form' => $employee->employ_form->name[$locale],
                         'employ_staff' => $employee->employ_staff->name[$locale],
                         'employ_type' => $employee->employ_type->name[$locale],

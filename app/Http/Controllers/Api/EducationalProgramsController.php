@@ -62,8 +62,11 @@ class EducationalProgramsController extends Controller
                         'employs' => $child->employs->map(function ($employ) use ($locale) {
                             return [
                                 'id' => $employ->id,
-                                'name' => $employ->first_name[$locale] ?? $employ->first_name, // Add localization if applicable
-                                'dec' => $employ->dec[$locale] ?? $employ->first_name, // Add localization if applicable
+                                'name' => trim(implode(' ', array_filter([
+                                    $employ->first_name[$locale] ?? $employ->first_name ?? '',
+                                    $employ->last_name[$locale] ?? $employ->last_name ?? '',
+                                ]))),
+                                'dec' => $employ->dec[$locale] ?? $employ->dec, // Add localization if applicable
                                 'photo' => [
                                     'lg' => $employ->photo ? url('/upload/images/' . $employ->photo) : null, // Katta o'lchamdagi rasm
                                     'md' => $employ->photo ? url('/upload/images/600/' . $employ->photo) : null, // O'rtacha o'lchamdagi rasm
