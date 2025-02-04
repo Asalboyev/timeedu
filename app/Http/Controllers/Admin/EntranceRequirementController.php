@@ -187,49 +187,52 @@ class EntranceRequirementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
-        $data = $request->all();
+        public function update(Request $request, $id)
+        {
+            $data = $request->all();
 
-        $validator = Validator::make($data, [
-            'name.' . $this->main_lang->code => 'required'
-        ]);
-        if ($validator->fails()) {
-            return back()->withInput()->with([
-                'success' => false,
-                'message' => 'Ошибка валидации'
+            $validator = Validator::make($data, [
+                'name.' . $this->main_lang->code => 'required'
             ]);
-        }
-
-
-        DB::beginTransaction();
-        try {
-            $post = EntranceRequirement::findOrFail($id);
-            $post->update($data);
-
+            if ($validator->fails()) {
+                return back()->withInput()->with([
+                    'success' => false,
+                    'message' => 'Ошибка валидации'
+                ]);
+            }
             if (isset($data['dropzone_images'])) {
                 $data['photo'] = $data['dropzone_images'];
+            } else {
+                $data['photo'] = null;
             }
 
-            if (isset($data['skills'])) {
-                $post->skills()->sync($data['skills']);
+
+            DB::beginTransaction();
+            try {
+                $post = EntranceRequirement::findOrFail($id);
+                $post->update($data);
+
+
+
+                if (isset($data['skills'])) {
+                    $post->skills()->sync($data['skills']);
+                }
+
+                DB::commit();
+            } catch (Exception $e) {
+                DB::rollBack();
+
+                return back()->withInput()->with([
+                    'success' => false,
+                    'message' => 'Transaction error'
+                ]);
             }
 
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            return back()->withInput()->with([
-                'success' => false,
-                'message' => 'Transaction error'
+            return redirect()->route('entrance-requirements.index')->with([
+                'success' => true,
+                'message' => 'Updated successfully'
             ]);
         }
-
-        return redirect()->route('entrance-requirements.index')->with([
-            'success' => true,
-            'message' => 'Updated successfully'
-        ]);
-    }
 
     /**
      * Remove the specified resource from storage.

@@ -146,9 +146,9 @@ class ActivitiesController extends Controller
         $activitie = Activity::find($id);
 
         if (isset($data['dropzone_images'])) {
-            $data['img'] = $data['dropzone_images'];
+            $data['photo'] = $data['dropzone_images'];
         } else {
-            $data['img'] = null;
+            $data['photo'] = null;
         }
 
         $activitie->update($data);
