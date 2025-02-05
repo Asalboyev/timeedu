@@ -154,6 +154,10 @@
                                     </div>
                                     @endforeach
                                 </div>
+                                <div class="form-group">
+                                    <label for="date" class="form-label">Slug</label>
+                                    <input type="text" id="date" name="slug" class="form-control" value="{{ old('slug') ?? $postsCategory->slug }}" />
+                                </div>
 {{--                                <div class="form-group">--}}
 {{--                                    <label for="parent_id" class="form-label">Родительская категория</label>--}}
 {{--                                    <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" name="parent_id">--}}

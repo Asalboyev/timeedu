@@ -378,43 +378,74 @@ class NewsController extends Controller
         // Foydalanuvchi tilini olish
         $locale = App::getLocale();
 
-        // Kategoriyani ID orqali topish
-        $category = PostsCategory::with('children')->where('slug', $slug)->first();
+        // Kategoriyani slug orqali topish
+        $category = PostsCategory::where('slug', $slug)->first();
 
         // Agar kategoriya topilmasa, xato xabarini qaytarish
         if (is_null($category)) {
             return response()->json(['message' => 'Category not found'], 404);
         }
 
-        // Kategoriya ma'lumotlarini foydalanuvchi tiliga moslashtirish
-        $translatedCategory = [
-            'id' => $category->id,
-            'title' => $category->title[$locale] ?? null, // Foydalanuvchi tiliga mos sarlavha
-            'desc' => $category->desc[$locale] ?? null,   // Foydalanuvchi tiliga mos tavsif
-            'children' => $category->children->map(function ($child) use ($locale) {
-                return [
-                    'id' => $child->id,
-                    'title' => $child->title[$locale] ?? null,
-                    'desc' => $child->desc[$locale] ?? null,
-                    'images' => [
-                        'lg' => $child->lg_img, // Katta rasm URL
-                        'md' => $child->md_img, // O'rta rasm URL
-                        'sm' => $child->sm_img, // Kichik rasm URL
-                    ],
-                ];
-            }),
-            'images' => [
-                'lg' => $category->lg_img, // Katta rasm URL
-                'md' => $category->md_img, // O'rta rasm URL
-                'sm' => $category->sm_img, // Kichik rasm URL
+        // Shu kategoriyaga tegishli postlarni olish
+        $posts = Post::latest()
+            ->whereHas('postsCategories', function ($query) use ($category) {
+                $query->where('posts_category_id', $category->id);
+            }) // Kategoriyaga tegishli postlarni olish
+            ->whereNull('video_link') // Faqat video_link null bo‘lgan postlarni olish
+            ->with('postImages') // Postlarga bog‘liq rasmlarni olish
+            ->paginate(10);
+
+        // Agar postlar bo‘lmasa, 404 xatolikni qaytaradi
+        if ($posts->isEmpty()) {
+            return response()->json([
+                'message' => 'No records found'
+            ], 404);
+        }
+
+        // Postlarni foydalanuvchi tiliga moslashtirish
+        $translatedPosts = $posts->map(function ($post) use ($locale) {
+            return [
+                'id' => $post->id,
+                'title' => $post->title[$locale] ?? null,
+                'desc' => $post->desc[$locale] ?? null,
+                'images' => $post->postImages->map(function ($image) {
+                    return [
+                        'lg' => $image->lg_img,
+                        'md' => $image->md_img,
+                        'sm' => $image->sm_img,
+                    ];
+                })->toArray(),
+                'date' => $post->date,
+                'views_count' => $post->views_count,
+                'slug' => $post->slug,
+                'meta_keywords' => $post->meta_keywords,
+            ];
+        });
+
+        // Kategoriya va postlar ma’lumotlarini qaytarish
+        return response()->json([
+            'category' => [
+                'id' => $category->id,
+                'title' => $category->title[$locale] ?? null,
+                'desc' => $category->desc[$locale] ?? null,
+                'images' => [
+                    'lg' => $category->lg_img,
+                    'md' => $category->md_img,
+                    'sm' => $category->sm_img,
+                ],
+                'in_main' => $category->in_main,
+                'view' => $category->view,
+                'slug' => $category->slug,
             ],
-            'in_main' => $category->in_main,
-            'view' => $category->view,
-            'slug' => $category->slug,
-
-        ];
-
-        // Ma'lumotlarni JSON formatida qaytarish
-        return response()->json($translatedCategory);
+            'posts' => [
+                'data' => $translatedPosts, // Tilga mos postlar
+                'total' => $posts->total(), // Umumiy postlar soni
+                'per_page' => $posts->perPage(), // Har bir sahifadagi postlar soni
+                'current_page' => $posts->currentPage(), // Hozirgi sahifa raqami
+                'last_page' => $posts->lastPage(), // Oxirgi sahifa raqami
+                'next_page_url' => $posts->nextPageUrl(), // Keyingi sahifa URL
+                'prev_page_url' => $posts->previousPageUrl(), // Oldingi sahifa URL
+            ]
+        ]);
     }
 }

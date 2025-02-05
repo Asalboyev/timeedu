@@ -192,6 +192,10 @@
                                     <input type="text" id="date" name="date" class="form-control" value="{{ old('date') ?? date('d-m-Y', strtotime($post->date)) }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
                                 </div>
                                 <div class="form-group">
+                                    <label for="date" class="form-label">Slug</label>
+                                    <input type="text" id="date" name="slug" class="form-control" value="{{ old('slug') ?? $post->slug }}" />
+                                </div>
+                                <div class="form-group">
                                     <label for="categories" class="form-label">Category</label>
                                     <select class="form-control mb-4 @error('categories') is-invalid @enderror" data-choices='{"removeItemButton": true}' multiple name="categories[]">
                                         @foreach ($all_categories as $key => $item)

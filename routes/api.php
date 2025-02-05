@@ -32,6 +32,7 @@ Route::middleware('locale')->group(function () {
     Route::get('/video_news/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_video_post']);
 
     Route::get('/categories', [\App\Http\Controllers\Api\NewsController::class, 'get_categories']);
+
     Route::get('/categories/{slug}', [\App\Http\Controllers\Api\NewsController::class, 'show_categories']);
 
     Route::get('/students', [\App\Http\Controllers\Api\ApiController::class, 'get_students']);
@@ -52,7 +53,6 @@ Route::middleware('locale')->group(function () {
     Route::get('/educational-programs/{id}', [\App\Http\Controllers\Api\EducationalProgramsController::class, 'show_educational_program']);
 
     Route::post('/contacts', [ApiController::class, 'store']);
-
 
 
     Route::get('/partner-link', [ApiController::class, 'get_partners_link']);

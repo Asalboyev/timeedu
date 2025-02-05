@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\PostsCategory;
 use App\Models\Lang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class PostsCategoryController extends Controller
 {
@@ -69,6 +71,11 @@ class PostsCategoryController extends Controller
                 'success' => false,
                 'message' => 'Ошибка валидации'
             ]);
+        }
+
+        $data['slug'] = Str::slug($data['title'][$this->main_lang->code], '-');
+        if(PostsCategory::where('slug', $data['slug'])->exists()) {
+            $data['slug'] = $data['slug'].'-'.time();
         }
 
         if(isset($data['dropzone_images'])) {
