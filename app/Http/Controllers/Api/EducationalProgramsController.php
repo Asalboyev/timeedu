@@ -87,26 +87,30 @@ class EducationalProgramsController extends Controller
                         ] : null,
                         'entrance_requirement' => $child->EntranceRequirement ? [
                             'id' => $child->EntranceRequirement->id,
-                            'name' => $child->EntranceRequirement->name[$locale] ?? $child->EntranceRequirement->name,
-                            'dec' => $child->EntranceRequirement->dec[$locale] ?? $child->EntranceRequirement->dec,
+                            'name' => is_array($child->EntranceRequirement->name) ? ($child->EntranceRequirement->name[$locale] ?? null) : $child->EntranceRequirement->name,
+                            'dec' => is_array($child->EntranceRequirement->dec) ? ($child->EntranceRequirement->dec[$locale] ?? null) : $child->EntranceRequirement->dec,
+
+                            // Rasm URL'lari
                             'photo' => [
-                                'lg' => $child->EntranceRequirement->photo ? url('/upload/images/' . $child->EntranceRequirement->photo) : null, // Katta o'lchamdagi rasm
-                                'md' => $child->EntranceRequirement->photo ? url('/upload/images/600/' . $child->EntranceRequirement->photo) : null, // O'rtacha o'lchamdagi rasm
-                                'sm' => $child->EntranceRequirement->photo ? url('/upload/images/200/' . $child->EntranceRequirement->photo) : null, // Kichik o'lchamdagi rasm
+                                'lg' => $child->EntranceRequirement->lg_img,
+                                'md' => $child->EntranceRequirement->md_img,
+                                'sm' => $child->EntranceRequirement->sm_img,
                             ],
-                            'skills' => $child->EntranceRequirement->skills ? $child->EntranceRequirement->skills->filter(function ($skill) {
-                                // Faqat yangi qo‘shilganlarini chiqarish (misol uchun, oxirgi 7 kun ichida qo‘shilganlar)
-                                return $skill->created_at >= now()->subDays(7);
+
+                            // Skills bo‘limi
+                            'skills' => $child->EntranceRequirement->skills()->get()->filter(function ($skill) {
+                                return optional($skill->created_at)->greaterThanOrEqualTo(now()->subDays(7));
                             })->map(function ($skill) use ($locale) {
                                 return [
                                     'id' => $skill->id,
-                                    'name' => $skill->name[$locale] ?? $skill->name,
+                                    'name' => is_array($skill->name) ? ($skill->name[$locale] ?? null) : $skill->name,
                                 ];
-                            }) : [],
+                            })->toArray()
                         ] : null,
 
 
-                        'faq' => $child->faq ? $child->faq->map(function ($faq) use ($locale) {
+
+                    'faq' => $child->faq ? $child->faq->map(function ($faq) use ($locale) {
                             return [
                                 'id' => $faq->id,
                                 'skills' => $faq->skill ? [
