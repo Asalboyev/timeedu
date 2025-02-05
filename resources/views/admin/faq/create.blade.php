@@ -131,6 +131,20 @@
                                     @endforeach
                                 </div>
                                 <div class="form-group">
+                                    <label for="parent_id" class="form-label">Parental</label>
+                                    <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" data-choices='{"": true}' name="parent_id">
+                                        <option value="{{null}}"> Main</option>
+                                        @foreach ($faqs as $key => $item)
+                                            <option value="{{ $item->id }}" {{ old('parent_id') == $item->id ? 'selected' : '' }}>{{ $item->question[$main_lang->code] ?? null}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('parent_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
                                     <label for="employs" class="form-label">Skill</label>
                                     <select class="form-control mb-4 @error('skill_id') is-invalid @enderror" data-choices='{"1": true}'  name="skill_id" required>
                                         @foreach ($skills as $key => $item)

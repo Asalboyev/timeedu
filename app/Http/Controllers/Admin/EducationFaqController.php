@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EducationalProgram;
 use App\Models\EmployType;
 use App\Models\ERskill;
 use App\Models\Lang;
@@ -18,63 +19,89 @@ class EducationFaqController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function index(Request $request, $id)
+    {
+        $languages = Lang::all();
+        $search = $request->input('search'); // Qidiruv so‘rovi
+        $childPage = $request->input('child-page', 1); // Bolalar menyusining sahifasi
+
+        // Faqat asosiy menyularni paginate qilish
+        $paginatedMenus = EducationFaq::where('educational_program_id', $id)
+            ->whereNull('parent_id')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'LIKE', '%' . $search . '%');
+            })
+            ->paginate(1); // Asosiy menyularni sahifalash
+
+        // Agar hech narsa topilmasa, bo‘sh massiv qaytarish
+        $menuTree = $paginatedMenus->isEmpty() ? [] : $this->buildMenuTree($paginatedMenus, $id, $childPage);
+
+        return view('admin.faq.index', [
+            'title' => 'Educational Programs',
+            'route_name' => 'educational-programs',
+            'educational_programs' => $menuTree,
+            'languages' => $languages,
+            'count' => $paginatedMenus,
+            'id' => $id,
+            'search' => $search,
+        ]);
+    }
+
+    private function buildMenuTree($paginatedMenus, $id, $childPage)
+    {
+        // Sahifalangan asosiy menyular ID-lari
+        $menuIds = $paginatedMenus->pluck('id')->toArray();
+
+        // Har bir asosiy menyuning bolalarini alohida paginate qilish
+        $childPaginations = [];
+        foreach ($menuIds as $menuId) {
+            $childPaginations[$menuId] = EducationFaq::where('educational_program_id', $id)
+                ->where('parent_id', $menuId)
+                ->paginate(12, ['*'], 'child-page'); // Sahifalangan child menyular
+        }
+
+        // Hierarxik daraxtni tuzish
+        $menuTree = [];
+        foreach ($paginatedMenus as $menu) {
+            $menuTree[] = [
+                'menu' => $menu, // Asosiy menyu
+                'children' => $childPaginations[$menu->id] ?? collect(), // Bolalar menyusi
+                'child_pagination' => $childPaginations[$menu->id] ?? null // Sahifalash ma'lumotlari
+            ];
+        }
+
+        return $menuTree;
+    }
+
 //    public function index($id)
 //    {
-//        // Qidiruv uchun so'rov yaratamiz
-//        $employ_typesQuery = EducationFaq::where('educational_program_id', $id);
 //
-//        // Agar "search" parametri mavjud bo'lsa va bo'sh bo'lmasa
-//        if (request()->has('search') && !empty(request('search'))) {
-//            $search = trim(request('search')); // Qidiruv parametrini olish
-//            $employ_typesQuery->where('name', 'like', '%' . $search . '%'); // Qidiruv sharti qo'shish
-//        }
+//        $langs = Lang::all();
 //
-//        // Tartib va sahifalash
-//        $employ_types = $employ_typesQuery->latest()->paginate(12);
+//        $faqs = EducationFaq::where('educational_program_id', $id)->latest()->paginate(10);
 //
-//        // Mavjud tillar ro'yxati
-//        $languages = Lang::all();
-//
-//        // View-ga ma'lumotlarni qaytarish
 //        return view('admin.faq.index', [
 //            'title' => $this->title,
 //            'route_name' => $this->route_name,
 //            'route_parameter' => $this->route_parameter,
-//            'faq' => $employ_types,
-//            'languages' => $languages,
-//            'search' => request('search', ''), // Qidiruv qiymatini oling yoki bo'sh qiymat bering
+//            'langs' => $langs,
+//            'faqs' => $faqs,
 //        ]);
 //    }
-
-
-    public function index($id)
-    {
-
-        $langs = Lang::all();
-
-        $faqs = EducationFaq::where('educational_program_id', $id)->latest()->paginate(10);
-
-        return view('admin.faq.index', [
-            'title' => $this->title,
-            'route_name' => $this->route_name,
-            'route_parameter' => $this->route_parameter,
-            'langs' => $langs,
-            'faqs' => $faqs,
-            'id' => $id,
-        ]);
-    }
 
     public function create($id)
     {
         $langs = Lang::all();
 
         $skills = ERskill::query()->get();
+        $faqs = EducationFaq::query()->get();
 
         return view('admin.faq.create', [
             'title' => $this->title,
             'route_name' => $this->route_name,
             'route_parameter' => $this->route_parameter,
             'langs' => $langs,
+            'faqs' => $faqs,
             'id' => $id,
             'skills' => $skills,
         ]);
@@ -88,7 +115,7 @@ class EducationFaqController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-     public function store(Request $request)
+    public function store(Request $request)
     {
         // Kiruvchi ma'lumotlarni tasdiqlash
         $data = $request->validate([
@@ -96,6 +123,7 @@ class EducationFaqController extends Controller
             'question' => 'required|array', // "question" array bo'lishi kerak
             'answer' => 'required|array', // "answer" ham array bo'lishi kerak
             'skill_id' => 'required|integer',
+            'parent_id' => 'nullable|integer', // parent_id ni qo'shdik
         ]);
 
         // Ma'lumotni saqlash
@@ -104,12 +132,14 @@ class EducationFaqController extends Controller
             'question' => $data['question'], // JSON formatda saqlash
             'answer' => $data['answer'], // JSON formatda saqlash
             'skill_id' => $data['skill_id'],
+            'parent_id' => $data['parent_id'] ?? null, // Agar yo'q bo'lsa, null qo'yiladi
         ]);
 
         // Yaratilgandan so'ng qaytish
         return redirect()->route('education_faqs.index', $data['educational_program_id'])
             ->with('success', 'FAQ muvaffaqiyatli qo\'shildi!');
     }
+
 
     /**
      * Display the specified resource.
@@ -127,6 +157,8 @@ class EducationFaqController extends Controller
         $faq = EducationFaq::find($id);
         $langs = Lang::all();
         $skills = ERskill::query()->get();
+        $faqs = EducationFaq::query()->get();
+
 
         // View ga ma'lumotlarni yuborish
         return view('admin.faq.edit', [
@@ -135,6 +167,7 @@ class EducationFaqController extends Controller
             'route_parameter' => $this->route_parameter,
             'langs' => $langs,
             'faq' => $faq,
+            'faqs' => $faqs,
             'skills' => $skills,
         ]);
 }

@@ -705,14 +705,14 @@ class ApiController extends Controller
             'prev_page_url' => $member->previousPageUrl(), // Oldingi sahifa URLi
         ]);
     }
-    public function show_journals(Request $request, $id = null)
+    public function show_journals(Request $request, $slug = null)
     {
         // Foydalanuvchi tilini olish
         $locale = App::getLocale();
 
-        // Agar id bo'lsa, ma'lum bir studentni qaytarish
-        if ($id) {
-            $member = Service::find($id);
+        // Agar slug berilgan bo'lsa, ma'lum bir studentni qaytarish
+        if ($slug) {
+            $member = Service::where('slug', $slug)->first();
 
             // Agar student topilmasa, 404 xatolikni qaytaradi
             if (!$member) {
@@ -723,24 +723,23 @@ class ApiController extends Controller
 
             // Student ma'lumotlarini tilga mos formatda qaytarish
             $translatedStudent = [
-                'id' => $member->id ?? null, //
-                'title' => $member->title[$locale] ?? null, // Mahsulotning nomi (locale bo'yicha)
-                'desc' => $member->desc[$locale]  ?? null, //
-                'views_count' => $member->views_count ?? null, //
-                'slug' => $member->slug ?? null, //
+                'id' => $member->id ?? null,
+                'title' => $member->title[$locale] ?? null,
+                'desc' => $member->desc[$locale] ?? null,
+                'views_count' => $member->views_count ?? null,
+                'slug' => $member->slug ?? null,
                 'date' => $member->created_at ?? null,
-
                 'photo' => [
-                    'lg' => $member->img ? url('/upload/images/' . $member->img) : null, // Katta o'lchamdagi rasm
-                    'md' => $member->img ? url('/upload/images/600/' . $member->img) : null, // O'rtacha o'lchamdagi rasm
-                    'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null, // Kichik o'lchamdagi rasm
+                    'lg' => $member->img ? url('/upload/images/' . $member->img) : null,
+                    'md' => $member->img ? url('/upload/images/600/' . $member->img) : null,
+                    'sm' => $member->img ? url('/upload/images/200/' . $member->img) : null,
                 ],
             ];
 
             return response()->json($translatedStudent);
         }
 
-        // Agar id berilmagan bo'lsa, barcha studentlarni paginate qilish
+        // Agar slug berilmagan bo'lsa, barcha studentlarni paginate qilish
         $members = Member::latest()->paginate(15);
 
         // Agar studentlar topilmasa, 404 xatolikni qaytaradi
@@ -772,13 +771,13 @@ class ApiController extends Controller
 
         // Studentlar va paginate ma'lumotlarini JSON formatida qaytarish
         return response()->json([
-            'data' => $translatedPosts,             // Tilga mos studentlar
-            'total' => $members->total(),             // Umumiy studentlar soni
-            'per_page' => $members->perPage(),        // Har bir sahifadagi studentlar soni
-            'current_page' => $members->currentPage(), // Hozirgi sahifa raqami
-            'last_page' => $members->lastPage(),      // Oxirgi sahifa raqami
-            'next_page_url' => $members->nextPageUrl(), // Keyingi sahifa URLi
-            'prev_page_url' => $members->previousPageUrl(), // Oldingi sahifa URLi
+            'data' => $translatedPosts,
+            'total' => $members->total(),
+            'per_page' => $members->perPage(),
+            'current_page' => $members->currentPage(),
+            'last_page' => $members->lastPage(),
+            'next_page_url' => $members->nextPageUrl(),
+            'prev_page_url' => $members->previousPageUrl(),
         ]);
     }
     public function get_partners()

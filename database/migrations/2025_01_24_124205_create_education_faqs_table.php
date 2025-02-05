@@ -19,6 +19,9 @@ return new class extends Migration
             $table->foreign('skill_id')->references('id')->on('e_rskills')->onDelete('cascade');
             $table->text('question')->nullable();
             $table->text('answer')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('education_faqs')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

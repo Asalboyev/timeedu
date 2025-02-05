@@ -68,7 +68,7 @@ Route::middleware('locale')->group(function () {
     Route::get('/documents/{id}', [ApiController::class, 'show_documents']);
 
     Route::get('/journals', [ApiController::class, 'get_journals']);
-    Route::get('/journals/{id}', [ApiController::class, 'show_journals']);
+    Route::get('/journals/{slug}', [ApiController::class, 'show_journals']);
 
 
 
