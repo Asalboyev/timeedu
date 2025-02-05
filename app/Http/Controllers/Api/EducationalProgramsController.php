@@ -46,7 +46,7 @@ class EducationalProgramsController extends Controller
                         'form_education'=> $child->form_education[$locale] ?? null,
                         'daytime'=> $child->daytime ?? null,
                         'part_time' => $child->part_time ?? null,
-                        'first_descriptionv' => $child->first_descriptionv[$locale] ?? null,
+                        'first_description' => $child->first_description[$locale] ?? null,
                         'second_description'=> $child->second_description[$locale] ?? null,
                         'third_description' => $child->third_description[$locale] ?? null,
                         'icon' => $child->icon ? url($child->icon) : null,
