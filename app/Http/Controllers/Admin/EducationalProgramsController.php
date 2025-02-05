@@ -66,7 +66,7 @@ class EducationalProgramsController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             })
-            ->paginate(5); // 5 tadan sahifalash
+            ->paginate(1); // 5 tadan sahifalash
 
         // Agar hech narsa topilmasa, bo‘sh massiv qaytarish
         $menuTree = $paginatedMenus->isEmpty() ? [] : $this->buildMenuTree($paginatedMenus);
