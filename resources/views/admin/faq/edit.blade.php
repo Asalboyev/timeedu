@@ -89,7 +89,7 @@
                                     <label for="parent_id" class="form-label">Main</label>
                                     <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" name="parent_id">
                                         @foreach ($faqs as $key => $item)
-                                            <option value="{{ $item->id }}" {{ old('parent_id', $faqs->parent_id) == $item->id ? 'selected' : '' }}>
+                                            <option value="{{ $item->id }}" {{ old('parent_id', $item->parent_id) == $item->id ? 'selected' : '' }}>
                                                 {{ $item->question[$main_lang->code] ?? '' }}
                                             </option>
                                         @endforeach

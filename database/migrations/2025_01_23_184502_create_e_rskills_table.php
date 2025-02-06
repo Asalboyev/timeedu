@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('e_rskills', function (Blueprint $table) {
             $table->id();
             $table->text('name')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('education_faqs')->onDelete('cascade');
             $table->string('active')->nullable();
             $table->timestamps();
         });
