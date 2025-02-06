@@ -24,9 +24,11 @@ return new class extends Migration
             $table->foreign('parent_id')->references('id')->on('educational_programs')->onDelete('cascade');
             $table->string('slug');
             $table->string('code')->nullable();
+            $table->string('file')->nullable();
             $table->text('lang')->nullable();
             $table->text('map')->nullable();
-            $table->text('date')->nullable();
+            $table->string('date')->nullable();
+            $table->string('sirtqi_date')->nullable();
             $table->text('form_education')->nullable();
             $table->string('active')->nullable();
             $table->string('daytime')->nullable();

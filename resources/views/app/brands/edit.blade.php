@@ -163,6 +163,10 @@
                                     @endforeach
                                 </div>
                                 <div class="form-group">
+                                    <label for="title" class="form-label required">Url</label>
+                                    <input type="text" required class="form-control" name="url" value="{{ old('url') ?? $brand->url }}" id="title" placeholder="url...">
+                                </div>
+                                <div class="form-group">
                                     <div class="row">
                                         <div class="col-auto">
                                             <div class="form-check form-switch">

@@ -246,12 +246,20 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="date" class="form-label">Date</label>
+                                    <label for="date" class="form-label">K Date</label>
                                     <input type="text" id="date" name="date" class="form-control" value="{{ old('date') }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
+                                </div>
+                                <div class="form-group">
+                                    <label for="date" class="form-label">S Date</label>
+                                    <input type="text" id="date" name="sirtqi_date" class="form-control" value="{{ old('sirtqi_date') }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
                                 </div>
                                 <div class="form-group">
                                     <label for="date" class="form-label">icon</label>
                                     <input type="file" id="date" name="icon" class="form-control" value="{{ old('icon') }}" placeholder="icon..."  />
+                                </div>
+                                <div class="form-group">
+                                    <label for="date" class="form-label">File</label>
+                                    <input type="file" id="date" name="file" class="form-control" value="{{ old('file') }}" placeholder="file..."  />
                                 </div>
                                 <div class="form-group">
                                     <label for="date" class="form-label">Education years</label>

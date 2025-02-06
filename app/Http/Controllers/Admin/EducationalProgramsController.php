@@ -165,6 +165,11 @@ class EducationalProgramsController extends Controller
                 $iconPath = $icon->store('educational-programs/icons', 'public'); // Save in 'storage/app/public/educational-programs/icons'
                 $data['icon'] = $iconPath; // Save the path in the database
             }
+            if ($request->hasFile('file')) {
+                $icon = $request->file('file');
+                $iconPath = $icon->store('educational-programs/file', 'public'); // Save in 'storage/app/public/educational-programs/icons'
+                $data['file'] = $iconPath; // Save the path in the database
+            }
 
             $post = EducationalProgram::create($data);
 
@@ -269,6 +274,17 @@ class EducationalProgramsController extends Controller
                 $iconPath = $icon->store('educational-programs/icons', 'public'); // Save in 'storage/app/public/educational-programs/icons'
                 $data['icon'] = $iconPath; // Save the new path in the data
             }
+            if ($request->hasFile('file')) {
+                // Delete the existing icon if it exists
+                if ($post->icon) {
+                    Storage::disk('public')->delete($post->icon);
+                }
+
+                $icon = $request->file('file');
+                $iconPath = $icon->store('educational-programs/file', 'public'); // Save in 'storage/app/public/educational-programs/icons'
+                $data['file'] = $iconPath; // Save the new path in the data
+            }
+
 
             $post->update($data);
 

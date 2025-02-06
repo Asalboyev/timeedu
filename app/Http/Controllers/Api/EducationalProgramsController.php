@@ -50,9 +50,11 @@ class EducationalProgramsController extends Controller
                         'second_description'=> $child->second_description[$locale] ?? null,
                         'third_description' => $child->third_description[$locale] ?? null,
                         'icon' => $child->icon ? url($child->icon) : null,
+                        'file' => $child->file ? url($child->file) : null,
                         'code' => $child->code,
                         'lang' => $child->lang[$locale] ?? null,
-                        'date' => $child->date,
+                        'kundizgi_date' => $child->date,
+                        'sirtqi_date' => $child->sirtqi_date,
                         'photo' => [
                             'lg' => $child->photo ? url('/upload/images/' . $child->photo) : null, // Katta o'lchamdagi rasm
                             'md' => $child->photo ? url('/upload/images/600/' . $child->photo) : null, // O'rtacha o'lchamdagi rasm
@@ -161,9 +163,11 @@ class EducationalProgramsController extends Controller
             'second_description'=> $program->second_description[$locale] ?? null,
             'third_description' => $program->third_description[$locale] ?? null,
             'icon' => $program->icon ? url( $program->icon) : null,
+            'file' => $program->file ? url( $program->file) : null,
             'code' => $program->code,
             'lang' => $program->lang[$locale] ?? null,
-            'date' => $program->date,
+            'kundizgi_date' => $program->date,
+            'sirtqi_date' => $program->sirtqi_date,
             'education_years' => $program->education_years,
             'yt_link' => $program->yt_link,
             'photo' => [

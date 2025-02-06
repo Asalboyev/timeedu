@@ -273,7 +273,6 @@
                                 <a href="{{ route($route_name.'.index') }}" type="button" class="btn btn-secondary">Cancel</a>
                                 <button type="submit" class="btn btn-primary ms-2">Save</button>
                             </div>
-
                     </div>
                 </div>
             </div>
@@ -284,14 +283,21 @@
                         <div class="row">
                             <div class="col-12">
                                 @if ($educationalProgram->parent_id != null && $educationalProgram->parent_id != null)
-
                                     <div class="form-group">
-                                        <label for="date" class="form-label">Date</label>
+                                        <label for="date" class="form-label">K Date</label>
                                         <input type="text" id="date" name="date" class="form-control" value="{{ old('date')?? $educationalProgram->date ?? null }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date" class="form-label">S Date</label>
+                                        <input type="text" id="date" name="sirtqi_date" class="form-control" value="{{ old('sirtqi_date')?? $educationalProgram->sirtqi_date ?? null }}" placeholder="{{ date('d-m-Y') }}" data-flatpickr='{"dateFormat": "d-m-Y"}' />
                                     </div>
                                     <div class="form-group">
                                         <label for="date" class="form-label">icon</label>
                                         <input type="file" id="icon" name="icon" class="form-control" value="{{ old('icon')?? $educationalProgram->icon ?? null }}" placeholder="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date" class="form-label">File</label>
+                                        <input type="file" id="date" name="file" class="form-control" value="{{ old('file') ?? $educationalProgram->file }}" placeholder="file..."  />
                                     </div>
                                     <div class="form-group">
                                         <label for="date" class="form-label">Education years</label>
