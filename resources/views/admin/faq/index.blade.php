@@ -67,14 +67,14 @@
                             <td><strong>{{ $programItem['menu']->question[$languages->first()->code] ?? 'No Name' }}</strong></td>
                             <td>Parent </td>
                             <td>
-                                <a href="{{ route('educational-programs.edit', $programItem['menu']->id) }}" class="btn btn-sm btn-info">
+                                <a href="{{ route('education_faqs.edit', $programItem['menu']->id) }}" class="btn btn-sm btn-info">
                                     <i class="fe fe-edit-2"></i>
                                 </a>
                                 <a href="#" class="btn btn-sm btn-danger"
                                    onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $programItem['menu']->id }}').submit(); }">
                                     <i class="fe fe-trash"></i>
                                 </a>
-                                <form id="delete-form-{{ $programItem['menu']->id }}" action="{{ route('educational-programs.destroy', $programItem['menu']->id) }}" method="POST" style="display: none;">
+                                <form id="delete-form-{{ $programItem['menu']->id }}" action="{{ route('education_faqs.destroy', $programItem['menu']->id) }}" method="POST" style="display: none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
