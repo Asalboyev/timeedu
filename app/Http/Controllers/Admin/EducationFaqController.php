@@ -94,7 +94,9 @@ class EducationFaqController extends Controller
         $langs = Lang::all();
 
         $skills = ERskill::query()->get();
-        $faqs = EducationFaq::query()->get();
+        $faqs = EducationFaq::where('educational_program_id', $id)
+            ->whereNull('parent_id')
+            ->get();
 
         return view('admin.faq.create', [
             'title' => $this->title,
@@ -157,8 +159,9 @@ class EducationFaqController extends Controller
         $faq = EducationFaq::find($id);
         $langs = Lang::all();
         $skills = ERskill::query()->get();
-        $faqs = EducationFaq::query()->get();
-
+        $faqs = EducationFaq::where('educational_program_id', $id)
+            ->whereNull('parent_id')
+            ->get();
 
         // View ga ma'lumotlarni yuborish
         return view('admin.faq.edit', [
