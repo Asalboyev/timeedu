@@ -190,7 +190,7 @@ class ApiController extends Controller
         $locale = App::getLocale();
 
         // Postlarni oxirgi qo'shilganidan boshlab olish va 10 tadan paginate qilish
-        $member = Certificate::where('action', 0)->latest()->paginate(15);
+        $member = Member::where('action', 0)->latest()->paginate(15);
 
         // Agar postlar topilmasa, 404 xatolikni qaytaradi
         if ($member->isEmpty()) {
