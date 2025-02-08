@@ -164,12 +164,6 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        if(isset($service->children[0])) {
-            return back()->with([
-                'success' => false,
-                'message' => 'Есть дочерние категории. Сначала нужно удалить их.'
-            ]);
-        }
         $service->delete();
 
         return back()->with([
