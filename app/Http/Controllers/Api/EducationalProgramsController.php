@@ -115,6 +115,7 @@ class EducationalProgramsController extends Controller
                     'faq' => $child->faq ? $child->faq->map(function ($faq) use ($locale) {
                             return [
                                 'id' => $faq->id,
+                                'parent' => $faq->parent_id,
                                 'skills' => $faq->skill ? [
                                     'id' => $faq->skill->id,
                                     'name' => $faq->skill->name[$locale] ?? $faq->skill->name,
@@ -218,6 +219,8 @@ class EducationalProgramsController extends Controller
             'faq' => $program->faq ? $program->faq->map(function ($faq) use ($locale) {
                 return [
                     'id' => $faq->id,
+                    'parent' => $faq->parent_id,
+
                     'skills' => $faq->skill ? [
                         'id' => $faq->skill->id,
                         'name' => $faq->skill->name[$locale] ?? $faq->skill->name,
@@ -281,6 +284,7 @@ class EducationalProgramsController extends Controller
                     'faq' => $child->faq ? $child->faq->map(function ($faq) use ($locale) {
                         return [
                             'id' => $faq->id,
+                            'parent' => $faq->parent_id,
                             'skills' => $faq->skill ? [
                                 'id' => $faq->skill->id,
                                 'name' => $faq->skill->name[$locale] ?? $faq->skill->name,
