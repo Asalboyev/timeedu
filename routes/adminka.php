@@ -71,7 +71,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('education-faqs/{id}', [\App\Http\Controllers\Admin\EducationFaqController::class,'index'])->name('education_faqs.index');
     Route::get('education-faqs/create/{id}', [\App\Http\Controllers\Admin\EducationFaqController::class,'create'])->name('education_faqs.create');
     Route::post('education-faqs/', [\App\Http\Controllers\Admin\EducationFaqController::class,'store'])->name('education_faqs.store');
-    Route::get('education-faqs/{id}/edit', [\App\Http\Controllers\Admin\EducationFaqController::class, 'edit'])
+    Route::get('education-faqs/{main}/{id}/edit', [\App\Http\Controllers\Admin\EducationFaqController::class, 'edit'])
         ->name('education_faqs.edit');
 
     Route::put('education-faqs/{id}', [\App\Http\Controllers\Admin\EducationFaqController::class, 'update'])

@@ -154,16 +154,35 @@ class EducationFaqController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+//    public function edit($id,$main)
+//    {
+//        $faq = EducationFaq::find($id);
+//        $langs = Lang::all();
+//        $skills = ERskill::query()->get();
+//        $faqs = EducationFaq::where('educational_program_id', $main)
+//            ->whereNull('parent_id')
+//            ->get();
+//
+//        // View ga ma'lumotlarni yuborish
+//        return view('admin.faq.edit', [
+//            'title' => $this->title,
+//            'route_name' => $this->route_name,
+//            'route_parameter' => $this->route_parameter,
+//            'langs' => $langs,
+//            'faq' => $faq,
+//            'faqs' => $faqs,
+//            'skills' => $skills,
+//        ]);
+//}\
+    public function edit($main, $id)
     {
         $faq = EducationFaq::find($id);
         $langs = Lang::all();
-        $skills = ERskill::query()->get();
-        $faqs = EducationFaq::where('educational_program_id', $id)
+        $skills = ERskill::all();
+        $faqs = EducationFaq::where('educational_program_id', $main)
             ->whereNull('parent_id')
             ->get();
 
-        // View ga ma'lumotlarni yuborish
         return view('admin.faq.edit', [
             'title' => $this->title,
             'route_name' => $this->route_name,
@@ -173,7 +192,8 @@ class EducationFaqController extends Controller
             'faqs' => $faqs,
             'skills' => $skills,
         ]);
-}
+    }
+
 
     /**
      * Update the specified resource in storage.

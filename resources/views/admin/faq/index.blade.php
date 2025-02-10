@@ -67,9 +67,10 @@
                             <td><strong>{{ $programItem['menu']->question[$languages->first()->code] ?? 'No Name' }}</strong></td>
                             <td>Parent </td>
                             <td>
-                                <a href="{{ route('education_faqs.edit', $programItem['menu']->id) }}" class="btn btn-sm btn-info">
+                                <a href="{{ route('education_faqs.edit', [$programItem['menu']->educational_program_id, $programItem['menu']->id]) }}" class="btn btn-sm btn-info">
                                     <i class="fe fe-edit-2"></i>
                                 </a>
+
                                 <a href="#" class="btn btn-sm btn-danger"
                                    onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $programItem['menu']->id }}').submit(); }">
                                     <i class="fe fe-trash"></i>
@@ -88,9 +89,10 @@
                                     <td>&mdash; {{ $child->question[$languages->first()->code] ?? 'No Name' }}</td>
                                     <td>{{ $programItem['menu']->question[$languages->first()->code] ?? 'No Parent' }}</td>
                                     <td>
-                                        <a href="{{ route('education_faqs.edit', $child->id) }}" class="btn btn-sm btn-info">
+                                        <a href="{{ route('education_faqs.edit', [$child->educational_program_id, $child->id]) }}" class="btn btn-sm btn-info">
                                             <i class="fe fe-edit-2"></i>
                                         </a>
+
                                         <a href="#" class="btn btn-sm btn-danger"
                                            onclick="if(confirm('Are you sure?')) { event.preventDefault(); document.getElementById('delete-form-{{ $child->id }}').submit(); }">
                                             <i class="fe fe-trash"></i>
